@@ -36,6 +36,11 @@ class NavMenu extends React.Component<IProps, IState> {
             </li>
           </ul>
           <ul className="navbar-nav ml-auto">
+          <li className="nav-item">
+              <Link to="/status" className="nav-link text-primary">
+                Health status
+              </Link>
+            </li>            
             <li className="nav-item">
               <Link to="/task-log-entries" className="nav-link text-primary">
                 Task log

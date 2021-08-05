@@ -30,6 +30,25 @@ const requestWithAuthentication = (
   return window.fetch(prefixAPI(url), fetchObject)
 }
 
+const requestWithoutAuthentication = (
+  url: string,
+  method = 'get',
+  body: AnyJson
+): Promise<Response> => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const fetchObject: RequestInit = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'same-origin'
+  }
+  if (method !== 'get' && body) {
+    fetchObject.body = JSON.stringify(body)
+  }
+  return window.fetch(prefixAPI(url), fetchObject)
+}
+
 export const requestJSONWithErrorHandler = async (
   url: string,
   method = 'get',
@@ -41,6 +60,38 @@ export const requestJSONWithErrorHandler = async (
   ) => void
 ): Promise<AnyJson> => {
   const response = await requestWithAuthentication(url, method, body)
+  let json
+  try {
+    json = await response.json()
+  } catch (e) {
+    console.error('getJSONWithErrorHandler: Error decoding JSON from response.')
+  }
+
+  const paginationHeader = response.headers.get('X-Pagination')
+  const pagination = paginationHeader ? JSON.parse(paginationHeader) : {}
+
+  if (response.ok) {
+    if (successCallback) {
+      successCallback(json, pagination)
+    }
+    return json
+  } else {
+    setError(store.dispatch, errorCode)
+    return null
+  }
+}
+
+export const requestJSONWithoutAuth = async (
+  url: string,
+  method = 'get',
+  body: AnyJson,
+  errorCode: string,
+  successCallback: (
+    responseJSON: FixTypeLater,
+    pagination?: FixTypeLater
+  ) => void
+): Promise<AnyJson> => {
+  const response = await requestWithoutAuthentication(url, method, body)
   let json
   try {
     json = await response.json()

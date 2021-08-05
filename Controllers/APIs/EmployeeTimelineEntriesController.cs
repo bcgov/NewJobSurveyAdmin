@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NewJobSurveyAdmin.Controllers
 {
-    [Authorize(Roles = "NewJobSurveyAdmin")]
+    [Authorize(Roles = "newjobsurveyadmin")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeTimelineEntriesController : ControllerBase

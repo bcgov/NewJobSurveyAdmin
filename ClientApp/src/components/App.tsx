@@ -9,6 +9,7 @@ import Home from './Home'
 import Layout from './Wrappers/Layout'
 import TaskLogEntryListing from './TaskLogEntries/TaskLogEntryListing'
 import AdminInterface from './Admin/AdminInterface'
+import HealthStatus from './HealthStatus/HealthStatus'
 
 import '../custom.css'
 
@@ -20,6 +21,7 @@ export default class App extends React.Component {
       <Layout>
         <AuthenticatedRoute exact path="/" component={Home} />
         <Route path="/callback" component={CallbackHandler} />
+        <Route path="/status" component={HealthStatus} />
         <AuthenticatedRoute
           exact
           path="/employees/:employeeId"
