@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NewJobSurveyAdmin.Controllers
 {
-    [Authorize(Roles = "newjobsurveyadmin")]
+    [Authorize(Roles = "ExitSurveyAdmin")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
