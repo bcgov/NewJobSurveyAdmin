@@ -246,6 +246,8 @@ EmailTemplates/*
 
 # App settings
 **/appsettings.Development.json
+**/appsettings.Production.json
 
 # Various
 .DS_Store
+.odo/odo-file-index.json
