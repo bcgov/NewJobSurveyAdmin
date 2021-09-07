@@ -34,6 +34,13 @@ namespace NewJobSurveyAdmin
         {
             services.AddHttpClient();
 
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddControllersWithViews();
 
             services.Configure<CallWebServiceOptions>(Configuration.GetSection("CallWebApi"));
@@ -69,6 +76,22 @@ namespace NewJobSurveyAdmin
             services.AddScoped<ISieveCustomFilterMethods, SieveCustomFilterMethods>();
             services.AddScoped<SieveProcessor>();
 
+            // TODO: Is this still important?
+            // services
+            //     .AddAuthentication(options =>
+            //         Authentication.SetAuthenticationOptions(options))
+            //     .AddJwtBearer(options =>
+            //     {
+            //         options.Authority = Configuration["Authentication:Authority"];
+            //         options.Audience = Configuration["Authentication:Audience"];
+            //     }
+
+            //     // Authentication.SetJwtBearerOptions(
+            //     //     options,
+            //     //     Configuration.GetValue<string>("Authentication:Authority")
+            //     // )
+            //     );
+
             services
                 .AddAuthentication(options =>
                     Authentication.SetAuthenticationOptions(options))
@@ -86,6 +109,7 @@ namespace NewJobSurveyAdmin
                         Configuration.GetValue<string>("Authentication:RoleName")
                     )
                 );
+
 
             // Add an HttpClient.
             services.AddHttpClient(HttpClientName)
@@ -133,6 +157,8 @@ namespace NewJobSurveyAdmin
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {

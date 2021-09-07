@@ -13,7 +13,7 @@ class NavMenu extends React.Component<IProps, IState> {
 
   render(): JSX.Element {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom mb-4">
+      <nav className="navbar navbar-expand-lg navbar-light bg-warning border-bottom mb-4">
         <Link to="/" className="navbar-brand text-primary">
           <i className="fas fa-envelope-open-text mr-3"></i>
           New Job Survey Admin

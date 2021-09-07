@@ -19,25 +19,25 @@ export default class App extends React.Component {
   render(): JSX.Element {
     return (
       <Layout>
-        <Route exact path="/" component={Home} />
+        <AuthenticatedRoute exact path="/" component={Home} />
         <Route path="/callback" component={CallbackHandler} />
         <Route path="/status" component={HealthStatus} />
-        <Route
+        <AuthenticatedRoute
           exact
           path="/employees/:employeeId"
           component={EmployeeDetail}
         />
-        <Route
+        <AuthenticatedRoute
           exact
           path="/employees"
           component={EmployeeListing}
         />
-        <Route
+        <AuthenticatedRoute
           exact
           path="/task-log-entries"
           component={TaskLogEntryListing}
         />
-        <Route exact path="/admin" component={AdminInterface} />
+        <AuthenticatedRoute exact path="/admin" component={AdminInterface} />
       </Layout>
     )
   }

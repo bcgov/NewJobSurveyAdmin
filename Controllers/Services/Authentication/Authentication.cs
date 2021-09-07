@@ -20,11 +20,11 @@ namespace NewJobSurveyAdmin.Services
             options.Authority = authority;
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                //BC Dev Keycloack
+                //BC Dev Keycloak
                 ValidAudiences = new string[] {
-                    "NewJobSurveyAdmin", "account", "realm-management"
+                    "ExitSurveyAdmin", "account", "realm-management" // TODO: Check on this
                 },
-                RoleClaimType = "user_roles" // roles in the token for the client.
+                RoleClaimType = "role" // roles in the token for the client.
             };
             options.RequireHttpsMetadata = false; //for test only!
             options.SaveToken = true;
@@ -37,7 +37,7 @@ namespace NewJobSurveyAdmin.Services
         )
         {
             options.AddPolicy("UserRole", policy =>
-                policy.RequireClaim("user_roles", $"[{roleName}]")
+                policy.RequireClaim("role", $"[{roleName}]")
             );
         }
 

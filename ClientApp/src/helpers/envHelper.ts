@@ -6,7 +6,7 @@ import { WebStorageStateStore } from 'oidc-client'
 export const routerBase = (): string => env('APP_PATH')
 
 export const deploymentUrl = (): string => {
-  return `${env('APP_DOMAIN')}${env('APP_PATH')}`
+  return `${env('API_DOMAIN')}${env('APP_PATH')}`
 }
 
 export const signinRedirectOptions = {

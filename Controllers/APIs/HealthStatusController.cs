@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using NewJobSurveyAdmin.Services.CallWeb;
 using NewJobSurveyAdmin.Services;
 
 namespace NewJobSurveyAdmin.Controllers
@@ -9,12 +10,11 @@ namespace NewJobSurveyAdmin.Controllers
     public class HealthStatusController : ControllerBase
     {
 
-        private readonly EmployeeInfoLookupService infoLookupService;
+        private readonly CallWebService callWebService;
 
-
-        public HealthStatusController(EmployeeInfoLookupService infoLookupService)
+        public HealthStatusController(CallWebService callWebService)
         {
-            this.infoLookupService = infoLookupService;
+            this.callWebService = callWebService;
         }
 
         // GetStatus: Returns "Healthy." if the API is healthy.
@@ -27,13 +27,19 @@ namespace NewJobSurveyAdmin.Controllers
             return Ok(text);
         }
 
-
-        [HttpGet("LdapCheck")]
-        public async Task<ActionResult<string>> LdapCheck(string employeeId)
+        // GetCallWebCount: Returns the count of records in CallWeb, if that API
+        // is working, or -1 if there has been an error.
+        // GET: api/HealthStatus/CallWebCount
+        [HttpGet("CallWebCount")]
+        public async Task<ActionResult<string>> GetCallWebCount()
         {
-            string email = this.infoLookupService.EmailByEmployeeId(employeeId);
+            var apiServiceCallResult = await this.callWebService.ListAll();
 
-            string text = "{ \"msg\": \"" + email + "\" }";
+            int length = apiServiceCallResult == null
+                ? -1
+                : apiServiceCallResult.Length;
+
+            string text = "{ \"callWebRecordCount\": \"" + length + "\" }";
 
             return Ok(text);
         }

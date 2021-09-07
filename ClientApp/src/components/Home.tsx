@@ -29,9 +29,11 @@ const Home = (): JSX.Element => {
       null,
       'EMPLOYEE_NOT_FOUND',
       (responseJSON: FixTypeLater[]): void => {
-        setTaskLogEntryData(
-          responseJSON.map(t => plainToClass(TaskLogEntry, t))
-        )
+        if (responseJSON) {
+          setTaskLogEntryData(
+            responseJSON.map(t => plainToClass(TaskLogEntry, t))
+          )
+        }
       }
     )
   }, [])
