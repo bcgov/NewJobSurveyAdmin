@@ -2,10 +2,10 @@ import { setError } from './errorHandlingHelper'
 import store from '../store/store'
 import { FixTypeLater } from '../types/FixTypeLater'
 import { AnyJson } from '../types/JsonType'
-import { deploymentUrl } from './envHelper'
+import { apiUrl } from './envHelper'
 
 export const prefixAPI = (path: string): string => {
-  return `${deploymentUrl()}${path}`
+  return `${apiUrl()}${path}`
 }
 
 const requestWithAuthentication = (

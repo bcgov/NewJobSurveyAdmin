@@ -5,7 +5,7 @@ import { CallbackComponent } from 'redux-oidc'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 
-import { deploymentUrl } from '../../helpers/envHelper'
+import { frontendUrl } from '../../helpers/envHelper'
 import { FixTypeLater } from '../../types/FixTypeLater'
 import userManager from '../../store/utils/userManager'
 
@@ -26,7 +26,7 @@ class CallbackPage extends React.Component<IProps> {
         errorCallback={(error: FixTypeLater): void => {
           console.log('Login error')
           console.error(error)
-          window.location.href = deploymentUrl()
+          window.location.href = frontendUrl()
         }}
       >
         <div className="Centered row">
