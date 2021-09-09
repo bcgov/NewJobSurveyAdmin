@@ -33,7 +33,7 @@ namespace NewJobSurveyAdmin.Models
             // Do not permit cascade deletes should either the Employee or the
             // EmployeeStatusEnum be deleted.
             modelBuilder.Entity<Employee>()
-                .HasIndex(e => new { e.GovernmentEmployeeId, e.ExitCount });
+                .HasIndex(e => new { e.GovernmentEmployeeId });
 
             modelBuilder.Entity<Employee>()
                 .HasOne(e => e.CurrentEmployeeStatus)

@@ -24,14 +24,14 @@ namespace NewJobSurveyAdmin.Services.CallWeb
             {
                 Telkey = employee.Telkey,
                 PreferredEmail = employee.PreferredEmail,
-                Ministry = employee.Ministry,
+                Ministry = employee.Organization,
                 PositionTitle = employee.PositionTitle,
                 AppointmentStatus = employee.AppointmentStatus,
                 PreferredFirstName = employee.PreferredFirstName,
                 LastName = employee.LastName,
-                LeaveReason = employee.Reason,
-                LeaveCode = employee.LeaveCode,
-                EffectiveDate = employee.EffectiveDate.ToString("yyyy-MM-dd"),
+                // LeaveReason = employee.Reason,
+                // LeaveCode = employee.LeaveCode,
+                // EffectiveDate = employee.EffectiveDate.ToString("yyyy-MM-dd"),
                 CurrentStatus = employee.CurrentEmployeeStatusCode,
                 SurveyWindowFlag = employee.SurveyWindowFlag()
             };

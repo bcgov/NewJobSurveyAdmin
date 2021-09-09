@@ -25,30 +25,10 @@ namespace NewJobSurveyAdmin.Models
                     d.PropertyInfo.Name != nameof(ModifiedTs) &&
                     d.PropertyInfo.Name != nameof(PreferredFirstName) &&
                     d.PropertyInfo.Name != nameof(PreferredEmail) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddress1) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddress2) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddressCity) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddressProvince) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddressPostCode) &&
                     d.PropertyInfo.Name != nameof(PreferredFirstNameFlag) &&
                     d.PropertyInfo.Name != nameof(PreferredEmailFlag) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddress1Flag) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddress2Flag) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddressCityFlag) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddressProvinceFlag) &&
-                    d.PropertyInfo.Name != nameof(PreferredAddressPostCodeFlag) &&
                     d.PropertyInfo.Name != nameof(TriedToUpdateInFinalState)
                 );
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public string FullName
-        {
-            get { return $"{this.FirstName} {this.LastName}"; }
         }
 
         [Key]
@@ -57,6 +37,9 @@ namespace NewJobSurveyAdmin.Models
 
         [Sieve(CanFilter = true, CanSort = true)]
         public virtual string Telkey { get; set; }
+
+
+        // Personal info (ID, names, etc.)
 
         [Sieve(CanFilter = true)]
         [Required]
@@ -73,13 +56,12 @@ namespace NewJobSurveyAdmin.Models
         [Required]
         public Boolean PreferredFirstNameFlag { get; set; }
 
+        [Required]
+        public string MiddleName { get; set; }
+
         [Sieve(CanFilter = true, CanSort = true)]
         [Required]
         public string LastName { get; set; }
-
-        [Sieve(CanFilter = true)]
-        [Required]
-        public string RecordCount { get; set; }
 
         [DataType(DataType.Date)]
         [Required]
@@ -87,6 +69,15 @@ namespace NewJobSurveyAdmin.Models
 
         [Required]
         public string Gender { get; set; }
+
+        [Required]
+        public string Age { get; set; }
+
+
+        // Contact information
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string ChipsEmail { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string GovernmentEmail { get; set; }
@@ -97,86 +88,33 @@ namespace NewJobSurveyAdmin.Models
         [Required]
         public Boolean PreferredEmailFlag { get; set; }
 
+
+        // Employee job info
+
         [Sieve(CanFilter = true, CanSort = true)]
         [Required]
         public string Classification { get; set; }
 
         [Required]
-        public string Ministry { get; set; }
+        public string Organization { get; set; }
 
         [Required]
         public string DepartmentId { get; set; }
 
         [Required]
-        public string JobFunctionCode { get; set; }
+        public string DepartmentIdDescription { get; set; }
+
+        [Required]
+        public string DevelopmentRegion { get; set; }
 
         [Required]
         public string LocationCity { get; set; }
 
-        [DataType(DataType.Date)]
         [Required]
-        public DateTime OriginalHireDate { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? LastDayWorkedDate { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        [DataType(DataType.Date)]
-        [Required]
-        public DateTime EffectiveDate { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
-        public string Reason { get; set; }
+        public string LocationGroup { get; set; }
 
         [Required]
-        public string Address1 { get; set; }
-
-        public string Address2 { get; set; }
-
-        [Required]
-        public string AddressCity { get; set; }
-
-        [Required]
-        public string AddressProvince { get; set; }
-
-        [Required]
-        public string AddressPostCode { get; set; }
-
-        [Required]
-        public string PreferredAddress1 { get; set; }
-
-        [Required]
-        public Boolean PreferredAddress1Flag { get; set; }
-
-        public string PreferredAddress2 { get; set; }
-
-        [Required]
-        public Boolean PreferredAddress2Flag { get; set; }
-
-        [Required]
-        public string PreferredAddressCity { get; set; }
-
-        public Boolean PreferredAddressCityFlag { get; set; }
-
-        [Required]
-        public string PreferredAddressProvince { get; set; }
-
-        [Required]
-        public Boolean PreferredAddressProvinceFlag { get; set; }
-
-        [Required]
-        public string PreferredAddressPostCode { get; set; }
-
-        [Required]
-        public Boolean PreferredAddressPostCodeFlag { get; set; }
-
-        [Required]
-        public string Phone { get; set; }
-
-        [Required]
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string AppointmentStatus { get; set; }
+        public string JobCode { get; set; }
 
         [Required]
         public string PositionCode { get; set; }
@@ -185,35 +123,100 @@ namespace NewJobSurveyAdmin.Models
         public string PositionTitle { get; set; }
 
         [Required]
-        public string Age { get; set; }
+        public string JobClassificationGroup { get; set; }
 
+        [Required]
+        public string NocCode { get; set; }
+
+        [Required]
+        public string NocDescription { get; set; }
+
+        [Required]
+        public string OrganizationCount { get; set; }
+
+        [Required]
+        public string RegionalDistrict { get; set; }
+
+        [Required]
+        public string UnionCode { get; set; }
+
+        // Hiring info
+
+        [Sieve(CanFilter = true, CanSort = true)]
         [DataType(DataType.Date)]
-        public DateTime? LeaveDate { get; set; }
+        [Required]
+        public DateTime EffectiveDate { get; set; }
+
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string AppointmentStatus { get; set; }
 
         [Required]
         public string ServiceYears { get; set; }
 
         [Required]
-        public string JobCode { get; set; }
+        public string RecordCount { get; set; }
 
         [Required]
-        public string BackDated { get; set; }
+        public string StaffingAction { get; set; }
 
         [Required]
-        [Sieve(CanFilter = true)]
-        public string ExitCount { get; set; }
+        public string StaffingReason { get; set; }
 
         [Required]
-        public string AgeGroup { get; set; }
+        public string NewHireOrInternalStaffing { get; set; }
 
         [Required]
-        public string ClassificationGroup { get; set; }
+        public string TaToPermanent { get; set; }
+
+        // Prior job info
 
         [Required]
-        public string ServiceGroup { get; set; }
+        public string PriorAppointmentStatus { get; set; }
 
         [Required]
-        public string LocationGroup { get; set; }
+        public string PriorClassification { get; set; }
+
+        [Required]
+        public string PriorDepartmentId { get; set; }
+
+        [Required]
+        public string PriorDepartmentIdDescription { get; set; }
+
+        [Required]
+        public string PriorEffectiveDate { get; set; }
+
+        [Required]
+        public string PriorEmployeeStatus { get; set; }
+
+        [Required]
+        public string PriorJobClassificationGroup { get; set; }
+
+        [Required]
+        public string PriorJobCode { get; set; }
+
+        [Required]
+        public string PriorNocCode { get; set; }
+
+        [Required]
+        public string PriorNocDescription { get; set; }
+
+        [Required]
+        public string PriorOrganization { get; set; }
+
+        [Required]
+        public string PriorPositionCode { get; set; }
+
+        [Required]
+        public string PriorPositionTitle { get; set; }
+
+        [Required]
+        public string PriorUnionCode { get; set; }
+
+
+
+
+        // Code-specific additional fields
 
         [Sieve(CanFilter = true, CanSort = true)]
         [Required]
@@ -224,6 +227,19 @@ namespace NewJobSurveyAdmin.Models
         public virtual List<EmployeeTimelineEntry> TimelineEntries { get; set; }
 
         public Boolean TriedToUpdateInFinalState { get; set; }
+
+
+        // Methods
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public string FullName
+        {
+            get { return $"{this.FirstName} {this.LastName}"; }
+        }
 
         public void UpdateEmail(
             EmployeeInfoLookupService infoLookupService
@@ -241,16 +257,6 @@ namespace NewJobSurveyAdmin.Models
             PreferredFirstNameFlag = false;
             PreferredEmail = GovernmentEmail;
             PreferredEmailFlag = false;
-            PreferredAddress1 = Address1;
-            PreferredAddress1Flag = false;
-            PreferredAddress2 = Address2;
-            PreferredAddress2Flag = false;
-            PreferredAddressCity = AddressCity;
-            PreferredAddressCityFlag = false;
-            PreferredAddressProvince = AddressProvince;
-            PreferredAddressProvinceFlag = false;
-            PreferredAddressPostCode = AddressPostCode;
-            PreferredAddressPostCodeFlag = false;
             TriedToUpdateInFinalState = false;
         }
 
@@ -261,31 +267,26 @@ namespace NewJobSurveyAdmin.Models
         {
             if (!PreferredFirstNameFlag) PreferredFirstName = FirstName;
             if (!PreferredEmailFlag) PreferredEmail = GovernmentEmail;
-            if (!PreferredAddress1Flag) PreferredAddress1 = Address1;
-            if (!PreferredAddress2Flag) PreferredAddress2 = Address2;
-            if (!PreferredAddressCityFlag) PreferredAddressCity = AddressCity;
-            if (!PreferredAddressProvinceFlag) PreferredAddressProvince = AddressProvince;
-            if (!PreferredAddressPostCodeFlag) PreferredAddressPostCode = AddressPostCode;
         }
 
-        public string LeaveCode
-        {
-            get
-            {
-                switch (this.Reason)
-                {
-                    case "Just Cause":
-                    case "Redundant":
-                    case "Rejection on Probation":
-                        return "3";
-                    case "Layoff (With Recall)":
-                    case "Job Ends/End of Recall Limit":
-                        return "2";
-                    default: // All other cases; no need to enumerate here
-                        return "1";
-                }
-            }
-        }
+        // public string LeaveCode
+        // {
+        //     get
+        //     {
+        //         switch (this.Reason)
+        //         {
+        //             case "Just Cause":
+        //             case "Redundant":
+        //             case "Rejection on Probation":
+        //                 return "3";
+        //             case "Layoff (With Recall)":
+        //             case "Job Ends/End of Recall Limit":
+        //                 return "2";
+        //             default: // All other cases; no need to enumerate here
+        //                 return "1";
+        //         }
+        //     }
+        // }
 
         public string SurveyWindowFlag()
         {

@@ -26,8 +26,8 @@ namespace NewJobSurveyAdmin.Services
             this.infoLookupService = infoLookupService;
         }
 
-        // NB. Existence is determined by the combination of EmployeeId,
-        // ExitCount, and record count.
+        // NB. Existence is determined by employee ID.
+        // TODO: Should there be other factors?
         private Employee EmployeeExists(
             Employee candidate
         )
@@ -36,8 +36,6 @@ namespace NewJobSurveyAdmin.Services
                 .Include(e => e.CurrentEmployeeStatus)
                 .Where(e =>
                     e.GovernmentEmployeeId == candidate.GovernmentEmployeeId
-                    && e.ExitCount == candidate.ExitCount
-                    && e.RecordCount == candidate.RecordCount
                 );
 
 
@@ -72,8 +70,9 @@ namespace NewJobSurveyAdmin.Services
             });
             context.Entry(employee).State = EntityState.Modified;
 
+            // TODO: Restore this call.
             // Update in CallWeb.
-            await callWeb.UpdateSurvey(employee);
+            // await callWeb.UpdateSurvey(employee);
 
             // Save.
             await context.SaveChangesAsync();
@@ -148,7 +147,10 @@ namespace NewJobSurveyAdmin.Services
                 // Try to insert a row into CallWeb, and set the telkey.
                 try
                 {
-                    employee.Telkey = await callWeb.CreateSurvey(employee);
+                    // TODO: Restore the next line.
+                    // employee.Telkey = await callWeb.CreateSurvey(employee);
+                    employee.Telkey = employee.GovernmentEmployeeId + '-' + employee.RecordCount;
+                    // TODO: Delete above line; temporary telkey generation.
                 }
                 catch (Exception e)
                 {
@@ -200,7 +202,8 @@ namespace NewJobSurveyAdmin.Services
                     });
                     context.Entry(existingEmployee).State = EntityState.Modified;
                     await context.SaveChangesAsync();
-                    await callWeb.UpdateSurvey(existingEmployee);
+                    // TODO: Restore the next line.
+                    // await callWeb.UpdateSurvey(existingEmployee);
                 }
 
                 // Now compare properties.
@@ -305,7 +308,8 @@ namespace NewJobSurveyAdmin.Services
                             return existingEmployee;
                         }
 
-                        await callWeb.UpdateSurvey(existingEmployee);
+                        // TODO: Restore the next line.
+                        // await callWeb.UpdateSurvey(existingEmployee);
                     }
                 }
 
@@ -338,25 +342,27 @@ namespace NewJobSurveyAdmin.Services
                 employeeExpirationThresholdSetting.Value
             );
 
-            if (
-                employee.EffectiveDate.AddDays(thresholdInDays) < DateTime.UtcNow &&
-                employee.CurrentEmployeeStatusCode != EmployeeStatusEnum.Expired.Code
-            )
-            {
-                return await SaveStatusAndAddTimelineEntry(employee,
-                    EmployeeStatusEnum.Expired);
-            }
+            // TODO 2021-09-07: Check this. Eliminating b/c we don't need expired employees.
+            // if (
+            //     employee.EffectiveDate.AddDays(thresholdInDays) < DateTime.UtcNow &&
+            //     employee.CurrentEmployeeStatusCode != EmployeeStatusEnum.Expired.Code
+            // )
+            // {
+            //     return await SaveStatusAndAddTimelineEntry(employee,
+            //         EmployeeStatusEnum.Expired);
+            // }
 
             // Conversely, re-open expired users if they are now inside the
             // threshold, for instance if the threshold was extended.
-            if (
-                employee.CurrentEmployeeStatusCode == EmployeeStatusEnum.Expired.Code &&
-                employee.EffectiveDate.AddDays(thresholdInDays) > DateTime.UtcNow
-            )
-            {
-                return await SaveStatusAndAddTimelineEntry(employee,
-                    EmployeeStatusEnum.Exiting);
-            }
+            // if (
+            //     employee.CurrentEmployeeStatusCode == EmployeeStatusEnum.Expired.Code &&
+            //     employee.EffectiveDate.AddDays(thresholdInDays) > DateTime.UtcNow
+            // )
+            // {
+            //     return await SaveStatusAndAddTimelineEntry(employee,
+            //         EmployeeStatusEnum.Exiting);
+            // }
+            // END TODO 2021-09-07
 
             return employee;
         }

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NewJobSurveyAdmin.Migrations
 {
     [DbContext(typeof(NewJobSurveyAdminContext))]
-    [Migration("20210820032617_InitialCreate")]
+    [Migration("20210909153809_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,30 +58,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Address1")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Address2")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AddressCity")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("AddressPostCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("AddressProvince")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Age")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("AgeGroup")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -89,18 +66,13 @@ namespace NewJobSurveyAdmin.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("BackDated")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Classification")
-                        .IsRequired()
+                    b.Property<string>("ChipsEmail")
                         .HasColumnType("text");
 
-                    b.Property<string>("ClassificationGroup")
+                    b.Property<string>("Classification")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -115,12 +87,16 @@ namespace NewJobSurveyAdmin.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("EffectiveDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("ExitCount")
+                    b.Property<string>("DepartmentIdDescription")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("DevelopmentRegion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -137,23 +113,17 @@ namespace NewJobSurveyAdmin.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("JobClassificationGroup")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("JobCode")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("JobFunctionCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("LastDayWorkedDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime?>("LeaveDate")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("LocationCity")
                         .IsRequired()
@@ -163,17 +133,30 @@ namespace NewJobSurveyAdmin.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Ministry")
+                    b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ModifiedTs")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("OriginalHireDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<string>("NewHireOrInternalStaffing")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("NocCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NocDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Organization")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrganizationCount")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -184,40 +167,6 @@ namespace NewJobSurveyAdmin.Migrations
                     b.Property<string>("PositionTitle")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("PreferredAddress1")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PreferredAddress1Flag")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PreferredAddress2")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PreferredAddress2Flag")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PreferredAddressCity")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PreferredAddressCityFlag")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PreferredAddressPostCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PreferredAddressPostCodeFlag")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PreferredAddressProvince")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PreferredAddressProvinceFlag")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("PreferredEmail")
                         .HasColumnType("text");
@@ -232,7 +181,59 @@ namespace NewJobSurveyAdmin.Migrations
                     b.Property<bool>("PreferredFirstNameFlag")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Reason")
+                    b.Property<string>("PriorAppointmentStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorClassification")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorDepartmentId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorDepartmentIdDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorEffectiveDate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorEmployeeStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorJobClassificationGroup")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorJobCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorNocCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorNocDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorOrganization")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorPositionCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorPositionTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PriorUnionCode")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -240,11 +241,23 @@ namespace NewJobSurveyAdmin.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ServiceGroup")
+                    b.Property<string>("RegionalDistrict")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ServiceYears")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StaffingAction")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StaffingReason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TaToPermanent")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -254,11 +267,15 @@ namespace NewJobSurveyAdmin.Migrations
                     b.Property<bool>("TriedToUpdateInFinalState")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("UnionCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CurrentEmployeeStatusCode");
 
-                    b.HasIndex("GovernmentEmployeeId", "ExitCount");
+                    b.HasIndex("GovernmentEmployeeId");
 
                     b.ToTable("Employees");
                 });
