@@ -66,10 +66,10 @@ namespace NewJobSurveyAdmin
                     Configuration.GetConnectionString("NewJobSurveyAdmin"))
             );
 
-            // services.Configure<KestrelServerOptions>(options =>
-            // {
-            //     options.AllowSynchronousIO = true;
-            // });
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
 
             services.Configure<SieveOptions>(Configuration.GetSection("Sieve"));
             services.AddScoped<ISieveCustomSortMethods, SieveCustomSortMethods>();
