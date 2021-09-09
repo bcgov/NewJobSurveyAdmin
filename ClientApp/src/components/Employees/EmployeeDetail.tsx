@@ -10,11 +10,9 @@ import { EmployeeStatus, EmployeeStatusEnum } from '../../types/EmployeeStatus'
 import { labelFor, labelForWithFlag } from '../../helpers/labelHelper'
 import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
 import AddComment from './AddComment'
-import Address from './Address'
 import CLText from '../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
 import ContentWrapper from '../Wrappers/ContentWrapper'
 import Date from '../DisplayHelpers/FormattedDate'
-import EditableAddress from './EditableAddress'
 import EditableDropdown from './EditableSelect'
 import EditableStringField from './EditableStringField'
 import LabelledText from '../DisplayHelpers/Interface/LabelledItems/LabelledText'
@@ -124,29 +122,6 @@ class EmployeeDetail extends React.Component<IProps, IState> {
                 />
               </CLText>
               <CLText label={labelFor('phone')}>{e.phone}</CLText>
-              <CLText label={'Address'}>
-                <Address employee={e} />
-              </CLText>
-              <CLText
-                label={labelForWithFlag(
-                  'preferredAddress',
-                  e,
-                  (e: Employee): boolean => {
-                    return (
-                      e.preferredAddress1Flag! ||
-                      e.preferredAddress2Flag! ||
-                      e.preferredAddressCityFlag! ||
-                      e.preferredAddressProvinceFlag! ||
-                      e.preferredAddressPostCodeFlag!
-                    )
-                  }
-                )}
-              >
-                <EditableAddress
-                  employee={e}
-                  refreshDataCallback={this.populateData}
-                />
-              </CLText>
             </div>
             <hr />
             <div className="row">

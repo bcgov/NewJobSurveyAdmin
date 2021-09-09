@@ -8,11 +8,6 @@ namespace NewJobSurveyAdmin.Models
     {
         public string PreferredEmail { get; set; }
         public string PreferredFirstName { get; set; }
-        public string PreferredAddress1 { get; set; }
-        public string PreferredAddress2 { get; set; }
-        public string PreferredAddressCity { get; set; }
-        public string PreferredAddressProvince { get; set; }
-        public string PreferredAddressPostCode { get; set; }
         public string CurrentEmployeeStatusCode { get; set; }
         public string AdminUserName { get; set; }
 
