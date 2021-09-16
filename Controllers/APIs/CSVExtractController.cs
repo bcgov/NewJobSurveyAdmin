@@ -50,20 +50,12 @@ namespace NewJobSurveyAdmin.Controllers
         [HttpPost("EmployeesFromCsv")]
         public async Task<ActionResult<List<Employee>>> EmployeesFromCsv()
         {
-            var reconciledEmployeeList = new List<Employee>();
+            var employeeList = new List<Employee>();
 
             try
             {
-                // Step 1. Update existing employee statuses.
-                await employeeReconciler.UpdateEmployeeStatuses();
-
-                // Step 2. Get a list of candidate Employee objects based on the
-                // Csv.
-                reconciledEmployeeList = await csv.ProcessCsv(Request, employeeReconciler, logger);
-
-                // Step 3. For all ACTIVE users in the DB who are NOT in the
-                // Csv, set them to not exiting, IF they are not in a final state.
-                await employeeReconciler.UpdateNotExiting(reconciledEmployeeList);
+                // Get a list of candidate Employee objects based on the CSV.
+                employeeList = await csv.ProcessCsv(Request, employeeReconciler, logger);
             }
             catch (Exception e)
             {
@@ -73,7 +65,7 @@ namespace NewJobSurveyAdmin.Controllers
                 );
             }
 
-            return Ok(reconciledEmployeeList);
+            return Ok(employeeList);
         }
     }
 }

@@ -35,7 +35,7 @@ const SetActiveEmployees = ({ submitId, setSubmitId }: IProps): JSX.Element => {
   return (
     <FilterDispatch.Provider value={dispatch}>
       <IconButton
-        label="Exiting employees"
+        label="Active employees"
         iconName="user-check"
         colorType="outline-primary"
         marginClasses="mr-2"

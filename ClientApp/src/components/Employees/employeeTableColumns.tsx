@@ -37,10 +37,6 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'preferredEmail'
   },
   {
-    Header: 'Exit count',
-    accessor: 'exitCount'
-  },
-  {
     Header: 'Record count',
     accessor: 'recordCount'
   },
@@ -59,7 +55,7 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'appointmentStatus'
   },
   {
-    Header: 'Exit effective date',
+    Header: 'Hire effective date',
     Cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate
         showLocalTimezone
@@ -69,12 +65,12 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'effectiveDate'
   },
   {
-    Header: 'Leave reason',
+    Header: 'Hiring reason',
     Cell: (props: EmployeeCellProps): JSX.Element => {
-      const reason = (props.value as unknown) as Reason
-      return <>{reason ? reason.reasonCode : '[Unknown Reason]'}</>
+      const staffingReason = (props.value as unknown) as Reason
+      return <>{staffingReason ? staffingReason.reasonCode : '[Unknown Reason]'}</>
     },
-    accessor: 'reason'
+    accessor: 'staffingReason'
   },
   {
     Header: 'Status',
@@ -95,7 +91,7 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'modifiedTs'
   },
   {
-    Header: 'Timeline Entries',
+    Header: 'Timeline entries',
     accessor: 'timelineEntryCount'
   }
 ]

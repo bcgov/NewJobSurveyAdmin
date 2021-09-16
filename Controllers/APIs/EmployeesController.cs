@@ -103,9 +103,8 @@ namespace NewJobSurveyAdmin.Controllers
             {
                 await context.SaveChangesAsync();
 
-                // TODO: Restore this call.
                 // Patch the row in CallWeb.
-                // await callWebService.UpdateSurvey(updatedEmployee);
+                await callWebService.UpdateSurvey(updatedEmployee);
 
                 return Ok(updatedEmployee);
             }

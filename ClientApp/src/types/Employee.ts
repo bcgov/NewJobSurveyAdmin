@@ -6,63 +6,65 @@ import { AppointmentStatus, AppointmentStatusEnum } from './AppointmentStatus'
 import { Transform, Type } from 'class-transformer'
 
 export class Employee {
-  public id?: string
-  public telkey?: string
-  public recordCount?: string
-  public governmentEmployeeId?: string
+  public age?: string
+  public chipsEmail?: string
+  public classification?: string
+  public currentEmployeeStatus?: string
+  public departmentId?: string
+  public departmentIdDescription?: string
+  public developmentRegion?: string
   public firstName?: string
-  public preferredFirstName?: string
-  public preferredFirstNameFlag?: boolean
-  public lastName?: string
+  public fullName?: string
   public gender?: string
   public governmentEmail?: string
-  public preferredEmail?: string
-  public preferredEmailFlag?: boolean
-  public classification?: string
-  public ministry?: string
-  public departmentId?: string
-  public jobFunctionCode?: string
+  public governmentEmployeeId?: string
+  public id?: string
+  public jobClassificationGroup?: string
+  public jobCode?: string
+  public lastName?: string
   public locationCity?: string
-  public address1?: string
-  public address2?: string
-  public addressCity?: string
-  public addressProvince?: string
-  public addressPostCode?: string
-  public preferredAddress1?: string
-  public preferredAddress2?: string
-  public preferredAddressCity?: string
-  public preferredAddressProvince?: string
-  public preferredAddressPostCode?: string
-  public preferredAddress1Flag?: boolean
-  public preferredAddress2Flag?: boolean
-  public preferredAddressCityFlag?: boolean
-  public preferredAddressProvinceFlag?: boolean
-  public preferredAddressPostCodeFlag?: boolean
-  public phone?: string
+  public locationGroup?: string
+  public middleName?: string
+  public newHireOrInternalStaffing?: string
+  public nocCode?: string
+  public nocDescription?: string
+  public organization?: string
+  public organizationCount?: string
   public positionCode?: string
   public positionTitle?: string
-  public age?: string
+  public preferredEmail?: string
+  public preferredEmailFlag?: string
+  public preferredFirstName?: string
+  public preferredFirstNameFlag?: boolean
+  public priorClassification?: string
+  public priorDepartmentId?: string
+  public priorDepartmentIdDescription?: string
+  public priorEmployeeStatus?: string
+  public priorJobClassificationGroup?: string
+  public priorJobCode?: string
+  public priorNocCode?: string
+  public priorNocDescription?: string
+  public priorOrganization?: string
+  public priorPositionCode?: string
+  public priorPositionTitle?: string
+  public priorUnionCode?: string
+  public recordCount?: string
+  public regionalDistrict?: string
   public serviceYears?: string
-  public jobCode?: string
-  public backDated?: string
-  public exitCount?: string
-  public ageGroup?: string
-  public classificationGroup?: string
-  public serviceGroup?: string
-  public locationGroup?: string
+  public staffingAction?: string
+  public taToPermanent?: string
+  public telkey?: string
   public triedToUpdateInFinalState?: boolean
+  public unionCode?: string
+
 
   // Dates
   @Transform((date: string) => dateOrUndefined(date))
   public birthDate?: Date
   @Transform((date: string) => dateOrUndefined(date))
-  public originalHireDate?: Date
-  @Transform((date: string) => dateOrUndefined(date))
-  public lastDayWorkedDate?: Date
-  @Transform((date: string) => dateOrUndefined(date))
   public effectiveDate?: Date
   @Transform((date: string) => dateOrUndefined(date))
-  public leaveDate?: Date
+  public priorEffectiveDate?: Date
 
   // UTC Datetimes
   @Transform((date: string) => dateOrUndefined(date, true))
@@ -72,10 +74,12 @@ export class Employee {
 
   // Fields requiring custom transformation annotations
   @Transform((k: ReasonEnum) => Reason.fromKey(k))
-  public reason?: Reason
+  public staffingReason?: Reason
 
   @Transform((k: AppointmentStatusEnum) => AppointmentStatus.fromKey(k))
   public appointmentStatus?: AppointmentStatus
+  @Transform((k: AppointmentStatusEnum) => AppointmentStatus.fromKey(k))
+  public priorAppointmentStatus?: AppointmentStatus
 
   @Transform((k: EmployeeStatusEnum) => EmployeeStatus.fromKey(k))
   public currentEmployeeStatusCode?: EmployeeStatus

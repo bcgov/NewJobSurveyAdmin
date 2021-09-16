@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom'
 
 import AuthenticatedRoute from './Wrappers/AuthenticatedRoute'
 import CallbackHandler from './Login/CallbackHandler'
-import EmployeeDetail from './Employees/EmployeeDetail'
+import EmployeeDetail from './Employees/EmployeeDetail/EmployeeDetail'
 import EmployeeListing from './Employees/EmployeeListing'
 import Home from './Home'
 import Layout from './Wrappers/Layout'

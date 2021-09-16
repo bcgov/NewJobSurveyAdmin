@@ -7,10 +7,8 @@ namespace NewJobSurveyAdmin.Models
 {
     public class EmployeeStatusEnum
     {
-        private static readonly string CodeExiting = "Exiting";
+        private static readonly string CodeActive = "Active";
         private static readonly string CodeSurveyComplete = "SurveyComplete";
-        private static readonly string CodeSnailMailSent = "SnailMailSent";
-        private static readonly string CodeNotExiting = "NotExiting";
         private static readonly string CodeOutOfScope = "OutOfScope";
         private static readonly string CodeDeclined = "Declined";
         private static readonly string CodeExpired = "Expired";
@@ -18,29 +16,17 @@ namespace NewJobSurveyAdmin.Models
         public static readonly string StateActive = "Active";
         public static readonly string StateFinal = "Final";
 
-        public static readonly EmployeeStatusEnum Exiting = new EmployeeStatusEnum
+        public static readonly EmployeeStatusEnum Active = new EmployeeStatusEnum
         {
-            Code = CodeExiting,
+            Code = CodeActive,
             State = StateActive,
-            Description = "Employee is exiting.."
+            Description = "Employee is active."
         };
         public static readonly EmployeeStatusEnum SurveyComplete = new EmployeeStatusEnum
         {
             Code = CodeSurveyComplete,
             State = StateFinal,
             Description = "Survey has been finished."
-        };
-        public static readonly EmployeeStatusEnum SnailMailSent = new EmployeeStatusEnum
-        {
-            Code = CodeSnailMailSent,
-            State = StateActive,
-            Description = "Snail mail has been sent."
-        };
-        public static readonly EmployeeStatusEnum NotExiting = new EmployeeStatusEnum
-        {
-            Code = CodeNotExiting,
-            State = StateFinal,
-            Description = "This employee is not actually exiting."
         };
         public static readonly EmployeeStatusEnum OutOfScope = new EmployeeStatusEnum
         {
@@ -64,10 +50,8 @@ namespace NewJobSurveyAdmin.Models
 
         public static readonly List<EmployeeStatusEnum> AllValues = new List<EmployeeStatusEnum>
         {
-            Exiting,
+            Active,
             SurveyComplete,
-            SnailMailSent,
-            NotExiting,
             OutOfScope,
             Declined,
             Expired

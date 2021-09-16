@@ -70,9 +70,8 @@ namespace NewJobSurveyAdmin.Services
             });
             context.Entry(employee).State = EntityState.Modified;
 
-            // TODO: Restore this call.
             // Update in CallWeb.
-            // await callWeb.UpdateSurvey(employee);
+            await callWeb.UpdateSurvey(employee);
 
             // Save.
             await context.SaveChangesAsync();
@@ -134,7 +133,7 @@ namespace NewJobSurveyAdmin.Services
                 // Case A. The employee does not exist in the database.
 
                 // Set the status code for a new employee.
-                var newStatusCode = EmployeeStatusEnum.Exiting.Code;
+                var newStatusCode = EmployeeStatusEnum.Active.Code;
                 employee.CurrentEmployeeStatusCode = newStatusCode;
 
                 // Set the email.
@@ -147,10 +146,7 @@ namespace NewJobSurveyAdmin.Services
                 // Try to insert a row into CallWeb, and set the telkey.
                 try
                 {
-                    // TODO: Restore the next line.
-                    // employee.Telkey = await callWeb.CreateSurvey(employee);
-                    employee.Telkey = employee.GovernmentEmployeeId + '-' + employee.RecordCount;
-                    // TODO: Delete above line; temporary telkey generation.
+                    employee.Telkey = await callWeb.CreateSurvey(employee);
                 }
                 catch (Exception e)
                 {
@@ -179,140 +175,8 @@ namespace NewJobSurveyAdmin.Services
             else
             {
                 // Case B. The unique user DOES exist in the database.
-
-                // If the employee is marked as "survey complete," skip them.
-                if (existingEmployee.CurrentEmployeeStatusCode
-                    == EmployeeStatusEnum.SurveyComplete.Code)
-                {
-                    return existingEmployee;
-                }
-
-                // If the employee is marked as "not exiting," update their
-                // status back to "exiting".
-                if (existingEmployee.CurrentEmployeeStatusCode
-                    == EmployeeStatusEnum.NotExiting.Code)
-                {
-                    existingEmployee.CurrentEmployeeStatusCode = EmployeeStatusEnum.Exiting.Code;
-                    context.EmployeeTimelineEntries.Add(new EmployeeTimelineEntry
-                    {
-                        EmployeeId = existingEmployee.Id,
-                        EmployeeActionCode = EmployeeActionEnum.CreateFromCSV.Code,
-                        EmployeeStatusCode = EmployeeStatusEnum.Exiting.Code,
-                        Comment = "Re-opening `Not Exiting` employee and setting to `Exiting`, as they re-appeared in the CSV."
-                    });
-                    context.Entry(existingEmployee).State = EntityState.Modified;
-                    await context.SaveChangesAsync();
-                    // TODO: Restore the next line.
-                    // await callWeb.UpdateSurvey(existingEmployee);
-                }
-
-                // Now compare properties.
-                var differentProperties = existingEmployee.PropertyCompare(employee);
-
-                if (differentProperties.Count() == 0)
-                {
-                    // Case B1. No changes on any fields. Don't do anything.
-                }
-                else
-                {
-                    // Case B2. Changes on some fields. Update the user.
-                    // TODO: This lets us have very discrete control over exactly
-                    // which property values get copied in. However, it is a bit
-                    // complicated. We could also explore using something like
-                    // entry.SetValues().
-
-                    // While updating fields, also keep track of which fields
-                    // were updated from old to new values.
-                    List<string> fieldsUpdatedList = new List<string>();
-                    foreach (PropertyVariance pv in differentProperties)
-                    {
-                        // Note: we don't log if the email address was set to
-                        // empty, because if it is empty, it will automatically
-                        // be reset when the user is saved.
-                        if (string.Equals(pv.PropertyInfo.Name, nameof(Employee.GovernmentEmail))
-                            && string.IsNullOrWhiteSpace(pv.ValueB as string)
-                        )
-                        {
-                            continue;
-                        }
-
-                        var newValue = pv.PropertyInfo.GetValue(employee);
-                        if (existingEmployee.IsActive())
-                        {
-                            // Only actually set the field if the employee is
-                            // active. Otherwise, we still want to log that the
-                            // field would have been updated, so we can report
-                            // on it (see below).
-                            pv.PropertyInfo.SetValue(existingEmployee, newValue);
-                        }
-                        fieldsUpdatedList
-                            .Add($"{pv.PropertyInfo.Name}: `{pv.ValueA}` → `{pv.ValueB}`");
-                    }
-
-                    // Now update the preferred fields when they've not already
-                    // been overwritten by the admin. See the definition of
-                    // the UpdatePreferredFields method for logic.
-                    existingEmployee.UpdatePreferredFields();
-
-                    // If there is > 1 field updated, update the object (note
-                    // that if just email was set to ``, we might have no
-                    // updated fields).
-                    if (fieldsUpdatedList.Count > 0)
-                    {
-                        var fieldsUpdated = String.Join(", ", fieldsUpdatedList);
-                        var comment = $"Fields updated by script: {fieldsUpdated}.";
-
-                        // If the user is in a final state, log this as a
-                        // mistake instead.
-                        if (!existingEmployee.IsActive() && !existingEmployee.TriedToUpdateInFinalState)
-                        {
-                            comment =
-                                $"These fields would have been updated, " +
-                                $"but they were not as this user is in a " +
-                                $"final state: {fieldsUpdated}. The " +
-                                $"TriedToUpdateInFinalState flag was set. " +
-                                "No more updates of this kind will be logged.";
-
-                            existingEmployee.TriedToUpdateInFinalState = true;
-                            // Create a new timeline entry.
-                            context.EmployeeTimelineEntries.Add(new EmployeeTimelineEntry
-                            {
-                                EmployeeId = existingEmployee.Id,
-                                EmployeeActionCode = EmployeeActionEnum.UpdateByTask.Code,
-                                EmployeeStatusCode = existingEmployee.CurrentEmployeeStatusCode,
-                                Comment = comment
-                            });
-
-                            context.Entry(existingEmployee).State = EntityState.Modified;
-                            await context.SaveChangesAsync();
-                        }
-
-                        // Save changes to employee and the new timeline entry.
-                        if (existingEmployee.IsActive() ||
-                            !existingEmployee.TriedToUpdateInFinalState)
-                        {
-                            // Create a new timeline entry.
-                            context.EmployeeTimelineEntries.Add(new EmployeeTimelineEntry
-                            {
-                                EmployeeId = existingEmployee.Id,
-                                EmployeeActionCode = EmployeeActionEnum.UpdateByTask.Code,
-                                EmployeeStatusCode = existingEmployee.CurrentEmployeeStatusCode,
-                                Comment = comment
-                            });
-
-                            context.Entry(existingEmployee).State = EntityState.Modified;
-                            await context.SaveChangesAsync();
-                        }
-                        else
-                        {
-                            return existingEmployee;
-                        }
-
-                        // TODO: Restore the next line.
-                        // await callWeb.UpdateSurvey(existingEmployee);
-                    }
-                }
-
+                // In this case, for NJSA, we actually do nothing.
+                // TODO: At least log that a duplicate employee was found.
                 return existingEmployee;
             }
         }
@@ -322,68 +186,35 @@ namespace NewJobSurveyAdmin.Services
             Employee employee
         )
         {
-            var callWebStatusCode = await callWeb
-                .GetSurveyStatusCode(employee);
+            var callWebStatusCode = await callWeb.GetSurveyStatusCode(employee);
 
-            // First, check if the employee has completed the survey.
+            // Check if the employee has completed the survey.
             if (callWebStatusCode.Equals(EmployeeStatusEnum.SurveyComplete.Code))
             {
                 return await SaveStatusAndAddTimelineEntry(employee,
                     EmployeeStatusEnum.SurveyComplete);
             }
 
-            // An employee only has a set amount of time to complete a survey.
-            // If that time has expired, then expire the user.
-            var employeeExpirationThresholdSetting = await context
-                .AdminSettings
-                .FirstAsync(a => a.Key == AdminSetting.EmployeeExpirationThreshold);
-
-            var thresholdInDays = System.Convert.ToInt32(
-                employeeExpirationThresholdSetting.Value
-            );
-
-            // TODO 2021-09-07: Check this. Eliminating b/c we don't need expired employees.
-            // if (
-            //     employee.EffectiveDate.AddDays(thresholdInDays) < DateTime.UtcNow &&
-            //     employee.CurrentEmployeeStatusCode != EmployeeStatusEnum.Expired.Code
-            // )
-            // {
-            //     return await SaveStatusAndAddTimelineEntry(employee,
-            //         EmployeeStatusEnum.Expired);
-            // }
-
-            // Conversely, re-open expired users if they are now inside the
-            // threshold, for instance if the threshold was extended.
-            // if (
-            //     employee.CurrentEmployeeStatusCode == EmployeeStatusEnum.Expired.Code &&
-            //     employee.EffectiveDate.AddDays(thresholdInDays) > DateTime.UtcNow
-            // )
-            // {
-            //     return await SaveStatusAndAddTimelineEntry(employee,
-            //         EmployeeStatusEnum.Exiting);
-            // }
-            // END TODO 2021-09-07
-
             return employee;
         }
 
-        public async Task UpdateNotExiting(List<Employee> reconciledEmployeeList)
-        {
-            var activeDBEmployeesNotInCsv = context.Employees
-                .Include(e => e.TimelineEntries)
-                .Include(e => e.CurrentEmployeeStatus)
-                .Where(e => e.CurrentEmployeeStatus.State != EmployeeStatusEnum.StateFinal) // Reproject this as the status might have changed
-                .ToList()
-                .Where(e => reconciledEmployeeList.All(e2 => e2.Id != e.Id)) // This finds all nonFinalEmployees whose Id is not in the reconciledEmployeeList
-                .ToList();
+        // public async Task UpdateNotExiting(List<Employee> reconciledEmployeeList)
+        // {
+        //     var activeDBEmployeesNotInCsv = context.Employees
+        //         .Include(e => e.TimelineEntries)
+        //         .Include(e => e.CurrentEmployeeStatus)
+        //         .Where(e => e.CurrentEmployeeStatus.State != EmployeeStatusEnum.StateFinal) // Reproject this as the status might have changed
+        //         .ToList()
+        //         .Where(e => reconciledEmployeeList.All(e2 => e2.Id != e.Id)) // This finds all nonFinalEmployees whose Id is not in the reconciledEmployeeList
+        //         .ToList();
 
-            foreach (Employee e in activeDBEmployeesNotInCsv)
-            {
-                var employee = await SaveStatusAndAddTimelineEntry(
-                    e, EmployeeStatusEnum.NotExiting
-                );
-            }
-        }
+        //     foreach (Employee e in activeDBEmployeesNotInCsv)
+        //     {
+        //         var employee = await SaveStatusAndAddTimelineEntry(
+        //             e, EmployeeStatusEnum.NotExiting
+        //         );
+        //     }
+        // }
 
         public async Task UpdateEmployeeStatuses()
         {
