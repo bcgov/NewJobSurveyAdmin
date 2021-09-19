@@ -34,12 +34,13 @@ namespace NewJobSurveyAdmin
         {
             services.AddHttpClient();
 
-            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            services.AddCors(options =>
             {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
+                options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin()
+                        .WithMethods("GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS")
+                      //   .AllowAnyMethod()
+                      .AllowAnyHeader());
+            });
 
             services.AddControllersWithViews();
 
@@ -155,10 +156,12 @@ namespace NewJobSurveyAdmin
 
             app.UseRouting();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors("CorsPolicy");
+
 
             app.UseEndpoints(endpoints =>
             {
