@@ -26,8 +26,7 @@ namespace NewJobSurveyAdmin.Models
                     d.PropertyInfo.Name != nameof(PreferredFirstName) &&
                     d.PropertyInfo.Name != nameof(PreferredEmail) &&
                     d.PropertyInfo.Name != nameof(PreferredFirstNameFlag) &&
-                    d.PropertyInfo.Name != nameof(PreferredEmailFlag) &&
-                    d.PropertyInfo.Name != nameof(TriedToUpdateInFinalState)
+                    d.PropertyInfo.Name != nameof(PreferredEmailFlag)
                 );
         }
 
@@ -257,7 +256,6 @@ namespace NewJobSurveyAdmin.Models
             PreferredFirstNameFlag = false;
             PreferredEmail = GovernmentEmail;
             PreferredEmailFlag = false;
-            TriedToUpdateInFinalState = false;
         }
 
         // Update all Preferred fields to be the equivalent of the base field,
@@ -291,6 +289,16 @@ namespace NewJobSurveyAdmin.Models
         public string SurveyWindowFlag()
         {
             return IsActive() ? "0" : "1";
+        }
+
+        public string TaU7Flag()
+        {
+            return TaToPermanent.Equals("YES") ? "1" : "0";
+        }
+
+        public string LatTransferFlag()
+        {
+            return "1"; // TODO: How to set this?
         }
 
         public Boolean IsActive()

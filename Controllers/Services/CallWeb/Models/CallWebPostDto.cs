@@ -6,39 +6,37 @@ namespace NewJobSurveyAdmin.Services.CallWeb
     {
         public string EmployeeId { get; set; }
         public string PreferredEmail { get; set; }
-        // public string Ministry { get; set; }
-        // public string PositionTitle { get; set; }
-        // public string AppointmentStatus { get; set; }
-        // public string PreferredFirstName { get; set; }
-        // public string LastName { get; set; }
-        // public string LeaveReason { get; set; }
-        // public string LeaveCode { get; set; }
+        public string PreferredFirstName { get; set; }
+        public string LastName { get; set; }
         public string EffectiveDate { get; set; }
-        // public string ExitCount { get; set; }
-        // public string AdditionalJobCount { get; set; }
-        // public string CurrentStatus { get; set; }
-        // public string SurveyWindowFlag { get; set; }
+        public string CurrentStatus { get; set; }
+        public string HireReason { get; set; }
+        public string InviteDate { get; set; }
+        public string Reminder1Date { get; set; }
+        public string Reminder2Date { get; set; }
+        public string DeadlineDate { get; set; }
+        public string SurveyWindowFlag { get; set; }
+        public string TaU7Flag { get; set; }
+        public string LatTransferFlag { get; set; }
 
         public static CallWebPostDto FromEmployee(Employee employee)
         {
-            // TODO: FIX THIS
             return new CallWebPostDto()
             {
                 EmployeeId = employee.GovernmentEmployeeId,
                 PreferredEmail = employee.PreferredEmail,
+                PreferredFirstName = employee.PreferredFirstName,
+                LastName = employee.LastName,
                 EffectiveDate = employee.EffectiveDate.ToString("yyyy-MM-dd"),
-                // Ministry = employee.Organization,
-                // PositionTitle = employee.PositionTitle,
-                // AppointmentStatus = employee.AppointmentStatus,
-                // PreferredFirstName = employee.PreferredFirstName,
-                // LastName = employee.LastName,
-                // LeaveReason = employee.Reason,
-                // LeaveCode = employee.LeaveCode,
-                // EffectiveDate = employee.EffectiveDate.ToString("yyyy-MM-dd"),
-                // ExitCount = employee.ExitCount,
-                // AdditionalJobCount = employee.RecordCount,
-                // CurrentStatus = employee.CurrentEmployeeStatusCode,
-                // SurveyWindowFlag = employee.SurveyWindowFlag()
+                CurrentStatus = employee.CurrentEmployeeStatusCode,
+                HireReason = employee.StaffingReason,
+                InviteDate = employee.EffectiveDate.AddDays(90 + 3).ToString("yyyy-MM-dd"),
+                Reminder1Date = employee.EffectiveDate.AddDays(90 + 5).ToString("yyyy-MM-dd"),
+                Reminder2Date = employee.EffectiveDate.AddDays(90 + 8).ToString("yyyy-MM-dd"),
+                DeadlineDate = employee.EffectiveDate.AddDays(90 + 12).ToString("yyyy-MM-dd"),
+                SurveyWindowFlag = employee.SurveyWindowFlag(),
+                TaU7Flag = employee.TaU7Flag(),
+                LatTransferFlag = employee.LatTransferFlag()
             };
         }
     }
