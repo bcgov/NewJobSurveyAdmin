@@ -24,7 +24,7 @@ export const signinRedirectOptions = {
 
 export const userManagerConfig = {
   client_id: env('AUTH_CLIENT_ID'),
-  redirect_uri: `${frontendUrl()}callback`,
+  redirect_uri: `${frontendUrl()}/#/callback`,
   response_type: env('AUTH_RESPONSE_TYPE'),
   scope: env('AUTH_SCOPE'),
   authority: env('AUTH_URL'),

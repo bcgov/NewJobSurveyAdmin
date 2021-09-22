@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import './components/App.scss'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import App from './components/App'
 import { unregister } from './registerServiceWorker'
@@ -17,9 +17,9 @@ ReactDOM.render(
   <Provider store={store}>
     <OidcProvider store={store} userManager={userManager}>
       {/* <PersistGate loading={'Loading...'} persistor={persistor}> */}
-      <BrowserRouter basename={getRouterBasename()}>
+      <HashRouter basename={getRouterBasename()}>
         <App />
-      </BrowserRouter>
+      </HashRouter>
       {/* </PersistGate> */}
     </OidcProvider>
   </Provider>,
