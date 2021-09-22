@@ -39,7 +39,8 @@ namespace NewJobSurveyAdmin
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin()
                         .WithMethods("GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS")
                       //   .AllowAnyMethod()
-                      .AllowAnyHeader());
+                      .AllowAnyHeader()
+                      .WithExposedHeaders("X-Pagination"));
             });
 
             services.AddControllersWithViews();
