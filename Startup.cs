@@ -48,7 +48,6 @@ namespace NewJobSurveyAdmin
             services.Configure<CallWebServiceOptions>(Configuration.GetSection("CallWebApi"));
             services.AddSingleton<CallWebService>();
 
-            services.Configure<CsvServiceOptions>(Configuration.GetSection("Csv"));
             services.AddSingleton<CsvService>();
 
             services.Configure<EmailServiceOptions>(Configuration.GetSection("Email"));

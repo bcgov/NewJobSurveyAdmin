@@ -12,22 +12,8 @@ namespace NewJobSurveyAdmin.Services
 {
     public class CsvService
     {
-        private string PsaCsvFilePath;
-
-        public CsvService(IOptions<CsvServiceOptions> options)
+        public CsvService()
         {
-            PsaCsvFilePath = options.Value.PsaCsvFilePath;
-        }
-
-        // Returns the raw, as-is text of the PSA CSV extract.
-        public Task<string> ReadCsv()
-        {
-            return ReadCsv(PsaCsvFilePath);
-        }
-
-        public Task<string> ReadCsv(string csvPath)
-        {
-            return LocalFileService.ReadLocalFile(csvPath);
         }
 
         // EmployeesFromCsv: Given the raw text of the PSA CSV extract (as

@@ -32,17 +32,7 @@ namespace NewJobSurveyAdmin.Controllers
             this.logger = logger;
         }
 
-        // GetCsv: Returns the raw, as-is text of the PSA Csv extract.
-        // GET: api/CsvExtract/Csv
-        [HttpGet("Csv")]
-        public async Task<ActionResult<string>> GetCsv()
-        {
-            string text = await csv.ReadCsv();
-
-            return Content(text);
-        }
-
-        // GetCsv: Given the raw text of the PSA Csv extract (as obtained, for
+        // EmployeesFromCsv: Given the raw text of the PSA Csv extract (as obtained, for
         // instance, from the GetCsv method), transform it into an array of
         // nicely-formatted Employee JSON objects, then reconcile each of those
         // Employees.
