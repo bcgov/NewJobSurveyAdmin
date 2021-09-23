@@ -22,7 +22,8 @@ const requestWithAuthentication = (
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     },
-    credentials: 'same-origin'
+    credentials: 'same-origin',
+    // mode: 'cors'
   }
   if (method !== 'get' && body) {
     fetchObject.body = JSON.stringify(body)
@@ -70,6 +71,9 @@ export const requestJSONWithErrorHandler = async (
   const paginationHeader = response.headers.get('X-Pagination')
   const pagination = paginationHeader ? JSON.parse(paginationHeader) : {}
 
+  console.log(response, response.headers, 'paginationHeader', paginationHeader)
+  console.log(response.headers.get('X-Pagination'))
+
   if (response.ok) {
     if (successCallback) {
       successCallback(json, pagination)
@@ -101,6 +105,8 @@ export const requestJSONWithoutAuth = async (
 
   const paginationHeader = response.headers.get('X-Pagination')
   const pagination = paginationHeader ? JSON.parse(paginationHeader) : {}
+
+  console.log(response, response.headers, 'paginationHeader', paginationHeader)
 
   if (response.ok) {
     if (successCallback) {
