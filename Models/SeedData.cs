@@ -1,7 +1,8 @@
-using NewJobSurveyAdmin.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NewJobSurveyAdmin.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NewJobSurveyAdmin.Models
@@ -38,12 +39,44 @@ namespace NewJobSurveyAdmin.Models
                     TaskOutcomeEnum.AllValues
                 );
 
-                context.AdminSettings.Add(
-                    new AdminSetting()
-                    {
-                        Key = AdminSetting.EmployeeExpirationThreshold,
-                        DisplayName = "Employee expiration threshold (days)",
-                        Value = "180"
+                context.AdminSettings.AddRange(
+                    new List<AdminSetting> {
+                        new AdminSetting()
+                        {
+                            Key = AdminSetting.EmployeeExpirationThreshold,
+                            DisplayName = "Employee expiration threshold (days)",
+                            Value = "180"
+                        },
+                        new AdminSetting()
+                        {
+                            Key = AdminSetting.DataPullDayOfWeek,
+                            DisplayName = "Data pull day of week",
+                            Value = "1"
+                        },
+                        new AdminSetting()
+                        {
+                            Key = AdminSetting.InviteDays,
+                            DisplayName = "Number of days after data pull to send invitation",
+                            Value = "3"
+                        },
+                        new AdminSetting()
+                        {
+                            Key = AdminSetting.Reminder1Days,
+                            DisplayName = "Number of days after invitation to send first reminder",
+                            Value = "3"
+                        },
+                        new AdminSetting()
+                        {
+                            Key = AdminSetting.Reminder2Days,
+                            DisplayName = "Number of days after first reminder to send second reminder",
+                            Value = "3"
+                        },
+                        new AdminSetting()
+                        {
+                            Key = AdminSetting.CloseDays,
+                            DisplayName = "Number of days after second reminder to close survey",
+                            Value = "3"
+                        }
                     }
                 );
 

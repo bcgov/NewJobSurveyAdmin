@@ -7,6 +7,11 @@ namespace NewJobSurveyAdmin.Models
     public class AdminSetting : BaseEntity
     {
         public static readonly string EmployeeExpirationThreshold = "EmployeeExpirationThreshold";
+        public static readonly string DataPullDayOfWeek = "DataPullDayOfWeek";
+        public static readonly string InviteDays = "InviteDays";
+        public static readonly string Reminder1Days = "Reminder1Days";
+        public static readonly string Reminder2Days = "Reminder2Days";
+        public static readonly string CloseDays = "CloseDays";
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
