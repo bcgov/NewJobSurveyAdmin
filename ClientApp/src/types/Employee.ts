@@ -1,6 +1,5 @@
 import { dateOrUndefined } from '../helpers/dateHelper'
 import { EmployeeTimelineEntry } from './EmployeeTimelineEntry'
-import { Reason, ReasonEnum } from './Reason'
 import { EmployeeStatus, EmployeeStatusEnum } from './EmployeeStatus'
 import { AppointmentStatus, AppointmentStatusEnum } from './AppointmentStatus'
 import { Transform, Type } from 'class-transformer'
@@ -52,11 +51,11 @@ export class Employee {
   public regionalDistrict?: string
   public serviceYears?: string
   public staffingAction?: string
+  public staffingReason?: string
   public taToPermanent?: string
   public telkey?: string
   public triedToUpdateInFinalState?: boolean
   public unionCode?: string
-
 
   // Dates
   @Transform((date: string) => dateOrUndefined(date))
@@ -73,8 +72,6 @@ export class Employee {
   public modifiedTs?: Date
 
   // Fields requiring custom transformation annotations
-  @Transform((k: ReasonEnum) => Reason.fromKey(k))
-  public staffingReason?: Reason
 
   @Transform((k: AppointmentStatusEnum) => AppointmentStatus.fromKey(k))
   public appointmentStatus?: AppointmentStatus

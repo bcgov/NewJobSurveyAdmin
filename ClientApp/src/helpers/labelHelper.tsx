@@ -1,11 +1,10 @@
 import React from 'react'
 
-import { SelectOption } from '../components/Employees/EditableSelect'
-import { EmployeeStatus } from '../types/EmployeeStatus'
-import { Reason } from '../types/Reason'
-import { TaskOutcome } from '../types/TaskOutcome'
 import { AppointmentStatus } from '../types/AppointmentStatus'
 import { Employee } from '../types/Employee'
+import { EmployeeStatus } from '../types/EmployeeStatus'
+import { SelectOption } from '../components/Employees/EditableSelect'
+import { TaskOutcome } from '../types/TaskOutcome'
 import FAIcon from '../components/DisplayHelpers/Interface/Icons/FAIcon'
 
 const fieldLabels: { [key: string]: string } = {
@@ -54,7 +53,6 @@ const fieldLabels: { [key: string]: string } = {
 
 const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   currentEmployeeStatusCode: EmployeeStatus.toOptions,
-  reason: Reason.toOptions,
   taskOutcomeCode: TaskOutcome.toOptions,
   appointmentStatus: AppointmentStatus.toOptions
 }

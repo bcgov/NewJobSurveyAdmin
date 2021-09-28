@@ -10,15 +10,14 @@ interface Props {
 }
 
 const EmployeeCurrentJobInfo = ({ employee: e }: Props): JSX.Element => {
+  // console.log('e', e)
   return (
     <>
       <div className="row">
         <CLText label={labelFor('effectiveDate')}>
           <Date date={e.effectiveDate} />
         </CLText>
-        <CLText label={labelFor('reason')}>
-          {e.staffingReason ? e.staffingReason.reasonCode : '[Unknown Reason]'}
-        </CLText>
+        <CLText label={labelFor('reason')}>{e.staffingReason}</CLText>
         <CLText label={labelFor('recordCount')}>{e.recordCount}</CLText>
       </div>
       <hr />
@@ -28,15 +27,11 @@ const EmployeeCurrentJobInfo = ({ employee: e }: Props): JSX.Element => {
         <CLText label={labelFor('appointmentStatus')}>
           {e.appointmentStatus!.code}
         </CLText>
-        <CLText label={labelFor('classification')}>
-          {e.classification}
-        </CLText>
+        <CLText label={labelFor('classification')}>{e.classification}</CLText>
         <CLText label={labelFor('jobCode')}>{e.jobCode}</CLText>
         <CLText label={labelFor('locationCity')}>{e.locationCity}</CLText>
         <CLText label={labelFor('serviceYears')}>{e.serviceYears}</CLText>
-        <CLText label={labelFor('positionTitle')}>
-          {e.positionTitle}
-        </CLText>
+        <CLText label={labelFor('positionTitle')}>{e.positionTitle}</CLText>
         <CLText label={labelFor('positionCode')}>{e.positionCode}</CLText>
       </div>
     </>
