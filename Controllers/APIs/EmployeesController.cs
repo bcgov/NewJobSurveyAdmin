@@ -1,15 +1,15 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NewJobSurveyAdmin.Models;
 using NewJobSurveyAdmin.Services;
 using NewJobSurveyAdmin.Services.CallWeb;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace NewJobSurveyAdmin.Controllers
 {
@@ -94,8 +94,7 @@ namespace NewJobSurveyAdmin.Controllers
         {
             var existingEmployee = await FindById(id);
 
-            var updatedEmployee = employeePatchDto
-                .ApplyPatch(existingEmployee);
+            var updatedEmployee = employeePatchDto.ApplyPatch(existingEmployee);
 
             context.Entry(updatedEmployee).State = EntityState.Modified;
 
@@ -121,18 +120,6 @@ namespace NewJobSurveyAdmin.Controllers
             }
         }
 
-        // POST: api/Employees
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
-        {
-            Employee newEmployee = await EmployeeReconciler
-                .ReconcileEmployee(employee);
-
-            return CreatedAtAction(nameof(GetEmployee), new { id = newEmployee.Id }, newEmployee);
-        }
-
         [HttpPost("RefreshEmployeeStatus")]
         public async Task<ActionResult> RefreshEmployeeStatus()
         {
@@ -142,7 +129,7 @@ namespace NewJobSurveyAdmin.Controllers
                 await EmployeeReconciler.UpdateEmployeeStatuses();
 
                 await logger.LogSuccess(TaskEnum.RefreshStatuses,
-                    $"Manually-triggered refresh of employee statuses."
+                    $"Triggered refresh of employee statuses."
                 );
             }
             catch (Exception e)

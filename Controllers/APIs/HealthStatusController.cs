@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using NewJobSurveyAdmin.Services.CallWeb;
-using NewJobSurveyAdmin.Services;
+using System.Threading.Tasks;
 
 namespace NewJobSurveyAdmin.Controllers
 {

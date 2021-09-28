@@ -1,11 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using NewJobSurveyAdmin.Models;
 using NewJobSurveyAdmin.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NewJobSurveyAdmin.Controllers
@@ -32,10 +29,10 @@ namespace NewJobSurveyAdmin.Controllers
             this.logger = logger;
         }
 
-        // EmployeesFromCsv: Given the raw text of the PSA Csv extract (as obtained, for
-        // instance, from the GetCsv method), transform it into an array of
-        // nicely-formatted Employee JSON objects, then reconcile each of those
-        // Employees.
+        // EmployeesFromCsv: Given the raw text of the PSA Csv extract (as
+        // obtained, for instance, from the PSA CSV file drop), transform it
+        // into an array of nicely-formatted Employee JSON objects, then
+        // reconcile each of those Employees.
         // POST: api/CsvExtract/EmployeesFromCsv
         [HttpPost("EmployeesFromCsv")]
         public async Task<ActionResult<List<Employee>>> EmployeesFromCsv()
