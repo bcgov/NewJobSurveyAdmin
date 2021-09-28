@@ -248,6 +248,10 @@ EmailTemplates/*
 **/appsettings.Development.json
 **/appsettings.Production.json
 
+# Auto-generated env.js in ClientApp
+ClientApp/.env
+ClientApp/public/env.js
+
 # Various
 .DS_Store
 .odo/odo-file-index.json
