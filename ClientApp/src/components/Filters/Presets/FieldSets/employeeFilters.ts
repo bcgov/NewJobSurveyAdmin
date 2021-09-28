@@ -13,6 +13,6 @@ export const employeeFilters: Filter[] = [
   new EnumFilter('appointmentStatus'),
   new DateFilter('effectiveDate'),
   new EnumFilter('currentEmployeeStatusCode'),
-  new TextFilter('reason'),
+  new TextFilter('staffingReason'),
   new CustomFilter('blankEmail')
 ]

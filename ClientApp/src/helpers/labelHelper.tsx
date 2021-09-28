@@ -27,7 +27,7 @@ const fieldLabels: { [key: string]: string } = {
   originalHireDate: 'Original hire date',
   lastDayWorkedDate: 'Last day worked date',
   effectiveDate: 'Hire effective date',
-  reason: 'Reason',
+  staffingReason: 'Hiring reason',
   appointmentStatus: 'Appointment status',
   positionCode: 'Position code',
   positionTitle: 'Position title',
