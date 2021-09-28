@@ -251,3 +251,6 @@ EmailTemplates/*
 # Various
 .DS_Store
 .odo/odo-file-index.json
+
+# Auto-generated env.js in ClientApp
+ClientApp/public/env.js
