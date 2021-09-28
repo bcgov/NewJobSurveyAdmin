@@ -17,7 +17,7 @@ const EmployeeCurrentJobInfo = ({ employee: e }: Props): JSX.Element => {
         <CLText label={labelFor('effectiveDate')}>
           <Date date={e.effectiveDate} />
         </CLText>
-        <CLText label={labelFor('reason')}>{e.staffingReason}</CLText>
+        <CLText label={labelFor('staffingReason')}>{e.staffingReason}</CLText>
         <CLText label={labelFor('recordCount')}>{e.recordCount}</CLText>
       </div>
       <hr />
