@@ -79,7 +79,7 @@ namespace NewJobSurveyAdmin.Services
             return employee;
         }
 
-        public async Task<Tuple<List<Employee>, List<string>>> ReconcileEmployees(
+        public async Task<Tuple<List<Employee>, List<string>>> InsertEmployees(
             List<Employee> employees
         )
         {
@@ -106,7 +106,7 @@ namespace NewJobSurveyAdmin.Services
                 try
                 {
                     var employee =
-                        await ReconcileWithDatabase(e, inviteDate, reminder1Date, reminder2Date, deadlineDate);
+                        await InsertEmployee(e, inviteDate, reminder1Date, reminder2Date, deadlineDate);
                     reconciledEmployeeList.Add(employee);
                 }
                 catch (Exception exception)
@@ -121,24 +121,7 @@ namespace NewJobSurveyAdmin.Services
             return Tuple.Create(reconciledEmployeeList, exceptionList);
         }
 
-        /*** Reconcile a single employee. NB! By default, this will NOT invoke
-        other methods (such as status updating) that affect multiple other
-        employees, unlike ReconcileEmployees which does so by default.
-        */
-        public async Task<Employee> ReconcileEmployee(Employee employee)
-        {
-            // Simply call the main ReconcileEmployees function, with this
-            // single employee as the sole element of a list; then get the
-            // employee from the resulting list.
-            var result = await ReconcileEmployees(
-                new List<Employee>() { employee }
-            );
-            var reconciledEmployee = result.Item1.ElementAt(0);
-
-            return reconciledEmployee;
-        }
-
-        private async Task<Employee> ReconcileWithDatabase(Employee employee, DateTime inviteDate,
+        private async Task<Employee> InsertEmployee(Employee employee, DateTime inviteDate,
             DateTime reminder1Date, DateTime reminder2Date, DateTime deadlineDate)
         {
             // Get the existing employee, if it exists.
@@ -197,7 +180,6 @@ namespace NewJobSurveyAdmin.Services
             }
         }
 
-
         public async Task<Employee> UpdateEmployeeStatus(
             Employee employee
         )
@@ -214,24 +196,6 @@ namespace NewJobSurveyAdmin.Services
             return employee;
         }
 
-        // public async Task UpdateNotExiting(List<Employee> reconciledEmployeeList)
-        // {
-        //     var activeDBEmployeesNotInCsv = context.Employees
-        //         .Include(e => e.TimelineEntries)
-        //         .Include(e => e.CurrentEmployeeStatus)
-        //         .Where(e => e.CurrentEmployeeStatus.State != EmployeeStatusEnum.StateFinal) // Reproject this as the status might have changed
-        //         .ToList()
-        //         .Where(e => reconciledEmployeeList.All(e2 => e2.Id != e.Id)) // This finds all nonFinalEmployees whose Id is not in the reconciledEmployeeList
-        //         .ToList();
-
-        //     foreach (Employee e in activeDBEmployeesNotInCsv)
-        //     {
-        //         var employee = await SaveStatusAndAddTimelineEntry(
-        //             e, EmployeeStatusEnum.NotExiting
-        //         );
-        //     }
-        // }
-
         public async Task UpdateEmployeeStatuses()
         {
             // For all non-final employees and expired employees, update.
@@ -246,7 +210,15 @@ namespace NewJobSurveyAdmin.Services
 
             foreach (Employee e in candidateEmployees)
             {
-                var employee = await UpdateEmployeeStatus(e);
+                try
+                {
+                    var employee = await UpdateEmployeeStatus(e);
+                }
+                catch (Exception except)
+                {
+                    // TODO: Handle this better.
+                    continue;
+                }
             }
         }
     }

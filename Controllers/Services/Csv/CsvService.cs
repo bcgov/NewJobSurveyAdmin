@@ -98,7 +98,7 @@ namespace NewJobSurveyAdmin.Services
 
             // Reconcile the employees with the database.
             var reconcilerTuple = await employeeReconciler
-                .ReconcileEmployees(goodRecords);
+                .InsertEmployees(goodRecords);
             var goodEmployees = reconcilerTuple.Item1;
             var badEmployees = reconcilerTuple.Item2;
             var totalEmployeeCount = goodEmployees.Count + badEmployees.Count;
