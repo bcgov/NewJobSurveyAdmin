@@ -4,6 +4,32 @@ The New Job Survey Admin tool will assist BC Stats in administering the BCPS New
 
 # Development tasks
 
+## .env setup
+
+**Temporary: to be replaced by OpenShift config**
+
+You must create a file named `.env` in the `./ClientApp` folder. The values should be as follows; fill in the ones with `**` to match your environment:
+
+```
+SKIP_PREFLIGHT_CHECK=true
+
+REACT_APP_AUTH_CLIENT_ID='** The ID of the KeyCloak auth client, e.g. NewJobSurveyAdmin **'
+
+# No trailing slash
+REACT_APP_APP_DOMAIN='** URL of the NJSA front-end app, e.g. http://localhost:3000 **'
+REACT_APP_API_DOMAIN='** URL of the NJSA API, e.g. http://localhost:5050 **'
+
+# MUST have a trailing slash!
+REACT_APP_APP_PATH='/'
+
+REACT_APP_AUTH_RESPONSE_TYPE='code'
+REACT_APP_AUTH_SCOPE='openid profile resourceApi'
+REACT_APP_AUTH_URL='** The URL of the KeyCloak realm, e.g. https://some-keycloak-server/auth/realms/someRealmID'
+REACT_APP_AUTH_AUTO_SILENT_RENEW=false
+REACT_APP_AUTH_FILTER_PROTOCOL_CLAIMS=true
+REACT_APP_AUTH_LOAD_USER_INFO=true
+```
+
 ## Running a development environment
 
 1. Ensure the [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1) is installed.
