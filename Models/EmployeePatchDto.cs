@@ -12,8 +12,6 @@ namespace NewJobSurveyAdmin.Models
         public string AdminUserName { get; set; }
 
 
-        // TODO: Very similar code exists in EmployeeReconciliationService.
-        // Factor it out.
         public Employee ApplyPatch(Employee existingEmployee)
         {
             var existingProperties = existingEmployee.GetType().GetProperties();
