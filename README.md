@@ -1,4 +1,5 @@
 # NewJobSurveyAdmin
+
 The New Job Survey Admin tool will assist BC Stats in administering the BCPS New Job Survey.
 
 # Development tasks
@@ -21,7 +22,7 @@ The New Job Survey Admin tool will assist BC Stats in administering the BCPS New
 9. Open the checked-out code in [Visual Studio Code](https://code.visualstudio.com).
 10. While in Visual Studio Code, press <kbd>CTRL</kbd> + <kbd>F5</kbd> to launch the API.
 
-## Quick database reset
+## Quick database reset (dev ONLY)
 
 This command will quickly drop the database, delete migrations, create an initial migration, and update the database.
 
