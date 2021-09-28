@@ -118,7 +118,9 @@ namespace NewJobSurveyAdmin.Models
 
         [Required] public string StaffingAction { get; set; }
 
-        [Required] public string StaffingReason { get; set; }
+        [Sieve(CanFilter = true, CanSort = true)]
+        [Required]
+        public string StaffingReason { get; set; }
 
         [Required] public string NewHireOrInternalStaffing { get; set; }
 
@@ -209,7 +211,6 @@ namespace NewJobSurveyAdmin.Models
         /// </returns>
         public IEnumerable<PropertyVariance> PropertyCompare(Employee candidate)
         {
-
             return this.DetailedCompare(candidate)
                 .Where(d =>
                     d.PropertyInfo.Name != nameof(Id) &&

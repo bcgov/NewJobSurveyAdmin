@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 
 import { Employee } from '../../types/Employee'
 import { EmployeeStatus } from '../../types/EmployeeStatus'
-import { Reason } from '../../types/Reason'
 import FormattedDate from '../DisplayHelpers/FormattedDate'
 import { AppointmentStatus } from '../../types/AppointmentStatus'
 
@@ -67,8 +66,8 @@ export const employeeTableColumns = (): Column<Employee>[] => [
   {
     Header: 'Hiring reason',
     Cell: (props: EmployeeCellProps): JSX.Element => {
-      const staffingReason = (props.value as unknown) as Reason
-      return <>{staffingReason ? staffingReason.reasonCode : '[Unknown Reason]'}</>
+      const staffingReason = props.value as unknown
+      return <>{staffingReason}</>
     },
     accessor: 'staffingReason'
   },
