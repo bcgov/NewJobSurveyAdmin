@@ -1,42 +1,40 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-
-import React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { plainToClass } from 'class-transformer'
+import React from 'react'
 
 import { Employee } from '../../../types/Employee'
-import { EmployeeStatus, EmployeeStatusEnum } from '../../../types/EmployeeStatus'
+import {
+  EmployeeStatus,
+  EmployeeStatusEnum
+} from '../../../types/EmployeeStatus'
 import { requestJSONWithErrorHandler } from '../../../helpers/requestHelpers'
 import AddComment from '../AddComment'
 import ContentWrapper from '../../Wrappers/ContentWrapper'
 import EditableDropdown from '../EditableSelect'
 import EmployeeContact from './_EmployeeContact'
 import EmployeeCurrentJobInfo from './_EmployeeCurrentJobInfo'
-import EmployeePriorJobInfo from './_EmployeePriorJobInfo'
 import EmployeeIds from './_EmployeeIds'
 import EmployeeMetadataFooter from './_EmployeeMetadataFooter'
 import EmployeePersonalInfo from './_EmployeePersonalInfo'
+import EmployeePriorJobInfo from './_EmployeePriorJobInfo'
 import LabelledText from '../../DisplayHelpers/Interface/LabelledItems/LabelledText'
 import TimelineEntryList from '../TimelineEntryList'
 
-interface IParams {
+interface Params {
   employeeId: string
 }
 
-interface IOwnProps extends RouteComponentProps<IParams> {}
+type IOwnProps = RouteComponentProps<Params>
 
-interface IStateProps {}
+type Props = IOwnProps
 
-interface IDispatchProps {}
-
-interface IProps extends IOwnProps, IStateProps, IDispatchProps {}
-
-interface IState {
+interface State {
   employee?: Employee
 }
 
-class EmployeeDetail extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+class EmployeeDetail extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = { employee: undefined }
 
@@ -83,13 +81,20 @@ class EmployeeDetail extends React.Component<IProps, IState> {
           <div className="col-8">
             <EmployeeIds employee={e} />
             <hr />
-            <EmployeePersonalInfo employee={e} populateData={this.populateData} />
+            <EmployeePersonalInfo
+              employee={e}
+              populateData={this.populateData}
+            />
             <hr />
             <EmployeeContact employee={e} populateData={this.populateData} />
             <hr />
-            <div className='row'>
-              <div className='col'><EmployeeCurrentJobInfo employee={e} /></div>
-              <div className='col'><EmployeePriorJobInfo employee={e} /></div>
+            <div className="row">
+              <div className="col">
+                <EmployeeCurrentJobInfo employee={e} />
+              </div>
+              <div className="col">
+                <EmployeePriorJobInfo employee={e} />
+              </div>
             </div>
             <hr />
             <EmployeeMetadataFooter employee={e} />
@@ -130,7 +135,6 @@ class EmployeeDetail extends React.Component<IProps, IState> {
       null,
       'EMPLOYEE_NOT_FOUND',
       (responseJSON: string): void => {
-        console.log('responseJSON', responseJSON)
         this.setState({ employee: plainToClass(Employee, responseJSON) })
       }
     )

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ISelectOption } from '../components/Employees/EditableSelect'
+import { SelectOption } from '../components/Employees/EditableSelect'
 import { EmployeeStatus } from '../types/EmployeeStatus'
 import { Reason } from '../types/Reason'
 import { TaskOutcome } from '../types/TaskOutcome'
@@ -52,7 +52,7 @@ const fieldLabels: { [key: string]: string } = {
   triedToUpdateInFinalState: 'Tried to update in final state'
 }
 
-const optionsForEnum: { [key: string]: () => ISelectOption[] } = {
+const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   currentEmployeeStatusCode: EmployeeStatus.toOptions,
   reason: Reason.toOptions,
   taskOutcomeCode: TaskOutcome.toOptions,
@@ -79,7 +79,7 @@ export const labelForWithFlag = (
   )
 }
 
-export const optionsFor = (fieldName: string): ISelectOption[] => {
+export const optionsFor = (fieldName: string): SelectOption[] => {
   const options = optionsForEnum[fieldName]().sort((a, b) =>
     a.name.localeCompare(b.name)
   )

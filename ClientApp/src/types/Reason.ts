@@ -1,6 +1,6 @@
 /* globals Map */
 
-import { ISelectOption } from '../components/Employees/EditableSelect'
+import { SelectOption } from '../components/Employees/EditableSelect'
 import { AppointmentStatusEnum } from './AppointmentStatus'
 
 export enum ExitTypeEnum {
@@ -171,7 +171,7 @@ export class Reason {
     return Reason.array().filter(r => r.appointmentStatusCode === code)
   }
 
-  static toOptions = (): ISelectOption[] => {
+  static toOptions = (): SelectOption[] => {
     const vals = Array.from(Reason.map().values()).map(reason => ({
       name: reason.reasonCode,
       value: reason.reasonCode
@@ -181,7 +181,7 @@ export class Reason {
 
   static toOptionsByAppointmentStatus = (
     appointmentStatusCode: AppointmentStatusEnum
-  ): ISelectOption[] => {
+  ): SelectOption[] => {
     return Reason.byAppointmentStatus(appointmentStatusCode).map(status => ({
       name: `${status.exitTypeCode}: ${status.reasonCode}`,
       value: status.reasonCode

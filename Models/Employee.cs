@@ -8,12 +8,208 @@ using System.Linq;
 
 namespace NewJobSurveyAdmin.Models
 {
+    /// <summary>
+    /// A government employee who needs to receive a job survey.
+    /// </summary>
     public class Employee : BaseEntity
     {
+        // Keys
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public virtual string Telkey { get; set; }
+
+
+        // Personal info (ID, names, etc.)
+
+        [Sieve(CanFilter = true)] [Required] public string GovernmentEmployeeId { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [Required]
+        public string FirstName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [Required]
+        public string PreferredFirstName { get; set; }
+
+        [Required] public Boolean PreferredFirstNameFlag { get; set; }
+
+        [Required] public string MiddleName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [Required]
+        public string LastName { get; set; }
+
+        [DataType(DataType.Date)] [Required] public DateTime BirthDate { get; set; }
+
+        [Required] public string Gender { get; set; }
+
+        [Required] public string Age { get; set; }
+
+
+        // Contact information
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string ChipsEmail { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string GovernmentEmail { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string PreferredEmail { get; set; }
+
+        [Required] public Boolean PreferredEmailFlag { get; set; }
+
+
+        // Employee job info
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [Required]
+        public string Classification { get; set; }
+
+        [Required] public string Organization { get; set; }
+
+        [Required] public string DepartmentId { get; set; }
+
+        [Required] public string DepartmentIdDescription { get; set; }
+
+        [Required] public string DevelopmentRegion { get; set; }
+
+        [Required] public string LocationCity { get; set; }
+
+        [Required] public string LocationGroup { get; set; }
+
+        [Required] public string JobCode { get; set; }
+
+        [Required] public string PositionCode { get; set; }
+
+        [Required] public string PositionTitle { get; set; }
+
+        [Required] public string JobClassificationGroup { get; set; }
+
+        [Required] public string NocCode { get; set; }
+
+        [Required] public string NocDescription { get; set; }
+
+        [Required] public string OrganizationCount { get; set; }
+
+        [Required] public string RegionalDistrict { get; set; }
+
+        [Required] public string UnionCode { get; set; }
+
+
+        // Hiring info
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [DataType(DataType.Date)]
+        [Required]
+        public DateTime EffectiveDate { get; set; }
+
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string AppointmentStatus { get; set; }
+
+        [Required] public string ServiceYears { get; set; }
+
+        [Required] public string RecordCount { get; set; }
+
+        [Required] public string StaffingAction { get; set; }
+
+        [Required] public string StaffingReason { get; set; }
+
+        [Required] public string NewHireOrInternalStaffing { get; set; }
+
+        [Required] public string TaToPermanent { get; set; }
+
+
+        // Prior job info
+
+        [Required] public string PriorAppointmentStatus { get; set; }
+
+        [Required] public string PriorClassification { get; set; }
+
+        [Required] public string PriorDepartmentId { get; set; }
+
+        [Required] public string PriorDepartmentIdDescription { get; set; }
+
+        [Required] public string PriorEffectiveDate { get; set; }
+
+        [Required] public string PriorEmployeeStatus { get; set; }
+
+        [Required] public string PriorJobClassificationGroup { get; set; }
+
+        [Required] public string PriorJobCode { get; set; }
+
+        [Required] public string PriorNocCode { get; set; }
+
+        [Required] public string PriorNocDescription { get; set; }
+
+        [Required] public string PriorOrganization { get; set; }
+
+        [Required] public string PriorPositionCode { get; set; }
+
+        [Required] public string PriorPositionTitle { get; set; }
+
+        [Required] public string PriorUnionCode { get; set; }
+
+
+        // Calculated date fields
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [DataType(DataType.Date)]
+        [Required]
+        public DateTime InviteDate { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [DataType(DataType.Date)]
+        [Required]
+        public DateTime Reminder1Date { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [DataType(DataType.Date)]
+        [Required]
+        public DateTime Reminder2Date { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [DataType(DataType.Date)]
+        [Required]
+        public DateTime DeadlineDate { get; set; }
+
+
+        // Additional generated fields
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        [Required]
+        public string CurrentEmployeeStatusCode { get; set; }
+
+        public virtual EmployeeStatusEnum CurrentEmployeeStatus { get; set; }
+
+        public virtual List<EmployeeTimelineEntry> TimelineEntries { get; set; }
+
+        public Boolean TriedToUpdateInFinalState { get; set; }
+
+
+        // Methods
+
+        /// <summary>
+        /// Method to compare properties between two Employees ("this" one, i.e.
+        /// the one this method is being called on, and another candidate one).
+        /// Used when we need to determine which fields have been updated on a
+        /// PATCHed user. Note the intentionally excluded properties; these will
+        /// never get set in a PATCH and so are not compared.
+        /// </summary>
+        /// <param name="candidate">The other Employee to compare this one against.</param>
+        /// <returns>
+        /// An enumerable list of properties that differ between the two
+        /// Employees, including the property name, the value in "this"
+        /// Employee, and the value in the candidate Employee.
+        /// </returns>
         public IEnumerable<PropertyVariance> PropertyCompare(Employee candidate)
         {
-            // Compare properties. Note the intentionally excluded properties.
+
             return this.DetailedCompare(candidate)
                 .Where(d =>
                     d.PropertyInfo.Name != nameof(Id) &&
@@ -30,216 +226,20 @@ namespace NewJobSurveyAdmin.Models
                 );
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        public virtual string Telkey { get; set; }
-
-
-        // Personal info (ID, names, etc.)
-
-        [Sieve(CanFilter = true)]
-        [Required]
-        public string GovernmentEmployeeId { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
-        public string FirstName { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
-        public string PreferredFirstName { get; set; }
-
-        [Required]
-        public Boolean PreferredFirstNameFlag { get; set; }
-
-        [Required]
-        public string MiddleName { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
-        public string LastName { get; set; }
-
-        [DataType(DataType.Date)]
-        [Required]
-        public DateTime BirthDate { get; set; }
-
-        [Required]
-        public string Gender { get; set; }
-
-        [Required]
-        public string Age { get; set; }
-
-
-        // Contact information
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string ChipsEmail { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string GovernmentEmail { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string PreferredEmail { get; set; }
-
-        [Required]
-        public Boolean PreferredEmailFlag { get; set; }
-
-
-        // Employee job info
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
-        public string Classification { get; set; }
-
-        [Required]
-        public string Organization { get; set; }
-
-        [Required]
-        public string DepartmentId { get; set; }
-
-        [Required]
-        public string DepartmentIdDescription { get; set; }
-
-        [Required]
-        public string DevelopmentRegion { get; set; }
-
-        [Required]
-        public string LocationCity { get; set; }
-
-        [Required]
-        public string LocationGroup { get; set; }
-
-        [Required]
-        public string JobCode { get; set; }
-
-        [Required]
-        public string PositionCode { get; set; }
-
-        [Required]
-        public string PositionTitle { get; set; }
-
-        [Required]
-        public string JobClassificationGroup { get; set; }
-
-        [Required]
-        public string NocCode { get; set; }
-
-        [Required]
-        public string NocDescription { get; set; }
-
-        [Required]
-        public string OrganizationCount { get; set; }
-
-        [Required]
-        public string RegionalDistrict { get; set; }
-
-        [Required]
-        public string UnionCode { get; set; }
-
-        // Hiring info
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        [DataType(DataType.Date)]
-        [Required]
-        public DateTime EffectiveDate { get; set; }
-
-        [Required]
-        [Sieve(CanFilter = true, CanSort = true)]
-        public string AppointmentStatus { get; set; }
-
-        [Required]
-        public string ServiceYears { get; set; }
-
-        [Required]
-        public string RecordCount { get; set; }
-
-        [Required]
-        public string StaffingAction { get; set; }
-
-        [Required]
-        public string StaffingReason { get; set; }
-
-        [Required]
-        public string NewHireOrInternalStaffing { get; set; }
-
-        [Required]
-        public string TaToPermanent { get; set; }
-
-        // Prior job info
-
-        [Required]
-        public string PriorAppointmentStatus { get; set; }
-
-        [Required]
-        public string PriorClassification { get; set; }
-
-        [Required]
-        public string PriorDepartmentId { get; set; }
-
-        [Required]
-        public string PriorDepartmentIdDescription { get; set; }
-
-        [Required]
-        public string PriorEffectiveDate { get; set; }
-
-        [Required]
-        public string PriorEmployeeStatus { get; set; }
-
-        [Required]
-        public string PriorJobClassificationGroup { get; set; }
-
-        [Required]
-        public string PriorJobCode { get; set; }
-
-        [Required]
-        public string PriorNocCode { get; set; }
-
-        [Required]
-        public string PriorNocDescription { get; set; }
-
-        [Required]
-        public string PriorOrganization { get; set; }
-
-        [Required]
-        public string PriorPositionCode { get; set; }
-
-        [Required]
-        public string PriorPositionTitle { get; set; }
-
-        [Required]
-        public string PriorUnionCode { get; set; }
-
-
-
-
-        // Code-specific additional fields
-
-        [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
-        public string CurrentEmployeeStatusCode { get; set; }
-
-        public virtual EmployeeStatusEnum CurrentEmployeeStatus { get; set; }
-
-        public virtual List<EmployeeTimelineEntry> TimelineEntries { get; set; }
-
-        public Boolean TriedToUpdateInFinalState { get; set; }
-
-
-        // Methods
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
+        /// <summary>
+        /// Convenience method to generate an employee's full name, which is a
+        /// concatenation of their first and last names.
+        /// </summary>
         public string FullName
         {
             get { return $"{this.FirstName} {this.LastName}"; }
         }
 
+        /// <summary>
+        /// Retrieve an employee's email address from LDAP, as it is not
+        /// reliably supplied from the PSA data extract.
+        /// </summary>
+        /// <param name="infoLookupService">The <see cref="NewJobSurveyAdmin.Services.EmployeeInfoLookupService" /> to be used to look up the email.</param>
         public void UpdateEmail(
             EmployeeInfoLookupService infoLookupService
         )
@@ -248,59 +248,85 @@ namespace NewJobSurveyAdmin.Models
                 .EmailByEmployeeId(GovernmentEmployeeId);
         }
 
-        // Initialize all Preferred fields to be the equivalent of the base
-        // field. This should only be run when the Employee is created.
-        public void InstantiateFields()
+        /// <summary>
+        /// Initialize all Preferred fields to be the equivalent of the base
+        /// field, and set up all calculated date fields. This should only be
+        /// run when the Employee is created.
+        /// </summary>
+        /// <param name="inviteDate">The date to invite the user to the survey.</param>
+        /// <param name="reminder1Date">The date to send the first survey reminder.</param>
+        /// <param name="reminder2Date">The date to send the second survey reminder.</param>
+        /// <param name="deadlineDate">The deadline date for completing the survey.</param>
+        public void InstantiateFields(DateTime inviteDate, DateTime reminder1Date, DateTime reminder2Date,
+            DateTime deadlineDate)
         {
             PreferredFirstName = FirstName;
             PreferredFirstNameFlag = false;
             PreferredEmail = GovernmentEmail;
             PreferredEmailFlag = false;
+            InviteDate = inviteDate;
+            Reminder1Date = reminder1Date;
+            Reminder2Date = reminder2Date;
+            DeadlineDate = deadlineDate;
         }
 
-        // Update all Preferred fields to be the equivalent of the base field,
-        // so long as the Preferred field has never been overwritten (i.e. the
-        // corresponding `Flag` is false).
-        public void UpdatePreferredFields()
-        {
-            if (!PreferredFirstNameFlag) PreferredFirstName = FirstName;
-            if (!PreferredEmailFlag) PreferredEmail = GovernmentEmail;
-        }
-
-        // public string LeaveCode
-        // {
-        //     get
-        //     {
-        //         switch (this.Reason)
-        //         {
-        //             case "Just Cause":
-        //             case "Redundant":
-        //             case "Rejection on Probation":
-        //                 return "3";
-        //             case "Layoff (With Recall)":
-        //             case "Job Ends/End of Recall Limit":
-        //                 return "2";
-        //             default: // All other cases; no need to enumerate here
-        //                 return "1";
-        //         }
-        //     }
-        // }
-
+        /// <summary>
+        /// Identify whether the survey is open or not. For use when posting to
+        /// CallWeb.
+        /// </summary>
+        /// <returns>
+        /// "0" if the survey is inactive (closed), "1" if it is active (open).
+        /// </returns>
         public string SurveyWindowFlag()
         {
             return IsActive() ? "0" : "1";
         }
 
+        /// <summary>
+        /// Identify whether this employee is a temporary appointment or not.
+        /// For use when posting to CallWeb.
+        /// </summary>
+        /// <returns>
+        /// "0" if the employee is not a temporary appointment, or "1" if they
+        /// are.
+        /// </returns>
         public string TaU7Flag()
         {
-            return TaToPermanent.Equals("YES") ? "1" : "0";
+            return StaffingReason.Equals("Temporary Appointment <7 Mnths") ? "1" : "0";
         }
 
+        /// <summary>
+        /// Identify whether this employee is a lateral transfer or not. For use
+        /// when posting to CallWeb.
+        /// </summary>
+        /// <returns>
+        /// "0" if the employee is not a lateral transfer, or "1" if they are.
+        /// </returns>
         public string LatTransferFlag()
         {
-            return "1"; // TODO: How to set this?
+            return StaffingReason.Equals("Lateral Transfer") ? "1" : "0";
         }
 
+        /// <summary>
+        /// Identify whether this employee is a new hire or not. For use when
+        /// posting to CallWeb.
+        /// </summary>
+        /// <returns>
+        /// "0" if the employee is not a new hire, or "1" if they are.
+        /// </returns>
+        public string NewHireFlag()
+        {
+            return NewHireOrInternalStaffing.Equals("New Hires") ? "1" : "0";
+        }
+
+        /// <summary>
+        /// Identify whether this employee is active or not, based on whether
+        /// their <see cref="NewJobSurveyAdmin.Models.Employee.CurrentEmployeeStatusCode" />
+        /// is an active code. See <see cref="NewJobSurveyAdmin.Models.EmployeeStatusEnum" />.
+        /// </summary>
+        /// <returns>
+        /// False if the employee is not in an active state, or true if they are.
+        /// </returns>
         public Boolean IsActive()
         {
             return EmployeeStatusEnum.IsActiveStatus(CurrentEmployeeStatusCode);

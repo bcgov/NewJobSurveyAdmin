@@ -10,23 +10,18 @@ namespace NewJobSurveyAdmin.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        public int EmployeeId { get; set; }
+        [Required] public int EmployeeId { get; set; }
 
-        [JsonIgnore]
-        public virtual Employee Employee { get; set; }
+        [JsonIgnore] public virtual Employee Employee { get; set; }
 
-        [Required]
-        public string EmployeeActionCode { get; set; }
+        [Required] public string EmployeeActionCode { get; set; }
 
         public virtual EmployeeActionEnum EmployeeAction { get; set; }
 
-        [Required]
-        public string EmployeeStatusCode { get; set; }
+        [Required] public string EmployeeStatusCode { get; set; }
         public virtual EmployeeStatusEnum EmployeeStatus { get; set; }
 
-        [Required]
-        public string Comment { get; set; }
+        [Required] public string Comment { get; set; }
 
         public string AdminUserName { get; set; }
     }

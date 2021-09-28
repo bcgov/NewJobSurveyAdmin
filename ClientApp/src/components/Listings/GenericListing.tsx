@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 
 import { FixTypeLater } from '../../types/FixTypeLater'
-import { IFilter } from '../Filters/FilterClasses/FilterTypes'
-import { IPresetProps } from '../Filters/Presets/IPresetProps'
+import { Filter } from '../Filters/FilterClasses/FilterTypes'
+import { PresetProps } from '../Filters/Presets/PresetProps'
 import { ITableSort } from '../../types/ITableSort'
 import { MasterFilterHandler } from '../Filters/MasterFilterHandler'
 import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
@@ -25,23 +25,23 @@ const processSorts = (sortBy: ITableSort[]): string => {
 }
 
 const extractFilters = (
-  filters: IFilter[],
+  filters: Filter[],
   propLocationSearch: string
 ): string =>
   MasterFilterHandler.extractFromRawQueryString(filters, propLocationSearch)
 
 export interface IGenericListingProps<T extends object> {
-  filterableFields: IFilter[]
+  filterableFields: Filter[]
   listingPath: string
   modelName: string
-  presetComponent?: React.FC<IPresetProps>
+  presetComponent?: React.FC<PresetProps>
   columns: () => FixTypeLater[]
   dataMapper: (responseJSON: FixTypeLater[]) => T[]
   exportedDataMapper: (responseJSON: FixTypeLater[]) => FixTypeLater[]
   pageSize?: number
 }
 
-interface IProps<T extends object>
+interface Props<T extends object>
   extends RouteComponentProps,
     IGenericListingProps<T> {}
 
@@ -55,7 +55,7 @@ const GenericListing = <T extends object>({
   pageSize: propPageSize,
   presetComponent,
   modelName
-}: IProps<T>): JSX.Element => {
+}: Props<T>): JSX.Element => {
   const [data, setData] = React.useState<T[]>([])
   const [loading, setLoading] = React.useState<boolean>(false)
   const [pageCount, setPageCount] = React.useState<number>(0)

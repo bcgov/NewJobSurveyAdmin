@@ -1,22 +1,22 @@
 import React from 'react'
 
-export interface ICommonButtonProps {
-  colorType?: string
+export interface CommonButtonProps {
   className?: string
+  colorType?: string
+  disabled?: boolean
   marginClasses?: string
   onClick?: () => void
+  reset?: boolean
   size?: string
   submit?: boolean
-  reset?: boolean
-  disabled?: boolean
 }
 
-interface IProps extends ICommonButtonProps {
+interface Props extends CommonButtonProps {
   children: React.ReactNode
   icon?: string
 }
 
-class Button extends React.Component<IProps> {
+class Button extends React.Component<Props> {
   public render(): JSX.Element {
     const { onClick, children, submit, reset } = this.props
     const className = this.props.className || ''

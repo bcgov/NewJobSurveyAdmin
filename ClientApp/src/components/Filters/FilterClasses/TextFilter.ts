@@ -1,8 +1,8 @@
-import { FilterType, IFilter } from './FilterTypes'
+import { Filter, FilterType } from './FilterTypes'
 
 const OR_OPERATOR = '|'
 
-export default class TextFilter implements IFilter {
+export default class TextFilter implements Filter {
   _type = FilterType.String
   _fieldName: string
   _values: string[]

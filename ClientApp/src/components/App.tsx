@@ -1,5 +1,5 @@
-import React from 'react'
 import { Route } from 'react-router-dom'
+import React from 'react'
 
 import AuthenticatedRoute from './Wrappers/AuthenticatedRoute'
 import CallbackHandler from './Login/CallbackHandler'

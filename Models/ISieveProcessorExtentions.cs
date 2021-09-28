@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 // Extension code for Sieve from https://github.com/Biarity/Sieve/issues/53.
 public static class ISieveProcessorExtensions
 {
-    public static async Task<PagedResult<T>> GetPagedAsync<T>(this ISieveProcessor sieveProcessor, IQueryable<T> query, SieveModel sieveModel = null) where T : class
+    public static async Task<PagedResult<T>> GetPagedAsync<T>(this ISieveProcessor sieveProcessor, IQueryable<T> query,
+        SieveModel sieveModel = null) where T : class
     {
         var result = new PagedResult<T>();
 
-        var (pagedQuery, page, pageSize, recordCount, pageCount) = await GetPagedResultAsync(sieveProcessor, query, sieveModel);
+        var (pagedQuery, page, pageSize, recordCount, pageCount) =
+            await GetPagedResultAsync(sieveProcessor, query, sieveModel);
 
         result.CurrentPage = page;
         result.PageSize = pageSize;
@@ -25,7 +27,9 @@ public static class ISieveProcessorExtensions
         return result;
     }
 
-    private static async Task<(IQueryable<T> pagedQuery, int page, int pageSize, int recordCount, int pageCount)> GetPagedResultAsync<T>(ISieveProcessor sieveProcessor, IQueryable<T> query, SieveModel sieveModel = null) where T : class
+    private static async Task<(IQueryable<T> pagedQuery, int page, int pageSize, int recordCount, int pageCount)>
+        GetPagedResultAsync<T>(ISieveProcessor sieveProcessor, IQueryable<T> query, SieveModel sieveModel = null)
+        where T : class
     {
         var page = sieveModel?.Page ?? 1;
         var pageSize = sieveModel?.PageSize ?? 20;

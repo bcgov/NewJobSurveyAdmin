@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import './SuccessMessage.scss'
 import { timeout } from '../../helpers/objectHelper'
 
-interface IProps {
+interface Props {
   successTime: number
   className?: string
   successMessage?: string
@@ -13,7 +13,7 @@ const SuccessMessage = ({
   successTime,
   className,
   successMessage
-}: IProps): JSX.Element => {
+}: Props): JSX.Element => {
   const [opacity, setOpacity] = React.useState('0')
   const [display, setDisplay] = React.useState('none')
 

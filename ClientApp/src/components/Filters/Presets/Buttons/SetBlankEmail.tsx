@@ -2,19 +2,19 @@ import React, { useContext } from 'react'
 
 import { FilterDispatch } from '../../FilterForm'
 import { FixTypeLater } from '../../../../types/FixTypeLater'
-import IconButton from '../../../DisplayHelpers/Interface/Buttons/IconButton'
 import CustomFilter from '../../FilterClasses/CustomFilter'
+import IconButton from '../../../DisplayHelpers/Interface/Buttons/IconButton'
 
 export const getBlankEmailFilter = (): CustomFilter => {
   return new CustomFilter('blankEmail')
 }
 
-interface IProps {
+interface Props {
   submitId: number
   setSubmitId: (submitId: number) => void
 }
 
-const SetActiveEmployees = ({ submitId, setSubmitId }: IProps): JSX.Element => {
+const SetActiveEmployees = ({ submitId, setSubmitId }: Props): JSX.Element => {
   const dispatch = useContext(FilterDispatch) as FixTypeLater
 
   const setActiveEmployees = React.useCallback((): void => {

@@ -10,11 +10,11 @@ const smallCodeWrapper = (content: string): JSX.Element => (
   </code>
 )
 
-interface IProps {
+interface Props {
   error?: FixTypeLater
 }
 
-class ErrorPage extends React.Component<IProps> {
+class ErrorPage extends React.Component<Props> {
   render(): JSX.Element {
     const error = this.props.error.error
     return (

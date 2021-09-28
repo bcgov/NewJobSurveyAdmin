@@ -66,7 +66,7 @@ namespace NewJobSurveyAdmin.Services
                 EmployeeActionCode = EmployeeActionEnum.UpdateByTask.Code,
                 EmployeeStatusCode = newStatusCode,
                 Comment = $"Status updated by script: " +
-                    $"{oldStatusCode} → {newStatusCode}."
+                          $"{oldStatusCode} → {newStatusCode}."
             });
             context.Entry(employee).State = EntityState.Modified;
 
@@ -86,12 +86,27 @@ namespace NewJobSurveyAdmin.Services
             var reconciledEmployeeList = new List<Employee>();
             var exceptionList = new List<string>();
 
+            var adminSettings = await context.AdminSettings.ToListAsync();
+            int inviteDays = Convert.ToInt32(adminSettings.Find(s => s.Key == AdminSetting.InviteDays).Value);
+            int reminder1Days = Convert.ToInt32(adminSettings.Find(s => s.Key == AdminSetting.Reminder1Days).Value);
+            int reminder2Days = Convert.ToInt32(adminSettings.Find(s => s.Key == AdminSetting.Reminder2Days).Value);
+            int deadlineDays = Convert.ToInt32(adminSettings.Find(s => s.Key == AdminSetting.CloseDays).Value);
+
+            // Establish base dates for insert. This assumes that the date we
+            // are inserting employees is the date established as the pull
+            // date in the CSV.
+            DateTime inviteDate = DateTime.Now.AddDays(inviteDays);
+            DateTime reminder1Date = inviteDate.AddDays(reminder1Days);
+            DateTime reminder2Date = reminder1Date.AddDays(reminder2Days);
+            DateTime deadlineDate = reminder2Date.AddDays(deadlineDays);
+
             // Step 1. Insert and update employees from the CSV.
             foreach (Employee e in employees)
             {
                 try
                 {
-                    var employee = await ReconcileWithDatabase(e);
+                    var employee =
+                        await ReconcileWithDatabase(e, inviteDate, reminder1Date, reminder2Date, deadlineDate);
                     reconciledEmployeeList.Add(employee);
                 }
                 catch (Exception exception)
@@ -123,7 +138,8 @@ namespace NewJobSurveyAdmin.Services
             return reconciledEmployee;
         }
 
-        private async Task<Employee> ReconcileWithDatabase(Employee employee)
+        private async Task<Employee> ReconcileWithDatabase(Employee employee, DateTime inviteDate,
+            DateTime reminder1Date, DateTime reminder2Date, DateTime deadlineDate)
         {
             // Get the existing employee, if it exists.
             var existingEmployee = EmployeeExists(employee);
@@ -139,9 +155,9 @@ namespace NewJobSurveyAdmin.Services
                 // Set the email.
                 employee.UpdateEmail(infoLookupService);
 
-                // Set other preferred fields. This only runs the first time
-                // the employee is created.
-                employee.InstantiateFields();
+                // Set other preferred and calculated fields. This only runs the
+                // first time the employee is created.
+                employee.InstantiateFields(inviteDate, reminder1Date, reminder2Date, deadlineDate);
 
                 // Try to insert a row into CallWeb, and set the telkey.
                 try

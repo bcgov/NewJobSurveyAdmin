@@ -11,7 +11,7 @@ import ColumnSortIndicator from './ColumnSortIndicator'
 import LoadingRow from './LoadingRow'
 import Pagination from './Pagination'
 
-interface IProps<T extends object> {
+interface Props<T extends object> {
   data: T[]
   columns: () => Column<T>[]
   fetchData: (options: FixTypeLater) => FixTypeLater
@@ -22,7 +22,7 @@ interface IProps<T extends object> {
   pageSize: number
 }
 
-const GenericTable = <T extends object>(props: IProps<T>): JSX.Element => {
+const GenericTable = <T extends object>(props: Props<T>): JSX.Element => {
   const {
     columns: propColumns,
     controlledPageCount,

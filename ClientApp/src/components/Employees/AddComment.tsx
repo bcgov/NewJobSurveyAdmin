@@ -5,13 +5,13 @@ import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
 import { userNameFromState } from '../../helpers/userHelper'
 import SuccessMessage from './SuccessMessage'
 
-interface IProps {
+interface Props {
   employeeDatabaseId: string
   employeeStatusCode: string
   refreshDataCallback: () => void
 }
 
-const AddComment = (props: IProps): JSX.Element => {
+const AddComment = (props: Props): JSX.Element => {
   const { employeeDatabaseId, employeeStatusCode, refreshDataCallback } = props
 
   const [comment, setComment] = React.useState('')
@@ -33,7 +33,6 @@ const AddComment = (props: IProps): JSX.Element => {
         },
         'CANNOT_CREATE_EMPLOYEE_TIMELINE_ENTRY',
         (responseJSON: AnyJson): void => {
-          console.log(responseJSON)
           refreshDataCallback()
           setComment('')
           setSuccessTime(Date.now())

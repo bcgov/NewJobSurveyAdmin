@@ -22,18 +22,21 @@ namespace NewJobSurveyAdmin.Models
             State = StateActive,
             Description = "Employee is active."
         };
+
         public static readonly EmployeeStatusEnum SurveyComplete = new EmployeeStatusEnum
         {
             Code = CodeSurveyComplete,
             State = StateFinal,
             Description = "Survey has been finished."
         };
+
         public static readonly EmployeeStatusEnum OutOfScope = new EmployeeStatusEnum
         {
             Code = CodeOutOfScope,
             State = StateFinal,
             Description = "Other ineligibility reason."
         };
+
         public static readonly EmployeeStatusEnum Declined = new EmployeeStatusEnum
         {
             Code = CodeDeclined,
@@ -64,20 +67,14 @@ namespace NewJobSurveyAdmin.Models
         }
 
 
-        [Key]
-        [Required]
-        public string Code { get; set; }
+        [Key] [Required] public string Code { get; set; }
 
-        [Required]
-        public string State { get; set; }
+        [Required] public string State { get; set; }
 
-        [Required]
-        public string Description { get; set; }
+        [Required] public string Description { get; set; }
 
-        [JsonIgnore]
-        public virtual List<Employee> Employees { get; set; }
+        [JsonIgnore] public virtual List<Employee> Employees { get; set; }
 
-        [JsonIgnore]
-        public virtual List<EmployeeTimelineEntry> TimelineEntries { get; set; }
+        [JsonIgnore] public virtual List<EmployeeTimelineEntry> TimelineEntries { get; set; }
     }
 }

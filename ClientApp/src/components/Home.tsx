@@ -2,18 +2,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { FixTypeLater } from '../types/FixTypeLater'
 import { getActiveEmployeesFilter } from './Filters/Presets/Buttons/SetActiveEmployees'
-import { getPreviousMonthFilter } from '../components/Filters/Presets/Buttons/SetPreviousMonth'
 import { getPreviousFiscalYearFilter } from '../components/Filters/Presets/Buttons/SetPreviousFiscalYear'
-
-import './Home.scss'
+import { getPreviousMonthFilter } from '../components/Filters/Presets/Buttons/SetPreviousMonth'
+import { plainToClass } from 'class-transformer'
 import { requestJSONWithErrorHandler } from '../helpers/requestHelpers'
 import { TaskLogEntry } from '../types/TaskLogEntry'
-import { plainToClass } from 'class-transformer'
-import { FixTypeLater } from '../types/FixTypeLater'
-import TaskOutcome from './TaskLogEntries/TaskOutcome'
-import IconButton from './DisplayHelpers/Interface/Buttons/IconButton'
 import FormattedDate from './DisplayHelpers/FormattedDate'
+import IconButton from './DisplayHelpers/Interface/Buttons/IconButton'
+import TaskOutcome from './TaskLogEntries/TaskOutcome'
+
+import './Home.scss'
 
 const NUM_TASK_LOG_ENTRIES = 5
 

@@ -5,7 +5,7 @@ import {
   defaultNiceDatetimeFormat
 } from '../../helpers/dateHelper'
 
-interface IProps {
+interface Props {
   date?: Date
   showTime?: boolean
   showLocalTimezone?: boolean
@@ -21,7 +21,7 @@ const FormattedDate = ({
   nice,
   showLocalTimezone,
   showTime
-}: IProps): JSX.Element => {
+}: Props): JSX.Element => {
   let momentDate = moment(date)
 
   if (showLocalTimezone) {

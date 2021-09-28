@@ -1,4 +1,5 @@
 using NewJobSurveyAdmin.Models;
+using System;
 
 namespace NewJobSurveyAdmin.Services.CallWeb
 {
@@ -18,6 +19,7 @@ namespace NewJobSurveyAdmin.Services.CallWeb
         public string SurveyWindowFlag { get; set; }
         public string TaU7Flag { get; set; }
         public string LatTransferFlag { get; set; }
+        public string NewHireFlag { get; set; }
 
         public static CallWebPostDto FromEmployee(Employee employee)
         {
@@ -30,13 +32,14 @@ namespace NewJobSurveyAdmin.Services.CallWeb
                 EffectiveDate = employee.EffectiveDate.ToString("yyyy-MM-dd"),
                 CurrentStatus = employee.CurrentEmployeeStatusCode,
                 HireReason = employee.StaffingReason,
-                InviteDate = employee.EffectiveDate.AddDays(90 + 3).ToString("yyyy-MM-dd"),
-                Reminder1Date = employee.EffectiveDate.AddDays(90 + 5).ToString("yyyy-MM-dd"),
-                Reminder2Date = employee.EffectiveDate.AddDays(90 + 8).ToString("yyyy-MM-dd"),
-                DeadlineDate = employee.EffectiveDate.AddDays(90 + 12).ToString("yyyy-MM-dd"),
+                InviteDate = employee.InviteDate.ToString("yyyy-MM-dd"),
+                Reminder1Date = employee.Reminder1Date.ToString("yyyy-MM-dd"),
+                Reminder2Date = employee.Reminder2Date.ToString("yyyy-MM-dd"),
+                DeadlineDate = employee.DeadlineDate.ToString("yyyy-MM-dd"),
                 SurveyWindowFlag = employee.SurveyWindowFlag(),
                 TaU7Flag = employee.TaU7Flag(),
-                LatTransferFlag = employee.LatTransferFlag()
+                LatTransferFlag = employee.LatTransferFlag(),
+                NewHireFlag = employee.NewHireFlag()
             };
         }
     }

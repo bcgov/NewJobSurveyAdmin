@@ -19,14 +19,14 @@ namespace NewJobSurveyAdmin.Models
             EmployeeInfoLookup = employeeInfoLookup;
         }
 
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<EmployeeStatusEnum> EmployeeStatusEnums { get; set; }
-        public DbSet<EmployeeActionEnum> EmployeeActionEnums { get; set; }
-        public DbSet<EmployeeTimelineEntry> EmployeeTimelineEntries { get; set; }
-        public DbSet<TaskLogEntry> TaskLogEntries { get; set; }
-        public DbSet<TaskEnum> TaskEnums { get; set; }
-        public DbSet<TaskOutcomeEnum> TaskOutcomeEnums { get; set; }
         public DbSet<AdminSetting> AdminSettings { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<EmployeeActionEnum> EmployeeActionEnums { get; set; }
+        public DbSet<EmployeeStatusEnum> EmployeeStatusEnums { get; set; }
+        public DbSet<EmployeeTimelineEntry> EmployeeTimelineEntries { get; set; }
+        public DbSet<TaskEnum> TaskEnums { get; set; }
+        public DbSet<TaskLogEntry> TaskLogEntries { get; set; }
+        public DbSet<TaskOutcomeEnum> TaskOutcomeEnums { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -81,15 +81,15 @@ namespace NewJobSurveyAdmin.Models
             return base.SaveChangesAsync(true, cancellationToken);
         }
 
-        // Automatically add timestamps to created / modified entities.Based on code from
+        // Automatically add timestamps to created / modified entities. Based on code from
         // https://www.koskila.net/how-to-add-creator-modified-info-to-all-of-your-ef-models-at-once-in-net-core/
         private void AddTimestamps()
         {
             // Get all entities that extend BaseEntity and that have been either
             // added or modified.
             var entities = ChangeTracker.Entries().Where(
-              x => x.Entity is BaseEntity &&
-              (x.State == EntityState.Added || x.State == EntityState.Modified)
+                x => x.Entity is BaseEntity &&
+                     (x.State == EntityState.Added || x.State == EntityState.Modified)
             );
 
             foreach (var entity in entities)
@@ -100,8 +100,8 @@ namespace NewJobSurveyAdmin.Models
                     ((BaseEntity)entity.Entity).CreatedTs = DateTime.UtcNow;
                 }
 
-              // In all cases, update the modified timestamp
-              ((BaseEntity)entity.Entity).ModifiedTs = DateTime.UtcNow;
+                // In all cases, update the modified timestamp
+                ((BaseEntity)entity.Entity).ModifiedTs = DateTime.UtcNow;
             }
         }
     }

@@ -5,19 +5,19 @@ export enum FilterType {
   Custom = 'custom'
 }
 
-export interface IFilter {
+export interface Filter {
   fieldName: string
   type: FilterType
   reset: () => void
   encode: () => string
-  decode: (input: string[]) => IFilter
-  clone: () => IFilter
+  decode: (input: string[]) => Filter
+  clone: () => Filter
   displayString: string
   isSet: boolean
   mustReplace: boolean
 }
 
-export interface ISort {
+export interface Sort {
   id: string
   desc: boolean
 }

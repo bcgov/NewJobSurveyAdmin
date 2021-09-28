@@ -13,3 +13,12 @@ export class AdminSetting {
   @Transform((date: string) => dateOrUndefined(date, true))
   modifiedTs?: Date
 }
+
+export enum AdminSettingKeyEnum {
+  EmployeeExpirationThreshold = "EmployeeExpirationThreshold",
+  DataPullDayOfWeek = "DataPullDayOfWeek",
+  InviteDays = "InviteDays",
+  Reminder1Days = "Reminder1Days",
+  Reminder2Days = "Reminder2Days",
+  CloseDays = "CloseDays",
+}

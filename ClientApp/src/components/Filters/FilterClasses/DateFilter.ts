@@ -1,10 +1,10 @@
 import { dateToString, stringToDate } from '../../../helpers/dateHelper'
-import { FilterType, IFilter } from './FilterTypes'
+import { Filter, FilterType } from './FilterTypes'
 
 const GTE_OPERATOR = '>='
 const LTE_OPERATOR = '<='
 
-export default class DateFilter implements IFilter {
+export default class DateFilter implements Filter {
   _type = FilterType.Date
   _fieldName: string
   _from?: Date

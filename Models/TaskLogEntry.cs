@@ -13,11 +13,13 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         [Required]
         public string TaskCode { get; set; }
+
         public virtual TaskEnum Task { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         [Required]
         public string TaskOutcomeCode { get; set; }
+
         public virtual TaskOutcomeEnum TaskOutcome { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]

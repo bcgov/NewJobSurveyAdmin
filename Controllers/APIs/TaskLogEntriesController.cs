@@ -40,6 +40,7 @@ namespace NewJobSurveyAdmin.Controllers
             {
                 throw new ArgumentOutOfRangeException("Page size must be >= 1.");
             }
+
             if (sieveModel.Page < 1)
             {
                 throw new ArgumentOutOfRangeException("Page must be >= 1.");
@@ -64,9 +65,9 @@ namespace NewJobSurveyAdmin.Controllers
         public async Task<ActionResult<TaskLogEntry>> GetTaskLogEntry(int id)
         {
             var taskLogEntry = await context.TaskLogEntries
-                    .Include(tle => tle.Task)
-                    .Include(tle => tle.TaskOutcome)
-                    .FirstOrDefaultAsync(tle => tle.Id == id);
+                .Include(tle => tle.Task)
+                .Include(tle => tle.TaskOutcome)
+                .FirstOrDefaultAsync(tle => tle.Id == id);
 
             if (taskLogEntry == null)
             {

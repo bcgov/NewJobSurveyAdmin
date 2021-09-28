@@ -1,23 +1,23 @@
 import React from 'react'
 
-import { IFilter } from '../FilterClasses/FilterTypes'
+import { Filter } from '../FilterClasses/FilterTypes'
 import ActiveFilterButton from './ActiveFilterButton'
 
 import './ActiveFilters.scss'
 
-interface IProps {
-  filters: IFilter[]
-  removeFilter: (filter: IFilter) => void
+interface Props {
+  filters: Filter[]
+  removeFilter: (filter: Filter) => void
 }
 
-const sort = (a: IFilter, b: IFilter): number => {
+const sort = (a: Filter, b: Filter): number => {
   const aLabel = a.fieldName
   const bLabel = b.fieldName
 
   return aLabel.localeCompare(bLabel)
 }
 
-const ActiveFilters = (props: IProps): JSX.Element => {
+const ActiveFilters = (props: Props): JSX.Element => {
   const filterButtons = props.filters
     .sort(sort)
     .filter(f => f.isSet)

@@ -2,7 +2,7 @@ import React from 'react'
 
 import IconButton from '../DisplayHelpers/Interface/Buttons/IconButton'
 
-interface IProps {
+interface Props {
   gotoPage: (page: number) => void
   previousPage: () => void
   nextPage: () => void
@@ -13,7 +13,7 @@ interface IProps {
   className?: string
 }
 
-const Pagination = (props: IProps): JSX.Element => {
+const Pagination = (props: Props): JSX.Element => {
   const {
     canNextPage,
     canPreviousPage,

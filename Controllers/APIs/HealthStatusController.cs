@@ -9,7 +9,6 @@ namespace NewJobSurveyAdmin.Controllers
     [ApiController]
     public class HealthStatusController : ControllerBase
     {
-
         private readonly CallWebService callWebService;
 
         public HealthStatusController(CallWebService callWebService)

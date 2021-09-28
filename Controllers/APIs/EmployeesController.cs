@@ -48,12 +48,12 @@ namespace NewJobSurveyAdmin.Controllers
             [FromQuery] SieveModel sieveModel
         )
         {
-
             // Validate the page size and page.
             if (sieveModel.PageSize < 1)
             {
                 throw new ArgumentOutOfRangeException("Page size must be >= 1.");
             }
+
             if (sieveModel.Page < 1)
             {
                 throw new ArgumentOutOfRangeException("Page must be >= 1.");

@@ -1,6 +1,6 @@
 /* globals Map */
 
-import { ISelectOption } from '../components/Employees/EditableSelect'
+import { SelectOption } from '../components/Employees/EditableSelect'
 
 export enum EmployeeStatusEnum {
   Active = 'Active',
@@ -81,7 +81,7 @@ export class EmployeeStatus {
     return EmployeeStatus.map().get(key)!
   }
 
-  static toOptions = (): ISelectOption[] => {
+  static toOptions = (): SelectOption[] => {
     return EmployeeStatus.array()
       .map(status => ({
         name: status.displayName,

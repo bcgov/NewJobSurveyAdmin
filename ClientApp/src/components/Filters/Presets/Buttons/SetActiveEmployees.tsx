@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 
-import { FilterDispatch } from '../../FilterForm'
-import { FixTypeLater } from '../../../../types/FixTypeLater'
-import EnumFilter from '../../FilterClasses/EnumFilter'
-import IconButton from '../../../DisplayHelpers/Interface/Buttons/IconButton'
 import {
   EmployeeStatus,
   EmployeeStatusStateEnum
 } from '../../../../types/EmployeeStatus'
+import { FilterDispatch } from '../../FilterForm'
+import { FixTypeLater } from '../../../../types/FixTypeLater'
+import EnumFilter from '../../FilterClasses/EnumFilter'
+import IconButton from '../../../DisplayHelpers/Interface/Buttons/IconButton'
 
 export const getActiveEmployeesFilter = (): EnumFilter => {
   const activeStatusKeys = EmployeeStatus.array()
@@ -16,12 +16,12 @@ export const getActiveEmployeesFilter = (): EnumFilter => {
   return new EnumFilter('currentEmployeeStatusCode', activeStatusKeys)
 }
 
-interface IProps {
+interface Props {
   submitId: number
   setSubmitId: (submitId: number) => void
 }
 
-const SetActiveEmployees = ({ submitId, setSubmitId }: IProps): JSX.Element => {
+const SetActiveEmployees = ({ submitId, setSubmitId }: Props): JSX.Element => {
   const dispatch = useContext(FilterDispatch) as FixTypeLater
 
   const setActiveEmployees = React.useCallback((): void => {

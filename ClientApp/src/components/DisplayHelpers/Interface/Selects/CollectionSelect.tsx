@@ -9,18 +9,18 @@ import styles from '../../../../_common.module.scss'
 
 const { baseColor, focusShadowColor, focusBorderColor } = styles
 
-export interface IShimEvent {
+export interface ShimEvent {
   target: {
     value: string
   }
 }
 
-export interface INameValuePair {
+export interface NameValuePair {
   name: string
   value: string
 }
 
-export interface ICollectionSelectValue {
+export interface CollectionSelectValue {
   value: string
   label: string
   isDefault?: boolean
@@ -36,21 +36,21 @@ export const singleValue = (
     : null
 }
 
-export interface ICollectionSelect<T> {
-  suppressLabel?: boolean
-  valueAccessor?: (item: T) => string
-  nameAccessor?: (item: T) => string
-  onChangeCallback: (selectedValues: CollectionSelectReturnValue) => void
-  includeBlank?: boolean
-  label?: string
-  placeholder?: React.ReactNode
+export interface CollectionSelectProps<T> {
   className?: string
-  id?: string
-  items?: T[]
+  defaultValueKeys?: string[]
   excludeNames?: string[]
   excludeValues?: string[]
-  defaultValueKeys?: string[]
+  id?: string
+  includeBlank?: boolean
   isMultiSelect?: boolean
+  items?: T[]
+  label?: string
+  nameAccessor?: (item: T) => string
+  onChangeCallback: (selectedValues: CollectionSelectReturnValue) => void
+  placeholder?: React.ReactNode
+  suppressLabel?: boolean
+  valueAccessor?: (item: T) => string
 }
 
 const customReactSelectStyles = {
@@ -83,22 +83,22 @@ const customReactSelectStyles = {
   }
 }
 
-interface IProps<T> extends ICollectionSelect<T> {}
+type Props<T> = CollectionSelectProps<T>
 
-class CollectionSelect<T> extends React.Component<IProps<T>> {
-  public constructor(props: IProps<T>) {
+class CollectionSelect<T> extends React.Component<Props<T>> {
+  public constructor(props: Props<T>) {
     super(props)
     this.onChange = this.onChange.bind(this)
   }
 
   protected onChange(
-    selectedItems: ValueType<ICollectionSelectValue, FixTypeLater>
+    selectedItems: ValueType<CollectionSelectValue, FixTypeLater>
   ): void {
     if (selectedItems != null && !Array.isArray(selectedItems)) {
       // Selected items is not an array. But for simplicity, we want to return
       // it as such everywhere, even when multiselect is not enabled. So
       // make the selected item into an array.
-      const value = (selectedItems as ICollectionSelectValue).value
+      const value = (selectedItems as CollectionSelectValue).value
       if (value === '') {
         this.props.onChangeCallback(null)
       } else {
@@ -114,7 +114,7 @@ class CollectionSelect<T> extends React.Component<IProps<T>> {
     }
   }
 
-  protected mapItems(items: T[]): ICollectionSelectValue[] {
+  protected mapItems(items: T[]): CollectionSelectValue[] {
     return items.map(variable => {
       const value = this.props.valueAccessor
         ? this.props.valueAccessor(variable)

@@ -1,5 +1,5 @@
-import React from 'react'
 import { CellProps, Column } from 'react-table'
+import React from 'react'
 
 import { TaskLogEntry } from '../../types/TaskLogEntry'
 import FormattedDate from '../DisplayHelpers/FormattedDate'

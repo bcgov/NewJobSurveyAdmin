@@ -1,30 +1,17 @@
-import {  RouteComponentProps } from 'react-router-dom'
 import React from 'react'
 
-import { Employee } from '../../types/Employee'
+import { FixTypeLater } from '../../types/FixTypeLater'
 import { requestJSONWithoutAuth } from '../../helpers/requestHelpers'
 import ContentWrapper from '../Wrappers/ContentWrapper'
-import { plainToClass } from 'class-transformer'
-import { FixTypeLater } from '../../types/FixTypeLater'
 
-interface IParams {
-  employeeId: string
-}
+type Props = {}
 
-interface IOwnProps extends RouteComponentProps<IParams> {}
-
-interface IStateProps {}
-
-interface IDispatchProps {}
-
-interface IProps extends IOwnProps, IStateProps, IDispatchProps {}
-
-interface IState {
+interface State {
   status?: string
 }
 
-class HealthStatus extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+class HealthStatus extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = { status: undefined }
 
@@ -33,18 +20,6 @@ class HealthStatus extends React.Component<IProps, IState> {
 
   componentDidMount(): void {
     this.populateData()
-  }
-
-  renderEmployee(e: Employee): JSX.Element {
-    return (
-      <div>
-        <div className="row">
-          <div className="col">
-            <h3 className="text-muted">Health Status</h3>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   render(): JSX.Element {
@@ -57,7 +32,12 @@ class HealthStatus extends React.Component<IProps, IState> {
         <p>{this.state.status}</p>
       )
 
-    return <ContentWrapper><h1>Health status</h1>{contents}</ContentWrapper>
+    return (
+      <ContentWrapper>
+        <h1>Health status</h1>
+        {contents}
+      </ContentWrapper>
+    )
   }
 
   async populateData(): Promise<void> {
@@ -67,7 +47,6 @@ class HealthStatus extends React.Component<IProps, IState> {
       null,
       'HEALTH_STATUS_FAILED',
       (responseJSON: FixTypeLater): void => {
-        console.log('responseJSON', responseJSON)
         this.setState({ status: responseJSON.msg })
       }
     )

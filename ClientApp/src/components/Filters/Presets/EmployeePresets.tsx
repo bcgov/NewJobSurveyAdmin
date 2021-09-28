@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { IPresetProps } from './IPresetProps'
+import { PresetProps } from './PresetProps'
 import SetActiveEmployees from './Buttons/SetActiveEmployees'
+import SetBlankEmail from './Buttons/SetBlankEmail'
 import SetPreviousFiscalYear from './Buttons/SetPreviousFiscalYear'
 import SetPreviousMonth from './Buttons/SetPreviousMonth'
-import SetBlankEmail from './Buttons/SetBlankEmail'
 
 const EmployeePresets = ({
   submitId,
   setSubmitId
-}: IPresetProps): JSX.Element => {
+}: PresetProps): JSX.Element => {
   return (
     <div className="EmployeePresets">
       <p className="mb-1">

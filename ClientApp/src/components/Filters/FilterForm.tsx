@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useMemo } from 'react'
 
-import { FilterType, IFilter } from './FilterClasses/FilterTypes'
-import { IPresetProps } from './Presets/IPresetProps'
+import { Filter, FilterType } from './FilterClasses/FilterTypes'
+import { PresetProps } from './Presets/PresetProps'
 import DateFilter from './FilterClasses/DateFilter'
 import DateFilterInput from './Inputs/DateFilterInput'
 import EnumFilter from './FilterClasses/EnumFilter'
@@ -11,19 +11,19 @@ import IconButton from '../DisplayHelpers/Interface/Buttons/IconButton'
 import TextFilter from './FilterClasses/TextFilter'
 import TextFilterInput from './Inputs/TextFilterInput'
 
-interface IProps {
-  addFilters: (filters: IFilter[]) => void
+interface Props {
+  addFilters: (filters: Filter[]) => void
+  filterableFields: Filter[]
+  presetComponent?: React.FC<PresetProps>
   resetFilters: () => void
-  filterableFields: IFilter[]
-  presetComponent?: React.FC<IPresetProps>
 }
 
 export type FilterMapAction = {
+  filter?: Filter
   type: 'setFilter' | 'reset'
-  filter?: IFilter
 }
 
-type FilterMap = { [key: string]: IFilter }
+type FilterMap = { [key: string]: Filter }
 
 function reducer(state: FilterMap, action: FilterMapAction): FilterMap {
   const { type, filter } = action
@@ -45,7 +45,7 @@ const FilterForm = ({
   resetFilters,
   filterableFields,
   presetComponent
-}: IProps): JSX.Element => {
+}: Props): JSX.Element => {
   const [filterMap, dispatch] = React.useReducer(reducer, {})
   const [resetTimestamp, setResetTimestamp] = React.useState<number>(0)
   const [submitId, setSubmitId] = React.useState<number>(0)

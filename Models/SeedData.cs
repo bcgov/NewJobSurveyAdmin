@@ -20,7 +20,7 @@ namespace NewJobSurveyAdmin.Models
                 // been seeded. Don't re-seed it.
                 if (context.EmployeeStatusEnums.Any())
                 {
-                    return;   // DB has been seeded
+                    return; // DB has been seeded
                 }
 
                 context.EmployeeStatusEnums.AddRange(
@@ -40,13 +40,8 @@ namespace NewJobSurveyAdmin.Models
                 );
 
                 context.AdminSettings.AddRange(
-                    new List<AdminSetting> {
-                        new AdminSetting()
-                        {
-                            Key = AdminSetting.EmployeeExpirationThreshold,
-                            DisplayName = "Employee expiration threshold (days)",
-                            Value = "180"
-                        },
+                    new List<AdminSetting>
+                    {
                         new AdminSetting()
                         {
                             Key = AdminSetting.DataPullDayOfWeek,

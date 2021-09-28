@@ -1,24 +1,25 @@
 import React from 'react'
+
+import Button, { CommonButtonProps } from './Button'
 import FAIcon from '../Icons/FAIcon'
-import Button, { ICommonButtonProps } from './Button'
 
 import './IconButton.scss'
 
-interface IProps extends ICommonButtonProps {
+interface Props extends CommonButtonProps {
   buttonClasses?: string
+  disabled?: boolean
   iconClasses?: string
   iconMarginClasses?: string
   iconName: string
   iconRight?: boolean
   iconType?: string
   label?: React.ReactNode
-  submit?: boolean
-  reset?: boolean
   onClick?: () => void
-  disabled?: boolean
+  reset?: boolean
+  submit?: boolean
 }
 
-class IconButton extends React.Component<IProps> {
+class IconButton extends React.Component<Props> {
   public render(): JSX.Element {
     const {
       buttonClasses,

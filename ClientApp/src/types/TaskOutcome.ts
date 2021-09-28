@@ -1,6 +1,6 @@
 /* globals Map */
 
-import { ISelectOption } from '../components/Employees/EditableSelect'
+import { SelectOption } from '../components/Employees/EditableSelect'
 
 export enum TaskOutcomeEnum {
   Success = 'Success',
@@ -34,7 +34,7 @@ export class TaskOutcome {
     return TaskOutcome.map().get(key)!
   }
 
-  static toOptions = (): ISelectOption[] => {
+  static toOptions = (): SelectOption[] => {
     return TaskOutcome.array().map(status => ({
       name: status.code,
       value: status.code

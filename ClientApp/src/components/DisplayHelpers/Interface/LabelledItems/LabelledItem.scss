@@ -1,14 +1,15 @@
-@import '../../../../common.module';
+@import "../../../../common.module";
 
 .LabelledItem {
   label {
     font-size: 80%;
     text-transform: uppercase;
     color: $gray-600;
-    // letter-spacing: 0.1px;
     margin-bottom: 2px;
   }
-  input, select, .ReactSelect {
+  input,
+  select,
+  .ReactSelect {
     font-size: 13.5px;
   }
   input.form-control {

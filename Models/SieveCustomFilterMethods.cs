@@ -5,7 +5,6 @@ namespace NewJobSurveyAdmin.Models
 {
     public class SieveCustomFilterMethods : ISieveCustomFilterMethods
     {
-
         // The method is given the {Operator} & {Value}
         public IQueryable<Employee> BlankEmail(
             IQueryable<Employee> source, string op, string[] values)

@@ -4,7 +4,6 @@ using Sieve.Services;
 
 namespace NewJobSurveyAdmin.Models
 {
-
     public class SieveCustomSortMethods : ISieveCustomSortMethods
     {
         // TODO: difficult to factor out the e => e.TimelineEntries.Count, but

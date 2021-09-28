@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
 import moment from 'moment'
+import React, { useContext } from 'react'
 
 import { FilterDispatch } from '../../FilterForm'
 import { FixTypeLater } from '../../../../types/FixTypeLater'
@@ -27,7 +27,7 @@ export const getPreviousFiscalYearFilter = (): DateFilter => {
   return new DateFilter('effectiveDate', startDate.toDate(), endDate.toDate())
 }
 
-interface IProps {
+interface Props {
   submitId: number
   setSubmitId: (submitId: number) => void
 }
@@ -35,7 +35,7 @@ interface IProps {
 const SetPreviousFiscalYear = ({
   submitId,
   setSubmitId
-}: IProps): JSX.Element => {
+}: Props): JSX.Element => {
   const dispatch = useContext(FilterDispatch) as FixTypeLater
 
   const setPreviousFiscalYear = React.useCallback((): void => {

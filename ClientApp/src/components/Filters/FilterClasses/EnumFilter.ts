@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { FilterType, IFilter } from './FilterTypes'
+import { Filter, FilterType } from './FilterTypes'
 import { optionsFor } from '../../../helpers/labelHelper'
 
 const OR_OPERATOR = '|'
 
-export default class EnumFilter implements IFilter {
+export default class EnumFilter implements Filter {
   _type = FilterType.Enum
   _fieldName: string
   _enumKeys: string[]

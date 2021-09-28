@@ -20,7 +20,7 @@ namespace NewJobSurveyAdmin.Services
         // obtained, for instance, from the GetCsv method), transform it into an
         // array of nicely-formatted Employee JSON objects. Note that these
         // Employees are NOT saved or otherwise processed by default.
-        public async Task<Tuple<List<Employee>, List<string>>> EmployeesFromCsv(
+        public Tuple<List<Employee>, List<string>> EmployeesFromCsv(
             Stream csvTextStream, Encoding csvEncoding
         )
         {
@@ -38,7 +38,7 @@ namespace NewJobSurveyAdmin.Services
                 // TrimAllStrings() extension, which is called below.
                 // https://github.com/JoshClose/CsvHelper/issues/1400
                 csv.Configuration.TrimOptions = CsvHelper.Configuration
-                                                   .TrimOptions.InsideQuotes;
+                    .TrimOptions.InsideQuotes;
                 // csv.Configuration.TypeConverterCache
                 //     .RemoveConverter<DateTime>();
                 // csv.Configuration.TypeConverterCache
@@ -76,6 +76,7 @@ namespace NewJobSurveyAdmin.Services
                         var ExceptionText = $"Line {line}: Exception: {e}";
                         badRecords.Add(ExceptionText);
                     }
+
                     isRecordBad = false;
                     line++;
                 }
@@ -90,7 +91,7 @@ namespace NewJobSurveyAdmin.Services
             LoggingService logger
         )
         {
-            var csvServiceTuple = await EmployeesFromCsv(request.Body, Encoding.UTF8);
+            var csvServiceTuple = EmployeesFromCsv(request.Body, Encoding.UTF8);
             var goodRecords = csvServiceTuple.Item1;
             var badRecords = csvServiceTuple.Item2;
             var totalRecordCount = goodRecords.Count + badRecords.Count;
@@ -127,12 +128,14 @@ namespace NewJobSurveyAdmin.Services
                         $"There were {badRecords.Count} bad rows: " +
                         $"Exceptions: {string.Join(newLine, badRecords)} ";
                 }
+
                 if (goodEmployees.Count != goodRecords.Count)
                 {
                     message +=
                         $"There were {badEmployees.Count} employees with errors: " +
                         $"Exceptions: {string.Join(newLine, badEmployees)} ";
                 }
+
                 await logger.LogWarning(TaskEnum.ReconcileCsv, message);
             }
 

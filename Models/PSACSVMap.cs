@@ -17,21 +17,21 @@ public class CustomDateTimeConverter : DateTimeConverter
         }
 
         var formatProvider = (IFormatProvider)memberMapData
-            .TypeConverterOptions
-            .CultureInfo
-            .GetFormat(typeof(DateTimeFormatInfo))
-            ??
-            memberMapData.TypeConverterOptions.CultureInfo;
+                                 .TypeConverterOptions
+                                 .CultureInfo
+                                 .GetFormat(typeof(DateTimeFormatInfo))
+                             ??
+                             memberMapData.TypeConverterOptions.CultureInfo;
 
         var dateTimeStyle = memberMapData
-            .TypeConverterOptions
-            .DateTimeStyle
-            ??
-            DateTimeStyles.None;
+                                .TypeConverterOptions
+                                .DateTimeStyle
+                            ??
+                            DateTimeStyles.None;
 
         return
             (memberMapData.TypeConverterOptions.Formats == null ||
-            memberMapData.TypeConverterOptions.Formats.Length == 0)
+             memberMapData.TypeConverterOptions.Formats.Length == 0)
                 ? DateTime.Parse(text, formatProvider, dateTimeStyle)
                 : DateTime.ParseExact(
                     text, memberMapData.TypeConverterOptions.Formats,

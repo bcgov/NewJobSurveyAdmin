@@ -1,12 +1,10 @@
 import React from 'react'
-import SuccessMessage from '../Employees/SuccessMessage'
+
 import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
 import ColumnarLabelledText from '../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
-import { FixTypeLater } from '../../types/FixTypeLater'
+import SuccessMessage from '../Employees/SuccessMessage'
 
-interface IProps {}
-
-const RefreshStatusButton = (props: IProps): JSX.Element => {
+const RefreshStatusButton = (): JSX.Element => {
   const [successTime, setSuccessTime] = React.useState(0)
   const [successMessage, setSuccessMessage] = React.useState<
     string | undefined
@@ -20,7 +18,7 @@ const RefreshStatusButton = (props: IProps): JSX.Element => {
       'post',
       null,
       'RECONCILIATION_FAILED',
-      (response: FixTypeLater): void => {
+      (): void => {
         setRefreshButtonActive(false)
         setSuccessTime(Date.now())
         setSuccessMessage('The reconciliation process finished.')

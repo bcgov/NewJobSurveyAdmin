@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 namespace NewJobSurveyAdmin.Services.CallWeb
 {
-
     internal class CallWebApi
     {
         private string BaseUrl;
@@ -45,7 +44,6 @@ namespace NewJobSurveyAdmin.Services.CallWeb
                 DateTimeOffset.Now.ToUnixTimeSeconds() >= ServiceToken.expires_in
             )
             {
-
                 var client = GetClient();
 
                 var tokenRequestBodyDict = new Dictionary<string, string>();

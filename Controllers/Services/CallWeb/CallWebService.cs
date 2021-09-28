@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace NewJobSurveyAdmin.Services.CallWeb
 {
-
     public class CallWebService
     {
         private CallWebApi CallWebApi;

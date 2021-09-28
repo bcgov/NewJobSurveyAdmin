@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NewJobSurveyAdmin.Migrations
 {
     [DbContext(typeof(NewJobSurveyAdminContext))]
-    [Migration("20210920014900_InitialCreate")]
+    [Migration("20210924194046_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,9 @@ namespace NewJobSurveyAdmin.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("DeadlineDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("DepartmentId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -112,6 +115,9 @@ namespace NewJobSurveyAdmin.Migrations
                     b.Property<string>("GovernmentEmployeeId")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("InviteDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("JobClassificationGroup")
                         .IsRequired()
@@ -244,6 +250,12 @@ namespace NewJobSurveyAdmin.Migrations
                     b.Property<string>("RegionalDistrict")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("Reminder1Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("Reminder2Date")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ServiceYears")
                         .IsRequired()

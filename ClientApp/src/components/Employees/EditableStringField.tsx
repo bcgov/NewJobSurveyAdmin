@@ -7,7 +7,7 @@ import { userNameFromState } from '../../helpers/userHelper'
 import './EditableField.scss'
 import SuccessMessage from './SuccessMessage'
 
-interface IProps {
+interface Props {
   employeeDatabaseId: string
   fieldName: string
   fieldValue: string
@@ -17,7 +17,7 @@ interface IProps {
   ignoreAdminUserName?: boolean
 }
 
-const EditableStringField = (props: IProps): JSX.Element => {
+const EditableStringField = (props: Props): JSX.Element => {
   const {
     employeeDatabaseId,
     fieldName,

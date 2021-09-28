@@ -1,27 +1,26 @@
 import React from 'react'
 
-import { AnyJson } from '../../types/JsonType'
 import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
 import { userNameFromState } from '../../helpers/userHelper'
-
-import './EditableField.scss'
 import SuccessMessage from './SuccessMessage'
 
-export interface ISelectOption {
+import './EditableField.scss'
+
+export interface SelectOption {
   name: string
   value: string
 }
 
-interface IProps {
+interface Props {
   employeeDatabaseId: string
   fieldName: string
   fieldValue: string
-  valueToDisplayAccessor?: (value: string) => string
-  options: ISelectOption[]
+  options: SelectOption[]
   refreshDataCallback: () => void
+  valueToDisplayAccessor?: (value: string) => string
 }
 
-const EditableSelect = (props: IProps): JSX.Element => {
+const EditableSelect = (props: Props): JSX.Element => {
   const {
     employeeDatabaseId,
     fieldName,
@@ -48,9 +47,8 @@ const EditableSelect = (props: IProps): JSX.Element => {
         AdminUserName: userNameFromState()
       },
       'CANNOT_EDIT_EMPLOYEE',
-      (responseJSON: AnyJson): void => {
+      (): void => {
         toggleEditable()
-        console.log(responseJSON)
         props.refreshDataCallback()
         setSuccessTime(Date.now())
       }

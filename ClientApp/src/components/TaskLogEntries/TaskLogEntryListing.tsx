@@ -1,5 +1,5 @@
-import React from 'react'
 import { plainToClass } from 'class-transformer'
+import React from 'react'
 
 import { FixTypeLater } from '../../types/FixTypeLater'
 import { TaskLogEntry } from '../../types/TaskLogEntry'

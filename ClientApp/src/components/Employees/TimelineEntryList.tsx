@@ -3,11 +3,11 @@ import React from 'react'
 import { EmployeeTimelineEntry } from '../../types/EmployeeTimelineEntry'
 import TimelineEntry from './TimelineEntry'
 
-interface IProps {
+interface Props {
   timelineEntries: EmployeeTimelineEntry[]
 }
 
-class TimelineEntryList extends React.Component<IProps> {
+class TimelineEntryList extends React.Component<Props> {
   render(): JSX.Element {
     const sortedEntries = this.props.timelineEntries.sort((a, b) => {
       if (

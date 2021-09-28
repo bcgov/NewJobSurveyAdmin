@@ -16,16 +16,19 @@ namespace NewJobSurveyAdmin.Models
             Code = CodeReconcileCsv,
             Description = "The task to reconcile the new CSV with the existing database."
         };
+
         public static readonly TaskEnum RefreshStatuses = new TaskEnum
         {
             Code = CodeRefreshStatuses,
             Description = "A manually-triggered refresh of employee statuses."
         };
+
         public static readonly TaskEnum EmailUsers = new TaskEnum
         {
             Code = CodeEmailUsers,
             Description = "The task to email employees."
         };
+
         public static readonly TaskEnum RetrieveSurveyStatus = new TaskEnum
         {
             Code = CodeRetrieveSurveyStatus,
@@ -40,14 +43,10 @@ namespace NewJobSurveyAdmin.Models
             RetrieveSurveyStatus
         };
 
-        [Key]
-        [Required]
-        public string Code { get; set; }
+        [Key] [Required] public string Code { get; set; }
 
-        [Required]
-        public string Description { get; set; }
+        [Required] public string Description { get; set; }
 
-        [JsonIgnore]
-        public virtual List<TaskLogEntry> TaskLogEntries { get; set; }
+        [JsonIgnore] public virtual List<TaskLogEntry> TaskLogEntries { get; set; }
     }
 }

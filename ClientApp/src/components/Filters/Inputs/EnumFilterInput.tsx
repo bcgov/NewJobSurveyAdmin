@@ -4,16 +4,16 @@ import { FilterDispatch } from '../FilterForm'
 import { FixTypeLater } from '../../../types/FixTypeLater'
 import { labelFor, optionsFor } from '../../../helpers/labelHelper'
 import CollectionSelect, {
-  INameValuePair
+  NameValuePair
 } from '../../DisplayHelpers/Interface/Selects/CollectionSelect'
 import EnumFilter from '../FilterClasses/EnumFilter'
 
-interface IProps {
+interface Props {
   filter: EnumFilter
   resetTimestamp: number
 }
 
-const EnumFilterInput = ({ filter, resetTimestamp }: IProps): JSX.Element => {
+const EnumFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
   const dispatch = useContext(FilterDispatch) as FixTypeLater
 
   const [selectValues, setSelectValues] = React.useState<string[]>([])
@@ -30,7 +30,7 @@ const EnumFilterInput = ({ filter, resetTimestamp }: IProps): JSX.Element => {
 
   return (
     <div className="LabelledItem">
-      <CollectionSelect<INameValuePair>
+      <CollectionSelect<NameValuePair>
         label={labelFor(filter.fieldName)}
         items={optionsFor(filter.fieldName)}
         id={filter.fieldName}

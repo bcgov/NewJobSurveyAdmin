@@ -8,12 +8,12 @@ import DateFilter from '../FilterClasses/DateFilter'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
-interface IProps {
+interface Props {
   filter: DateFilter
   resetTimestamp: number
 }
 
-const DateFilterInput = ({ filter, resetTimestamp }: IProps): JSX.Element => {
+const DateFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
   const dispatch = useContext(FilterDispatch) as FixTypeLater
 
   const [fromDate, setFromDate] = React.useState(filter.from)

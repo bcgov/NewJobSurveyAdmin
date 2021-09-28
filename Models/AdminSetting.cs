@@ -6,7 +6,6 @@ namespace NewJobSurveyAdmin.Models
 {
     public class AdminSetting : BaseEntity
     {
-        public static readonly string EmployeeExpirationThreshold = "EmployeeExpirationThreshold";
         public static readonly string DataPullDayOfWeek = "DataPullDayOfWeek";
         public static readonly string InviteDays = "InviteDays";
         public static readonly string Reminder1Days = "Reminder1Days";
@@ -17,14 +16,11 @@ namespace NewJobSurveyAdmin.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        public string Key { get; set; }
+        [Required] public string Key { get; set; }
 
-        [Required]
-        public string DisplayName { get; set; }
+        [Required] public string DisplayName { get; set; }
 
-        [Required]
-        public string Value { get; set; }
+        [Required] public string Value { get; set; }
     }
 
     public class AdminSettingPatchDto

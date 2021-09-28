@@ -1,17 +1,16 @@
-using System.Net.Http;
-using System;
-using NewJobSurveyAdmin.Models;
-using NewJobSurveyAdmin.Services;
-using NewJobSurveyAdmin.Services.CallWeb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Sieve.Services;
+using NewJobSurveyAdmin.Models;
+using NewJobSurveyAdmin.Services;
+using NewJobSurveyAdmin.Services.CallWeb;
 using Sieve.Models;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Sieve.Services;
+using System.Net.Http;
 
 namespace NewJobSurveyAdmin
 {
@@ -32,77 +31,68 @@ namespace NewJobSurveyAdmin
         // services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient();
+            // services.AddHttpClient();
 
+            // CORS configuration. Note we have to manually list all the methods
+            // allowed: options.AllowAnyMethod() does NOT include "PATCH".
+            // TODO: Fix for Safari / Firefox.
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin()
-                        .WithMethods("GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS")
-                      //   .AllowAnyMethod()
-                      .AllowAnyHeader()
-                      .WithExposedHeaders("X-Pagination"));
+                    .WithMethods("GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS")
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("X-Pagination"));
             });
 
-            services.AddControllersWithViews();
+            // NJSA controllers.
+            services.AddControllers();
 
+            // Service to consume the CallWeb API.
             services.Configure<CallWebServiceOptions>(Configuration.GetSection("CallWebApi"));
             services.AddSingleton<CallWebService>();
 
+            // CSV reader.
             services.AddSingleton<CsvService>();
 
-            services.Configure<EmailServiceOptions>(Configuration.GetSection("Email"));
-            services.AddSingleton<EmailService>();
-
+            // LDAP employee information lookup.
             services.Configure<EmployeeInfoLookupServiceOptions>(Configuration.GetSection("LdapLookup"));
             services.AddSingleton<EmployeeInfoLookupService>();
 
+            // Employee reconciler: update Employee statuses with CallWeb.
             services.AddScoped<EmployeeReconciliationService>();
 
-            services.AddSingleton<LocalFileService>();
-
+            // Logging to TaskLogEntries.
             services.AddScoped<LoggingService>();
 
+            // Postgres SQL connector.
             services.AddDbContext<NewJobSurveyAdminContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("NewJobSurveyAdmin"))
             );
 
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            });
+            // Configure Kestrel, which handles the API requests.
+            services.Configure<KestrelServerOptions>(options => { options.AllowSynchronousIO = true; });
 
+            // Configure Sieve, which allows pagination, sorting, filtering of
+            // results.
             services.Configure<SieveOptions>(Configuration.GetSection("Sieve"));
             services.AddScoped<ISieveCustomSortMethods, SieveCustomSortMethods>();
             services.AddScoped<ISieveCustomFilterMethods, SieveCustomFilterMethods>();
             services.AddScoped<SieveProcessor>();
 
-            // TODO: Is this still important?
-            // services
-            //     .AddAuthentication(options =>
-            //         Authentication.SetAuthenticationOptions(options))
-            //     .AddJwtBearer(options =>
-            //     {
-            //         options.Authority = Configuration["Authentication:Authority"];
-            //         options.Audience = Configuration["Authentication:Audience"];
-            //     }
-
-            //     // Authentication.SetJwtBearerOptions(
-            //     //     options,
-            //     //     Configuration.GetValue<string>("Authentication:Authority")
-            //     // )
-            //     );
-
+            // Configure authentication.
             services
                 .AddAuthentication(options =>
                     Authentication.SetAuthenticationOptions(options))
                 .AddJwtBearer(options =>
                     Authentication.SetJwtBearerOptions(
                         options,
-                        Configuration.GetValue<string>("Authentication:Authority")
+                        Configuration.GetValue<string>("Authentication:Authority"),
+                        Configuration.GetValue<string>("Authentication:RoleName")
                     )
                 );
 
+            // Configure authorization.
             services
                 .AddAuthorization(options =>
                     Authentication.SetAuthorizationOptions(
@@ -111,8 +101,7 @@ namespace NewJobSurveyAdmin
                     )
                 );
 
-
-            // Add an HttpClient.
+            // HTTP client for making requests to the CallWeb API.
             services.AddHttpClient(HttpClientName)
                 .ConfigurePrimaryHttpMessageHandler(() =>
                 {
@@ -121,16 +110,11 @@ namespace NewJobSurveyAdmin
                     if (Environment.IsDevelopment())
                     {
                         handler.ServerCertificateCustomValidationCallback +=
-                        (httpRequestMessage, cert, cetChain, policyErrors) => true;
+                            (httpRequestMessage, cert, cetChain, policyErrors) => true;
                     }
+
                     return handler;
                 });
-
-            // // In production, the React files will be served from this directory
-            // services.AddSpaStaticFiles(configuration =>
-            // {
-            //     configuration.RootPath = "ClientApp/build";
-            // });
         }
 
         // This method gets called by the runtime. Use this method to configure
@@ -150,35 +134,19 @@ namespace NewJobSurveyAdmin
                 app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
-            // app.UseStaticFiles();
-            // app.UseSpaStaticFiles();
-
+            // The following Use____ calls should be kept in this order.
             app.UseRouting();
-
             app.UseCors("CorsPolicy");
-
             app.UseAuthentication();
             app.UseAuthorization();
 
-
-
+            // Hook up controllers.
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-
-            // app.UseSpa(spa =>
-            // {
-            //     spa.Options.SourcePath = "ClientApp";
-
-            //     if (env.IsDevelopment())
-            //     {
-            //         spa.UseReactDevelopmentServer(npmScript: "start");
-            //     }
-            // });
         }
     }
 }

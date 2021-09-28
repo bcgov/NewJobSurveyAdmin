@@ -13,9 +13,9 @@ interface IDispatchProps {
   dispatch: Dispatch<AnyAction>
 }
 
-interface IProps extends IDispatchProps, RouteComponentProps {}
+interface Props extends IDispatchProps, RouteComponentProps {}
 
-class CallbackPage extends React.Component<IProps> {
+class CallbackPage extends React.Component<Props> {
   render(): JSX.Element {
     return (
       <CallbackComponent

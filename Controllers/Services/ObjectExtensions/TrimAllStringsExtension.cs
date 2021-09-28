@@ -2,7 +2,6 @@ using System.Linq;
 
 public static class TrimAllStringsExtension
 {
-
     public static T TrimAllStrings<T>(this T input)
     {
         var stringProperties = input
