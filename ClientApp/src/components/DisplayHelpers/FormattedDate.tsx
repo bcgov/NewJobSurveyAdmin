@@ -11,6 +11,7 @@ interface Props {
   showLocalTimezone?: boolean
   nice?: boolean
   customFormat?: string
+  noWrap?: boolean
 }
 
 const TIMEZONE = 'America/Vancouver'
@@ -20,8 +21,13 @@ const FormattedDate = ({
   date,
   nice,
   showLocalTimezone,
-  showTime
+  showTime,
+  noWrap
 }: Props): JSX.Element => {
+  if (!date) {
+    return <>—</>
+  }
+
   let momentDate = moment(date)
 
   if (showLocalTimezone) {
@@ -40,7 +46,9 @@ const FormattedDate = ({
       : momentDate.format(defaultDateFormat)
   }
 
-  return <span className="Date">{displayDate}</span>
+  return (
+    <span className={`Date ${noWrap && 'text-nowrap'}`}>{displayDate}</span>
+  )
 }
 
 export default FormattedDate

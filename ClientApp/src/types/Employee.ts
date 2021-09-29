@@ -64,6 +64,14 @@ export class Employee {
   public effectiveDate?: Date
   @Transform((date: string) => dateOrUndefined(date))
   public priorEffectiveDate?: Date
+  @Transform((date: string) => dateOrUndefined(date))
+  public inviteDate?: Date
+  @Transform((date: string) => dateOrUndefined(date))
+  public reminder1Date?: Date
+  @Transform((date: string) => dateOrUndefined(date))
+  public reminder2Date?: Date
+  @Transform((date: string) => dateOrUndefined(date))
+  public deadlineDate?: Date
 
   // UTC Datetimes
   @Transform((date: string) => dateOrUndefined(date, true))
