@@ -249,7 +249,7 @@ EmailTemplates/*
 **/appsettings.Production.json
 
 # Auto-generated env.js in ClientApp
-ClientApp/.env
+ClientApp/.env*
 ClientApp/public/env.js
 
 # Various
