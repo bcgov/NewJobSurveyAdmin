@@ -4,7 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@beam-australia/react-env": "^2.1.2",
+    "@beam-australia/react-env": "^3.1.1",
     "@bcgov/bootstrap-theme": "https://github.com/bcgov/bootstrap-theme/releases/download/v1.1.1/bcgov-bootstrap-theme-1.1.1.tgz",
     "@types/jest": "^24.0.23",
     "@types/moment-timezone": "^0.5.13",
@@ -70,7 +70,7 @@
     "extends": "react-app"
   },
   "scripts": {
-    "prestart": "react-env",
+    "prestart": "react-env --dest=public/config",
     "start": "rimraf ./build && react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",

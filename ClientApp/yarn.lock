@@ -1171,10 +1171,10 @@
   version "1.1.1"
   resolved "https://github.com/bcgov/bootstrap-theme/releases/download/v1.1.1/bcgov-bootstrap-theme-1.1.1.tgz#340aca7b61ff5048914a355c75db6a6fc71504a9"
 
-"@beam-australia/react-env@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@beam-australia/react-env/-/react-env-2.1.2.tgz#12581373fcb20f68ac206cd8317a74261a9dde0c"
-  integrity sha512-gXcCGGGb2oRM/oeqT861JXsSTJjOxGTBMkj7J5ujEBb6Vmv5I108NcALPYYdGdzFCV6ebdVP+E5k0W1xAbzA7w==
+"@beam-australia/react-env@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@beam-australia/react-env/-/react-env-3.1.1.tgz#63cb8316861b8fbdb4b9c550a62139cd90675e40"
+  integrity sha512-LdWzgqmu116t9+sOvONyB21bBmI8dm8g8s3KhnJVzCcK93GrdSisuIOtOkQPMYgenmVGTWQwWnbLAgoka/jAFw==
   dependencies:
     cross-spawn "^6.0.5"
     dotenv "^8.0.0"

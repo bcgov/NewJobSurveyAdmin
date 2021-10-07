@@ -10,36 +10,45 @@ interface Props {
 }
 
 const EmployeeCurrentJobInfo = ({ employee: e }: Props): JSX.Element => {
+  // console.log('e', e)
   return (
-    <>
+    <div
+      className="bg-white border border-secondary p-4 shadow-lg"
+      style={{ marginLeft: '-60px', zIndex: 1000 }}
+    >
       <div className="row">
-        <CLText label={labelFor('effectiveDate')}>
+        <div className="col-12">
+          <h2>Current job info</h2>
+        </div>
+        <CLText columnClass="col-12" label={labelFor('effectiveDate')}>
           <Date date={e.effectiveDate} />
         </CLText>
-        <CLText label={labelFor('reason')}>
-          {e.staffingReason ? e.staffingReason.reasonCode : '[Unknown Reason]'}
+        <CLText columnClass="col-12" label={labelFor('appointmentStatus')}>
+          {e.appointmentStatus!.code}
         </CLText>
-        <CLText label={labelFor('recordCount')}>{e.recordCount}</CLText>
       </div>
       <hr />
       <div className="row">
-        <CLText label={labelFor('ministry')}>{e.organization}</CLText>
-        <CLText label={labelFor('departmentId')}>{e.departmentId}</CLText>
-        <CLText label={labelFor('appointmentStatus')}>
-          {e.appointmentStatus!.code}
-        </CLText>
-        <CLText label={labelFor('classification')}>
-          {e.classification}
-        </CLText>
-        <CLText label={labelFor('jobCode')}>{e.jobCode}</CLText>
-        <CLText label={labelFor('locationCity')}>{e.locationCity}</CLText>
-        <CLText label={labelFor('serviceYears')}>{e.serviceYears}</CLText>
-        <CLText label={labelFor('positionTitle')}>
+        <CLText columnClass="col-12" label={labelFor('positionTitle')}>
           {e.positionTitle}
         </CLText>
-        <CLText label={labelFor('positionCode')}>{e.positionCode}</CLText>
+        <CLText columnClass="col-12" label={labelFor('positionCode')}>
+          {e.positionCode}
+        </CLText>
+        <CLText columnClass="col-12" label={labelFor('ministry')}>
+          {e.organization}
+        </CLText>
+        <CLText columnClass="col-12" label={labelFor('departmentId')}>
+          {e.departmentId}
+        </CLText>
+        <CLText columnClass="col-12" label={labelFor('classification')}>
+          {e.classification}
+        </CLText>
+        <CLText columnClass="col-12" label={labelFor('jobCode')}>
+          {e.jobCode}
+        </CLText>
       </div>
-    </>
+    </div>
   )
 }
 

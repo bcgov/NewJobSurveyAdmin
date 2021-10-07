@@ -14,6 +14,7 @@ import ContentWrapper from '../../Wrappers/ContentWrapper'
 import EditableDropdown from '../EditableSelect'
 import EmployeeContact from './_EmployeeContact'
 import EmployeeCurrentJobInfo from './_EmployeeCurrentJobInfo'
+import EmployeeHireInfo from './_EmployeeHireInfo'
 import EmployeeIds from './_EmployeeIds'
 import EmployeeMetadataFooter from './_EmployeeMetadataFooter'
 import EmployeePersonalInfo from './_EmployeePersonalInfo'
@@ -88,12 +89,14 @@ class EmployeeDetail extends React.Component<Props, State> {
             <hr />
             <EmployeeContact employee={e} populateData={this.populateData} />
             <hr />
+            <EmployeeHireInfo employee={e} />
+            <hr />
             <div className="row">
               <div className="col">
-                <EmployeeCurrentJobInfo employee={e} />
+                <EmployeePriorJobInfo employee={e} />
               </div>
               <div className="col">
-                <EmployeePriorJobInfo employee={e} />
+                <EmployeeCurrentJobInfo employee={e} />
               </div>
             </div>
             <hr />

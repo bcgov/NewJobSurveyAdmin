@@ -1,12 +1,11 @@
-import React from 'react'
 import { CellProps, Column } from 'react-table'
 import { Link } from 'react-router-dom'
+import React from 'react'
 
+import { AppointmentStatus } from '../../types/AppointmentStatus'
 import { Employee } from '../../types/Employee'
 import { EmployeeStatus } from '../../types/EmployeeStatus'
-import { Reason } from '../../types/Reason'
 import FormattedDate from '../DisplayHelpers/FormattedDate'
-import { AppointmentStatus } from '../../types/AppointmentStatus'
 
 type EmployeeCellProps = React.PropsWithChildren<
   CellProps<Employee, string | undefined>
@@ -37,8 +36,12 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'preferredEmail'
   },
   {
-    Header: 'Record count',
-    accessor: 'recordCount'
+    Header: 'Hiring reason',
+    accessor: 'staffingReason'
+  },
+  {
+    Header: 'New hire or internal staffing',
+    accessor: 'newHireOrInternalStaffing'
   },
   {
     Header: 'Appointment status',
@@ -58,6 +61,7 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     Header: 'Hire effective date',
     Cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate
+        noWrap
         showLocalTimezone
         date={(props.value as unknown) as Date}
       />
@@ -65,12 +69,59 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'effectiveDate'
   },
   {
-    Header: 'Hiring reason',
-    Cell: (props: EmployeeCellProps): JSX.Element => {
-      const staffingReason = (props.value as unknown) as Reason
-      return <>{staffingReason ? staffingReason.reasonCode : '[Unknown Reason]'}</>
-    },
-    accessor: 'staffingReason'
+    Header: 'Import date',
+    Cell: (props: EmployeeCellProps): JSX.Element => (
+      <FormattedDate
+        noWrap
+        showLocalTimezone
+        date={(props.value as unknown) as Date}
+      />
+    ),
+    accessor: 'createdTs'
+  },
+  {
+    Header: 'Invite date',
+    Cell: (props: EmployeeCellProps): JSX.Element => (
+      <FormattedDate
+        noWrap
+        showLocalTimezone
+        date={(props.value as unknown) as Date}
+      />
+    ),
+    accessor: 'inviteDate'
+  },
+  {
+    Header: 'Reminder 1 date',
+    Cell: (props: EmployeeCellProps): JSX.Element => (
+      <FormattedDate
+        noWrap
+        showLocalTimezone
+        date={(props.value as unknown) as Date}
+      />
+    ),
+    accessor: 'reminder1Date'
+  },
+  {
+    Header: 'Reminder 2 date',
+    Cell: (props: EmployeeCellProps): JSX.Element => (
+      <FormattedDate
+        noWrap
+        showLocalTimezone
+        date={(props.value as unknown) as Date}
+      />
+    ),
+    accessor: 'reminder2Date'
+  },
+  {
+    Header: 'Deadline date',
+    Cell: (props: EmployeeCellProps): JSX.Element => (
+      <FormattedDate
+        noWrap
+        showLocalTimezone
+        date={(props.value as unknown) as Date}
+      />
+    ),
+    accessor: 'deadlineDate'
   },
   {
     Header: 'Status',
@@ -80,7 +131,7 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'currentEmployeeStatusCode'
   },
   {
-    Header: 'Last modified date',
+    Header: 'Last modified time',
     Cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate
         date={(props.value as unknown) as Date}
