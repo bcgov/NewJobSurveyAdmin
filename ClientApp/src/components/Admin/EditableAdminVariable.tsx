@@ -28,7 +28,7 @@ const EditableAdminVariable = ({
         validator={(value: string): boolean => {
           return !isNaN(+value) && +value > 0
         }}
-        employeeDatabaseId={adminSetting.id!}
+        modelDatabaseId={adminSetting.id!}
         fieldName={'Value'}
         fieldValue={adminSetting.value!}
         ignoreAdminUserName

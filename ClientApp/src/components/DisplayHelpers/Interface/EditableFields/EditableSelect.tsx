@@ -13,7 +13,7 @@ export interface SelectOption {
 }
 
 interface Props {
-  employeeDatabaseId: string
+  modelDatabaseId: string
   fieldName: string
   fieldValue: string
   modelPath?: string
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const EditableSelect = ({
-  employeeDatabaseId,
+  modelDatabaseId,
   fieldName,
   fieldValue,
   modelPath,
@@ -42,7 +42,7 @@ const EditableSelect = ({
   const submitEdit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     requestJSONWithErrorHandler(
-      `api/${modelPath || 'employees'}/${employeeDatabaseId}`,
+      `api/${modelPath || 'employees'}/${modelDatabaseId}`,
       'patch',
       {
         [fieldName]: newValue,

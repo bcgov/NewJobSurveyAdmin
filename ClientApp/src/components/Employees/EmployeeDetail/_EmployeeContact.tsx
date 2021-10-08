@@ -20,7 +20,7 @@ const EmployeeContact = ({ employee: e, populateData }: Props): JSX.Element => {
           validator={(email: string): boolean =>
             email.length === 0 || EmailValidator.validate(email)
           }
-          employeeDatabaseId={e.id!}
+          modelDatabaseId={e.id!}
           fieldName={'preferredEmail'}
           fieldValue={e.preferredEmail!}
           refreshDataCallback={populateData}

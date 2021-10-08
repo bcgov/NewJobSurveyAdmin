@@ -20,7 +20,7 @@ const EmployeePersonalInfo = ({
       <CLText label={labelFor('firstName')}>{e.firstName}</CLText>
       <CLText label={labelForWithFlag('preferredFirstName', e)}>
         <EditableStringField
-          employeeDatabaseId={e.id!}
+          modelDatabaseId={e.id!}
           fieldName={'preferredFirstName'}
           fieldValue={e.preferredFirstName!}
           refreshDataCallback={populateData}
