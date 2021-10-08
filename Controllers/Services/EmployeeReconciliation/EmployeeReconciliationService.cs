@@ -135,8 +135,9 @@ namespace NewJobSurveyAdmin.Services
                 var newStatusCode = EmployeeStatusEnum.Active.Code;
                 employee.CurrentEmployeeStatusCode = newStatusCode;
 
-                // Set the email.
-                employee.UpdateEmail(infoLookupService);
+                // Set the first name, last name, and email from LDAP, if
+                // available.
+                employee.UpdateInfoFromLdap(infoLookupService);
 
                 // Set other preferred and calculated fields. This only runs the
                 // first time the employee is created.

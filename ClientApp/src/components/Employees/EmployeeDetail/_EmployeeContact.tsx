@@ -14,6 +14,9 @@ interface Props {
 const EmployeeContact = ({ employee: e, populateData }: Props): JSX.Element => {
   return (
     <div className="row">
+      <CLText extraClasses="text-extra-muted" label={labelFor('chipsEmail')}>
+        {e.chipsEmail}
+      </CLText>
       <CLText label={labelFor('governmentEmail')}>{e.governmentEmail}</CLText>
       <CLText label={labelForWithFlag('preferredEmail', e)}>
         <EditableStringField

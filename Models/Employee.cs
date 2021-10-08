@@ -51,9 +51,14 @@ namespace NewJobSurveyAdmin.Models
 
 
         // Contact information
-
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsEmail { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string ChipsFirstName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string ChipsLastName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string GovernmentEmail { get; set; }
@@ -237,16 +242,36 @@ namespace NewJobSurveyAdmin.Models
         }
 
         /// <summary>
-        /// Retrieve an employee's email address from LDAP, as it is not
-        /// reliably supplied from the PSA data extract.
+        /// Retrieve an employee's first name, last name, and email from LDAP,
+        /// as they may have been updated since the PSA data extract.
+        /// 
+        /// If the LDAP lookup finds a person with the employee's employee ID
+        /// who works at BC Assessment, we must ignore the LDAP values. This is
+        /// because there is a clash between employee IDs — they are not unique.
         /// </summary>
-        /// <param name="infoLookupService">The <see cref="NewJobSurveyAdmin.Services.EmployeeInfoLookupService" /> to be used to look up the email.</param>
-        public void UpdateEmail(
+        /// <param name="infoLookupService">The <see cref="NewJobSurveyAdmin.Services.EmployeeInfoLookupService" /> to be used to look up the info.</param>
+        public void UpdateInfoFromLdap(
             EmployeeInfoLookupService infoLookupService
         )
         {
-            GovernmentEmail = infoLookupService
-                .EmailByEmployeeId(GovernmentEmployeeId);
+            var ldapInfo = infoLookupService.GetEmployeeInfoFromLdap(GovernmentEmployeeId);
+
+            if (ldapInfo.Organization.Equals("BC Assessment"))
+            {
+                // If the organization is "BC Assessment", we need to use the
+                // CHIPS values regardless. This is due to an ID clash.
+                FirstName = ChipsFirstName;
+                LastName = ChipsLastName;
+                GovernmentEmail = ldapInfo.EmailOverride ?? ChipsEmail;
+            }
+            else
+            {
+                // Otherwise we can use the LDAP info, defaulting back to CHIPS
+                // if anything is null.
+                FirstName = ldapInfo.FirstName ?? ChipsFirstName;
+                LastName = ldapInfo.LastName ?? ChipsLastName;
+                GovernmentEmail = ldapInfo.EmailOverride ?? ldapInfo.Email ?? ChipsEmail;
+            }
         }
 
         /// <summary>
