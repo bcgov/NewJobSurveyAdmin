@@ -4,7 +4,7 @@ import * as EmailValidator from 'email-validator'
 import { Employee } from '../../../types/Employee'
 import { labelFor, labelForWithFlag } from '../../../helpers/labelHelper'
 import CLText from '../../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
-import EditableStringField from '../EditableStringField'
+import EditableStringField from '../../DisplayHelpers/Interface/EditableFields/EditableStringField'
 
 interface Props {
   employee: Employee

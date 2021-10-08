@@ -11,7 +11,7 @@ import {
 import { requestJSONWithErrorHandler } from '../../../helpers/requestHelpers'
 import AddComment from '../AddComment'
 import ContentWrapper from '../../Wrappers/ContentWrapper'
-import EditableDropdown from '../EditableSelect'
+import EditableDropdown from '../../DisplayHelpers/Interface/EditableFields/EditableSelect'
 import EmployeeContact from './_EmployeeContact'
 import EmployeeCurrentJobInfo from './_EmployeeCurrentJobInfo'
 import EmployeeHireInfo from './_EmployeeHireInfo'

@@ -4,14 +4,17 @@ import { Employee } from '../../../types/Employee'
 import { labelFor, labelForWithFlag } from '../../../helpers/labelHelper'
 import CLText from '../../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
 import Date from '../../DisplayHelpers/FormattedDate'
-import EditableStringField from '../EditableStringField'
+import EditableStringField from '../../DisplayHelpers/Interface/EditableFields/EditableStringField'
 
 interface Props {
   employee: Employee
   populateData: () => void
 }
 
-const EmployeePersonalInfo = ({ employee: e, populateData }: Props): JSX.Element => {
+const EmployeePersonalInfo = ({
+  employee: e,
+  populateData
+}: Props): JSX.Element => {
   return (
     <div className="row">
       <CLText label={labelFor('firstName')}>{e.firstName}</CLText>

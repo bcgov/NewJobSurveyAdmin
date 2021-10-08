@@ -3,7 +3,7 @@ import React from 'react'
 import { AppointmentStatus } from '../types/AppointmentStatus'
 import { Employee } from '../types/Employee'
 import { EmployeeStatus } from '../types/EmployeeStatus'
-import { SelectOption } from '../components/Employees/EditableSelect'
+import { SelectOption } from '../components/DisplayHelpers/Interface/EditableFields/EditableSelect'
 import { TaskOutcome } from '../types/TaskOutcome'
 import FAIcon from '../components/DisplayHelpers/Interface/Icons/FAIcon'
 
