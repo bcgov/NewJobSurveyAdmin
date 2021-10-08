@@ -302,11 +302,11 @@ namespace NewJobSurveyAdmin.Models
         /// CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the survey is inactive (closed), "1" if it is active (open).
+        /// "" if the survey is inactive (closed), "1" if it is active (open).
         /// </returns>
         public string SurveyWindowFlag()
         {
-            return IsActive() ? "0" : "1";
+            return IsActive() ? "" : "1";
         }
 
         /// <summary>
@@ -314,12 +314,14 @@ namespace NewJobSurveyAdmin.Models
         /// For use when posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a temporary appointment, or "1" if they
+        /// "" if the employee is not a temporary appointment, or "1" if they
         /// are.
         /// </returns>
         public string TaU7Flag()
         {
-            return StaffingReason.Equals("Temporary Appointment <7 Mnths") ? "1" : "0";
+            return StaffingReason.Equals("Temporary Appointment <7 Mnths")
+                ? "1"
+                : "";
         }
 
         /// <summary>
@@ -327,11 +329,11 @@ namespace NewJobSurveyAdmin.Models
         /// when posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a lateral transfer, or "1" if they are.
+        /// "" if the employee is not a lateral transfer, or "1" if they are.
         /// </returns>
         public string LatTransferFlag()
         {
-            return StaffingReason.Equals("Lateral Transfer") ? "1" : "0";
+            return StaffingReason.Equals("Lateral Transfer") ? "1" : "";
         }
 
         /// <summary>
@@ -339,11 +341,11 @@ namespace NewJobSurveyAdmin.Models
         /// posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a new hire, or "1" if they are.
+        /// "" if the employee is not a new hire, or "1" if they are.
         /// </returns>
         public string NewHireFlag()
         {
-            return NewHireOrInternalStaffing.Equals("New Hires") ? "1" : "0";
+            return NewHireOrInternalStaffing.Equals("New Hires") ? "1" : "";
         }
 
         /// <summary>
