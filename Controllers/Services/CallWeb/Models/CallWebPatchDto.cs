@@ -9,15 +9,18 @@ namespace NewJobSurveyAdmin.Services.CallWeb
         public string PreferredEmail { get; set; }
         public string PreferredFirstName { get; set; }
         public string CurrentStatus { get; set; }
+        public string SurveyWindowFlag { get; set; }
 
         public static CallWebPatchDto FromEmployee(Employee employee)
         {
+
             return new CallWebPatchDto()
             {
                 Telkey = employee.Telkey,
                 PreferredEmail = employee.PreferredEmail,
                 PreferredFirstName = employee.PreferredFirstName,
                 CurrentStatus = employee.CurrentEmployeeStatusCode,
+                SurveyWindowFlag = employee.SurveyWindowFlag(),
             };
         }
     }
