@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NewJobSurveyAdmin.Migrations
 {
     [DbContext(typeof(NewJobSurveyAdminContext))]
-    [Migration("20210924194046_InitialCreate")]
+    [Migration("20211008202225_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,12 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ChipsEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ChipsFirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ChipsLastName")
                         .HasColumnType("text");
 
                     b.Property<string>("Classification")

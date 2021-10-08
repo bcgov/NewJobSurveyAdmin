@@ -49,6 +49,8 @@ public class PsaCsvMap : ClassMap<Employee>
         Map(m => m.AppointmentStatus).Name("APPOINTMENT STATUS");
         Map(m => m.BirthDate).Name("BIRTHDATE");
         Map(m => m.ChipsEmail).Name("CHIPS EMAIL");
+        Map(m => m.ChipsFirstName).Name("FIRST NAME");
+        Map(m => m.ChipsLastName).Name("LAST NAME");
         Map(m => m.LocationCity).Name("CITY");
         Map(m => m.Classification).Name("CLASSIFICATION");
         Map(m => m.DepartmentId).Name("DEPTID");
@@ -56,14 +58,12 @@ public class PsaCsvMap : ClassMap<Employee>
         Map(m => m.DevelopmentRegion).Name("DEVELOPMENT REGION");
         Map(m => m.RecordCount).Name("EMPL_RCD");
         Map(m => m.GovernmentEmployeeId).Name("EMPLID");
-        Map(m => m.FirstName).Name("FIRST NAME");
         Map(m => m.Gender).Name("GENDER");
         Map(m => m.StaffingAction).Name("HIRE STAFFING ACTION");
         Map(m => m.EffectiveDate).Name("HIRE STAFFING EFFDT");
         Map(m => m.StaffingReason).Name("HIRE STAFFING REASON");
         Map(m => m.JobClassificationGroup).Name("JOBCLASGRP");
         Map(m => m.JobCode).Name("JOBCODE");
-        Map(m => m.LastName).Name("LAST NAME");
         Map(m => m.LocationGroup).Name("LOCATION GROUP");
         Map(m => m.MiddleName).Name("MIDDLE NAME"); // TODO: Remove
         Map(m => m.NewHireOrInternalStaffing).Name("NEW HIRE OR INTERNAL STAFFING");
