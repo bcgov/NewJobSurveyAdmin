@@ -1,0 +1,13 @@
+@import '../../common.module';
+
+$backgroundLineLeft: 8%;
+
+.DatePreview {
+  .DatePreviewDates {
+    /* Draws a vertical line behind the dates without using a border */
+    background: linear-gradient(90deg, 
+      rgba(0,0,0,0) calc(#{$backgroundLineLeft} - 0.5px), 
+      rgba($gray-700,1) calc(#{$backgroundLineLeft}), 
+      rgba(0,0,0,0) calc(#{$backgroundLineLeft} + 0.5px));
+  }
+}

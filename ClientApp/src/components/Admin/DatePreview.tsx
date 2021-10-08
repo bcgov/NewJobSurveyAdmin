@@ -6,6 +6,8 @@ import { AdminSetting, AdminSettingKeyEnum } from '../../types/AdminSetting'
 import AdminDataPullDayOfWeek from './AdminDataPullDayOfWeek'
 import DatePreviewDate from './DatePreviewDate'
 
+import './DatePreview.scss'
+
 interface Props {
   adminSettings: AdminSetting[]
   setAdminSettings: (adminSettings: AdminSetting[]) => void
@@ -67,66 +69,80 @@ const DatePreview = ({
 
   return (
     <div className="DatePreview">
-      <div className="row">
+      <div className="row mb-3">
         <AdminDataPullDayOfWeek
           updateAdminSetting={updateAdminSetting}
           dataPullSetting={dataPullSetting}
         />
       </div>
-      <DatePreviewDate
-        adminSetting={inviteDaysSetting}
-        setAdminSettings={setAdminSettings}
-        dayNum={0}
-        basePullDate={basePullDate}
-        eventName={'Next data pull'}
-        plusDaysToNext={inviteDays}
-      />
-      <DatePreviewDate
-        adminSetting={reminder1DaysSetting}
-        setAdminSettings={setAdminSettings}
-        dayNum={0 + inviteDays}
-        basePullDate={basePullDate}
-        eventName={'Invite'}
-        plusDaysToNext={reminder1Days}
-      />
-      <DatePreviewDate
-        adminSetting={reminder2DaysSetting}
-        setAdminSettings={setAdminSettings}
-        dayNum={0 + inviteDays + reminder1Days}
-        basePullDate={basePullDate}
-        eventName={'Reminder 1'}
-        plusDaysToNext={reminder2Days}
-      />
-      <DatePreviewDate
-        adminSetting={apparentCloseDaysSetting}
-        setAdminSettings={setAdminSettings}
-        dayNum={0 + inviteDays + reminder1Days + reminder2Days}
-        basePullDate={basePullDate}
-        eventName={'Reminder 2'}
-        plusDaysToNext={apparentCloseDays}
-      />
-      <DatePreviewDate
-        setAdminSettings={setAdminSettings}
-        dayNum={
-          0 + inviteDays + reminder1Days + reminder2Days + apparentCloseDays
-        }
-        basePullDate={basePullDate}
-        eventName={'User told survey closed'}
-        plusDaysToNext={realCloseDays}
-      />
-      <DatePreviewDate
-        setAdminSettings={setAdminSettings}
-        dayNum={
-          0 +
-          inviteDays +
-          reminder1Days +
-          reminder2Days +
-          apparentCloseDays +
-          realCloseDays
-        }
-        basePullDate={basePullDate}
-        eventName={'Survey actually closed'}
-      />
+      <div className="row DatePreviewDates">
+        <DatePreviewDate
+          adminSetting={inviteDaysSetting}
+          updateAdminSetting={updateAdminSetting}
+          dayNum={0}
+          basePullDate={basePullDate}
+          eventName={'Next data pull'}
+          plusDaysToNext={inviteDays}
+          icon={'fa-download'}
+          color={'primary'}
+        />
+        <DatePreviewDate
+          adminSetting={reminder1DaysSetting}
+          updateAdminSetting={updateAdminSetting}
+          dayNum={0 + inviteDays}
+          basePullDate={basePullDate}
+          eventName={'Invite'}
+          plusDaysToNext={reminder1Days}
+          icon={'fa-envelope-open-text'}
+          color={'success'}
+        />
+        <DatePreviewDate
+          adminSetting={reminder2DaysSetting}
+          updateAdminSetting={updateAdminSetting}
+          dayNum={0 + inviteDays + reminder1Days}
+          basePullDate={basePullDate}
+          eventName={'Reminder 1'}
+          plusDaysToNext={reminder2Days}
+          icon={'fa-envelope-open-text'}
+          color={'warning'}
+        />
+        <DatePreviewDate
+          adminSetting={apparentCloseDaysSetting}
+          updateAdminSetting={updateAdminSetting}
+          dayNum={0 + inviteDays + reminder1Days + reminder2Days}
+          basePullDate={basePullDate}
+          eventName={'Reminder 2'}
+          plusDaysToNext={apparentCloseDays}
+          icon={'fa-envelope-open-text'}
+          color={'warning'}
+        />
+        <DatePreviewDate
+          updateAdminSetting={updateAdminSetting}
+          dayNum={
+            0 + inviteDays + reminder1Days + reminder2Days + apparentCloseDays
+          }
+          basePullDate={basePullDate}
+          eventName={'User told survey closed'}
+          plusDaysToNext={realCloseDays}
+          icon={'fa-envelope-open-text'}
+          color={'danger'}
+        />
+        <DatePreviewDate
+          updateAdminSetting={updateAdminSetting}
+          dayNum={
+            0 +
+            inviteDays +
+            reminder1Days +
+            reminder2Days +
+            apparentCloseDays +
+            realCloseDays
+          }
+          basePullDate={basePullDate}
+          eventName={'Survey actually closed'}
+          icon={'fa-ban'}
+          color={'primary'}
+        />
+      </div>
     </div>
   )
 }
