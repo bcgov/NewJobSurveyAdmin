@@ -6,7 +6,7 @@ import { AdminSetting } from '../../types/AdminSetting'
 import { FixTypeLater } from '../../types/FixTypeLater'
 import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
 import ColumnarLabelledText from '../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
-import EditableStringField from '../Employees/EditableStringField'
+import EditableStringField from '../DisplayHelpers/Interface/EditableFields/EditableStringField'
 
 interface Props {
   adminSetting: AdminSetting

@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { AnyJson } from '../../types/JsonType'
-import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
-import { userNameFromState } from '../../helpers/userHelper'
+import { AnyJson } from '../../../../types/JsonType'
+import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
+import { userNameFromState } from '../../../../helpers/userHelper'
 
 import './EditableField.scss'
-import SuccessMessage from './SuccessMessage'
+import SuccessMessage from '../../../Employees/SuccessMessage'
 
 interface Props {
   employeeDatabaseId: string

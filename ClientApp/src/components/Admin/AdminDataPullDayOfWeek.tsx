@@ -6,7 +6,7 @@ import { AdminSetting } from '../../types/AdminSetting'
 import { AnyJson } from '../../types/JsonType'
 import { NameValuePair } from '../DisplayHelpers/Interface/Selects/CollectionSelect'
 import ColumnarLabelledText from '../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
-import EditableSelect from '../Employees/EditableSelect'
+import EditableSelect from '../DisplayHelpers/Interface/EditableFields/EditableSelect'
 
 interface Props {
   dataPullSetting: AdminSetting

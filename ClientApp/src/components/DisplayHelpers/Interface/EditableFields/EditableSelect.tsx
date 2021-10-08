@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { FixTypeLater } from '../../types/FixTypeLater'
-import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
-import { userNameFromState } from '../../helpers/userHelper'
-import SuccessMessage from './SuccessMessage'
+import { FixTypeLater } from '../../../../types/FixTypeLater'
+import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
+import { userNameFromState } from '../../../../helpers/userHelper'
+import SuccessMessage from '../../../Employees/SuccessMessage'
 
 import './EditableField.scss'
 
