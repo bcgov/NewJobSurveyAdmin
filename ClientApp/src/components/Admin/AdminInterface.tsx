@@ -32,7 +32,9 @@ const AdminInterface = (): JSX.Element => {
               adminSettings={adminSettings}
               setAdminSettings={setAdminSettings}
             />
-            <RefreshStatusButton />
+            <div className="row mt-4">
+              <RefreshStatusButton />
+            </div>
           </>
         )}
       </div>

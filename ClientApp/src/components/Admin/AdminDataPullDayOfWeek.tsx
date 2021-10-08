@@ -47,19 +47,21 @@ const AdminDataPullDayOfWeek = ({
   return (
     <div className="AdminDataPullDayOfWeek">
       <ColumnarLabelledText key={id} label={displayName} columnClass="col">
-        <EditableSelect
-          modelDatabaseId={id!}
-          fieldName="value"
-          fieldValue={value!}
-          options={ISO_DAYS_OF_WEEK_SELECT_ITEMS}
-          modelPath={'adminSettings'}
-          valueToDisplayAccessor={(value: string): string => {
-            return mapIsoWeekdayToOption(value).name
-          }}
-          refreshDataCallback={(responseJson: AnyJson): void => {
-            updateAdminSetting(plainToClass(AdminSetting, responseJson))
-          }}
-        />
+        <h3 className="mt-1">
+          <EditableSelect
+            modelDatabaseId={id!}
+            fieldName="value"
+            fieldValue={value!}
+            options={ISO_DAYS_OF_WEEK_SELECT_ITEMS}
+            modelPath={'adminSettings'}
+            valueToDisplayAccessor={(value: string): string => {
+              return mapIsoWeekdayToOption(value).name
+            }}
+            refreshDataCallback={(responseJson: AnyJson): void => {
+              updateAdminSetting(plainToClass(AdminSetting, responseJson))
+            }}
+          />
+        </h3>
       </ColumnarLabelledText>
     </div>
   )

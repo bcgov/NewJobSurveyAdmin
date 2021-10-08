@@ -6,12 +6,14 @@ import { timeout } from '../../helpers/objectHelper'
 interface Props {
   successTime: number
   className?: string
+  inline?: boolean
   successMessage?: string
 }
 
 const SuccessMessage = ({
   successTime,
   className,
+  inline,
   successMessage
 }: Props): JSX.Element => {
   const [opacity, setOpacity] = React.useState('0')
@@ -19,7 +21,7 @@ const SuccessMessage = ({
 
   useEffect(() => {
     async function showSuccessMessage(): Promise<void> {
-      setDisplay('block')
+      setDisplay(inline ? 'inline' : 'block')
       await timeout(10)
       setOpacity('1')
       await timeout(2000)
