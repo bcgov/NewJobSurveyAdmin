@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FixTypeLater } from '../../types/FixTypeLater'
 import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
 import { userNameFromState } from '../../helpers/userHelper'
 import SuccessMessage from './SuccessMessage'
@@ -15,20 +16,21 @@ interface Props {
   employeeDatabaseId: string
   fieldName: string
   fieldValue: string
+  modelPath?: string
   options: SelectOption[]
-  refreshDataCallback: () => void
+  refreshDataCallback?: (response: FixTypeLater) => void
   valueToDisplayAccessor?: (value: string) => string
 }
 
-const EditableSelect = (props: Props): JSX.Element => {
-  const {
-    employeeDatabaseId,
-    fieldName,
-    fieldValue,
-    options,
-    valueToDisplayAccessor
-  } = props
-
+const EditableSelect = ({
+  employeeDatabaseId,
+  fieldName,
+  fieldValue,
+  modelPath,
+  options,
+  refreshDataCallback,
+  valueToDisplayAccessor
+}: Props): JSX.Element => {
   const [newValue, setNewValue] = React.useState(fieldValue || '')
   const [isEditable, setIsEditable] = React.useState(false)
   const [successTime, setSuccessTime] = React.useState(0)
@@ -40,16 +42,18 @@ const EditableSelect = (props: Props): JSX.Element => {
   const submitEdit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     requestJSONWithErrorHandler(
-      `api/employees/${employeeDatabaseId}`,
+      `api/${modelPath || 'employees'}/${employeeDatabaseId}`,
       'patch',
       {
         [fieldName]: newValue,
         AdminUserName: userNameFromState()
       },
       'CANNOT_EDIT_EMPLOYEE',
-      (): void => {
+      (response): void => {
         toggleEditable()
-        props.refreshDataCallback()
+        if (refreshDataCallback) {
+          refreshDataCallback(response)
+        }
         setSuccessTime(Date.now())
       }
     )
