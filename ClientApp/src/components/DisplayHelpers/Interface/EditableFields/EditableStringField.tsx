@@ -8,7 +8,7 @@ import './EditableField.scss'
 import SuccessMessage from '../../../Employees/SuccessMessage'
 
 interface Props {
-  employeeDatabaseId: string
+  modelDatabaseId: string
   fieldName: string
   fieldValue: string
   refreshDataCallback: () => void
@@ -19,7 +19,7 @@ interface Props {
 
 const EditableStringField = (props: Props): JSX.Element => {
   const {
-    employeeDatabaseId,
+    modelDatabaseId,
     fieldName,
     fieldValue: originalFieldValue,
     modelPath,
@@ -64,7 +64,7 @@ const EditableStringField = (props: Props): JSX.Element => {
       }
       event.preventDefault()
       requestJSONWithErrorHandler(
-        `api/${modelPath || 'employees'}/${employeeDatabaseId}`,
+        `api/${modelPath || 'employees'}/${modelDatabaseId}`,
         'patch',
         patchBody,
         'CANNOT_EDIT_EMPLOYEE',
@@ -77,7 +77,7 @@ const EditableStringField = (props: Props): JSX.Element => {
       )
     },
     [
-      employeeDatabaseId,
+      modelDatabaseId,
       fieldName,
       newValue,
       refreshDataCallback,

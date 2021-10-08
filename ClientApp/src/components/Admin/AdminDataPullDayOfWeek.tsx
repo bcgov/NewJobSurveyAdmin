@@ -48,7 +48,7 @@ const AdminDataPullDayOfWeek = ({
     <div className="AdminDataPullDayOfWeek">
       <ColumnarLabelledText key={id} label={displayName} columnClass="col">
         <EditableSelect
-          employeeDatabaseId={id!}
+          modelDatabaseId={id!}
           fieldName="value"
           fieldValue={value!}
           options={ISO_DAYS_OF_WEEK_SELECT_ITEMS}

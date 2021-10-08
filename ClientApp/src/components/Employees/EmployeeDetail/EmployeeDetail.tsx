@@ -63,7 +63,7 @@ class EmployeeDetail extends React.Component<Props, State> {
             <LabelledText label={'Current status'}>
               <h3 className="mt-1">
                 <EditableDropdown
-                  employeeDatabaseId={e.id!}
+                  modelDatabaseId={e.id!}
                   fieldName="currentEmployeeStatusCode"
                   fieldValue={e.currentEmployeeStatusCode!.code}
                   refreshDataCallback={this.populateData}
@@ -105,7 +105,7 @@ class EmployeeDetail extends React.Component<Props, State> {
           <div className="col-4">
             <h3>Timeline</h3>
             <AddComment
-              employeeDatabaseId={e.id!}
+              modelDatabaseId={e.id!}
               employeeStatusCode={e.currentEmployeeStatusCode!.code}
               refreshDataCallback={this.populateData}
             />
