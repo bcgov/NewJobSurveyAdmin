@@ -3,12 +3,8 @@ import React from 'react'
 import moment from 'moment'
 
 import { AdminSetting, AdminSettingKeyEnum } from '../../types/AdminSetting'
-import { FixTypeLater } from '../../types/FixTypeLater'
-import { plainToClass } from 'class-transformer'
-import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
-import ColumnarLabelledText from '../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
+import AdminDataPullDayOfWeek from './AdminDataPullDayOfWeek'
 import DatePreviewDate from './DatePreviewDate'
-import EditableStringField from '../Employees/EditableStringField'
 
 interface Props {
   adminSettings: AdminSetting[]
@@ -57,38 +53,25 @@ const DatePreview = ({
     basePullDate.add(1, 'week')
   }
 
+  const updateAdminSetting = React.useCallback(
+    (newSetting: AdminSetting) => {
+      // Remove the old pull day setting
+      const updatedAdminSettings = adminSettings.filter(
+        a => a.key !== newSetting.key
+      )
+      updatedAdminSettings.push(newSetting)
+      setAdminSettings(updatedAdminSettings)
+    },
+    [adminSettings, setAdminSettings]
+  )
+
   return (
     <div className="DatePreview">
       <div className="row">
-        <ColumnarLabelledText
-          key={dataPullSetting.id}
-          label={dataPullSetting.displayName!}
-          columnClass="col"
-        >
-          <EditableStringField
-            modelPath={'adminSettings'}
-            validator={(value: string): boolean => {
-              return !isNaN(+value) && +value > 0
-            }}
-            employeeDatabaseId={dataPullSetting.id!}
-            fieldName={'Value'}
-            fieldValue={dataPullSetting.value!}
-            ignoreAdminUserName
-            refreshDataCallback={(): void => {
-              requestJSONWithErrorHandler(
-                `api/adminSettings`,
-                'get',
-                null,
-                'ADMIN_SETTINGS_NOT_FOUND',
-                (responseJSON: FixTypeLater[]): void => {
-                  setAdminSettings(
-                    responseJSON.map(s => plainToClass(AdminSetting, s))
-                  )
-                }
-              )
-            }}
-          />
-        </ColumnarLabelledText>
+        <AdminDataPullDayOfWeek
+          updateAdminSetting={updateAdminSetting}
+          dataPullSetting={dataPullSetting}
+        />
       </div>
       <DatePreviewDate
         adminSetting={inviteDaysSetting}

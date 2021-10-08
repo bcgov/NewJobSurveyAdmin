@@ -43,6 +43,7 @@ export interface CollectionSelectProps<T> {
   excludeValues?: string[]
   id?: string
   includeBlank?: boolean
+  isClearable?: boolean
   isMultiSelect?: boolean
   items?: T[]
   label?: string
@@ -145,15 +146,17 @@ class CollectionSelect<T> extends React.Component<Props<T>> {
           <label htmlFor={this.props.id}>{this.props.label}</label>
         )}
         <ReactSelect
-          id={this.props.id}
-          onChange={this.onChange}
-          isMulti={this.props.isMultiSelect}
           className="ReactSelect form-control"
-          options={options}
           defaultValue={defaultOptions}
-          styles={customReactSelectStyles}
+          id={this.props.id}
+          isClearable={
+            this.props.isClearable === undefined || this.props.isClearable
+          }
+          isMulti={this.props.isMultiSelect}
+          onChange={this.onChange}
+          options={options}
           placeholder={placeholder}
-          isClearable
+          styles={customReactSelectStyles}
         />
       </div>
     )
