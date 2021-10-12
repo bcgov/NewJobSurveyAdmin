@@ -50,7 +50,7 @@ namespace NewJobSurveyAdmin.Models
         [Required] public string Age { get; set; }
 
 
-        // Contact information
+        // Chips information (from the PSA extract)
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsEmail { get; set; }
 
@@ -59,6 +59,22 @@ namespace NewJobSurveyAdmin.Models
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsLastName { get; set; }
+
+
+        // Ldap information (from the LDAP lookup)
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapEmail { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapFirstName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapLastName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapOrganization { get; set; }
+
+        // Contact info
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string GovernmentEmail { get; set; }
@@ -256,6 +272,11 @@ namespace NewJobSurveyAdmin.Models
         )
         {
             var ldapInfo = infoLookupService.GetEmployeeInfoFromLdap(GovernmentEmployeeId);
+
+            LdapFirstName = ldapInfo.FirstName;
+            LdapLastName = ldapInfo.LastName;
+            LdapEmail = ldapInfo.Email;
+            LdapOrganization = ldapInfo.Organization;
 
             if (ldapInfo.Organization.Equals("BC Assessment"))
             {
