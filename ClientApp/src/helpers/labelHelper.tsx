@@ -6,20 +6,21 @@ import { EmployeeStatus } from '../types/EmployeeStatus'
 import { SelectOption } from '../components/DisplayHelpers/Interface/EditableFields/EditableSelect'
 import { TaskOutcome } from '../types/TaskOutcome'
 import FAIcon from '../components/DisplayHelpers/Interface/Icons/FAIcon'
+import { NewHireOrInternalStaffing } from '../types/NewHireOrInternalStaffing'
 
 const fieldLabels: { [key: string]: string } = {
   id: 'Database ID',
   telkey: 'Telkey',
   recordCount: 'Record count',
   governmentEmployeeId: 'Employee ID',
-  chipsFirstName: 'CHIPS First Name',
+  chipsFirstName: 'PSA extract first name',
   firstName: 'First name',
   preferredFirstName: 'Preferred first name',
-  chipsLastName: 'CHIPS Last Name',
+  chipsLastName: 'PSA extract last name',
   lastName: 'Last name',
   birthDate: 'Birth date',
   gender: 'Gender',
-  chipsEmail: 'CHIPS email',
+  chipsEmail: 'PSA Extract email',
   governmentEmail: 'Email',
   preferredEmail: 'Preferred email',
   classification: 'Classification',
@@ -51,13 +52,15 @@ const fieldLabels: { [key: string]: string } = {
   taskOutcomeCode: 'Status',
   comment: 'Comment',
   blankEmail: 'Preferred email',
-  triedToUpdateInFinalState: 'Tried to update in final state'
+  triedToUpdateInFinalState: 'Tried to update in final state',
+  newHireOrInternalStaffing: 'New hire or internal staffing'
 }
 
 const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   currentEmployeeStatusCode: EmployeeStatus.toOptions,
   taskOutcomeCode: TaskOutcome.toOptions,
-  appointmentStatus: AppointmentStatus.toOptions
+  appointmentStatus: AppointmentStatus.toOptions,
+  newHireOrInternalStaffing: NewHireOrInternalStaffing.toOptions
 }
 
 export const labelFor = (fieldName: string): string => fieldLabels[fieldName]
