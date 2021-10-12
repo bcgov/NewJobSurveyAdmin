@@ -127,6 +127,7 @@ namespace NewJobSurveyAdmin.Models
         [Required]
         public string StaffingReason { get; set; }
 
+        [Sieve(CanFilter = true, CanSort = true)]
         [Required] public string NewHireOrInternalStaffing { get; set; }
 
         [Required] public string TaToPermanent { get; set; }
