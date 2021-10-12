@@ -92,9 +92,8 @@ namespace NewJobSurveyAdmin.Services
             int reminder2Days = Convert.ToInt32(adminSettings.Find(s => s.Key == AdminSetting.Reminder2Days).Value);
             int deadlineDays = Convert.ToInt32(adminSettings.Find(s => s.Key == AdminSetting.CloseDays).Value);
 
-            // Establish base dates for insert. This assumes that the date we
-            // are inserting employees is the date established as the pull
-            // date in the CSV.
+            // Establish base dates for insert: the base date is the day we run
+            // the pull.
             DateTime inviteDate = DateTime.Now.AddDays(inviteDays);
             DateTime reminder1Date = inviteDate.AddDays(reminder1Days);
             DateTime reminder2Date = reminder1Date.AddDays(reminder2Days);
