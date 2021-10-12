@@ -36,11 +36,16 @@ namespace NewJobSurveyAdmin
 
             // CORS configuration. Note we have to manually list all the methods
             // allowed: options.AllowAnyMethod() does NOT include "PATCH".
-            // TODO: Fix for Safari / Firefox.
+            // We have to include both `PATCH` and `patch` because Safari and
+            // Firefox are, strangely, treating the WithMethods declaration in
+            // a case-sensitive manner.
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin()
-                    .WithMethods("GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS")
+                options.AddPolicy("CorsPolicy", builder => builder
+                    .WithMethods(
+                        "GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS", "patch"
+                    )
+                    .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .WithExposedHeaders("X-Pagination"));
             });
