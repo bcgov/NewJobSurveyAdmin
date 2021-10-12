@@ -71,6 +71,12 @@ namespace NewJobSurveyAdmin.Models
                             Key = AdminSetting.CloseDays,
                             DisplayName = "Number of days after second reminder to close survey",
                             Value = "3"
+                        },
+                        new AdminSetting()
+                        {
+                            Key = AdminSetting.IsBlackoutPeriod,
+                            DisplayName = "Is blackout period active?",
+                            Value = "0"
                         }
                     }
                 );
