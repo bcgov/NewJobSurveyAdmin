@@ -135,6 +135,18 @@ namespace NewJobSurveyAdmin.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("LdapEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LdapFirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LdapLastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LdapOrganization")
+                        .HasColumnType("text");
+
                     b.Property<string>("LocationCity")
                         .IsRequired()
                         .HasColumnType("text");
