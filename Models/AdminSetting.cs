@@ -11,6 +11,7 @@ namespace NewJobSurveyAdmin.Models
         public static readonly string Reminder1Days = "Reminder1Days";
         public static readonly string Reminder2Days = "Reminder2Days";
         public static readonly string CloseDays = "CloseDays";
+        public static readonly string IsBlackoutPeriod = "IsBlackoutPeriod";
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
