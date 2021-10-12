@@ -10,12 +10,10 @@ namespace NewJobSurveyAdmin.Controllers
     public class HealthStatusController : ControllerBase
     {
         private readonly CallWebService callWebService;
-        private readonly PsaApiService psaApiService;
 
-        public HealthStatusController(CallWebService callWebService, PsaApiService psaApiService)
+        public HealthStatusController(CallWebService callWebService)
         {
             this.callWebService = callWebService;
-            this.psaApiService = psaApiService;
         }
 
         // GetStatus: Returns "Healthy." if the API is healthy.
@@ -41,16 +39,6 @@ namespace NewJobSurveyAdmin.Controllers
                 : apiServiceCallResult.Length;
 
             string text = "{ \"callWebRecordCount\": \"" + length + "\" }";
-
-            return Ok(text);
-        }
-
-        [HttpGet("PingPsaApi")]
-        public async Task<ActionResult<string>> PingPsaApi()
-        {
-            var apiServiceCallResult = await this.psaApiService.GetCurrent();
-
-            var text = "Text";
 
             return Ok(text);
         }
