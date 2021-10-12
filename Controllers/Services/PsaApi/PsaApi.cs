@@ -1,10 +1,10 @@
+using NewJobSurveyAdmin.Models;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System;
-using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace NewJobSurveyAdmin.Services.PsaApi
 {
@@ -38,7 +38,7 @@ namespace NewJobSurveyAdmin.Services.PsaApi
 
         // Get a client that has had the Authorization header set to use the
         // access token.
-        private async Task<HttpClient> GetClientWithBasicAuth()
+        private HttpClient GetClientWithBasicAuth()
         {
 
             var client = GetClient();
@@ -52,35 +52,31 @@ namespace NewJobSurveyAdmin.Services.PsaApi
             return client;
         }
 
-        private StringContent ToJsonContent(object obj)
-        {
-            var serializedObj = JsonConvert.SerializeObject(obj);
-
-            return new StringContent(
-                serializedObj, Encoding.UTF8, "application/json"
-            );
-        }
-
-        private async Task<object> PsaApiResultFromResponse(
+        private async Task<List<Employee>> EmployeesFromResponse(
             HttpResponseMessage response
         )
         {
             var responseAsString = await response.Content.ReadAsStringAsync();
 
-            var jsonObject = JsonConvert.DeserializeObject(
-                responseAsString
+            var settings = new JsonSerializerSettings();
+            settings.DateFormatString = "YYYY-MM-DD";
+            settings.ContractResolver = new PsaApiContractResolver();
+
+            var jsonObject = JsonConvert.DeserializeObject<PsaApiRequestDto>(
+                responseAsString,
+                settings
             );
 
-            return jsonObject;
+            return jsonObject.Employees;
         }
 
-        public async Task<object> GetAll()
+        public async Task<List<Employee>> GetAllEmployees()
         {
-            var client = await GetClientWithBasicAuth();
+            var client = GetClientWithBasicAuth();
             var response = await client.GetAsync($"{NjsaDataUrl}");
-            var json = await PsaApiResultFromResponse(response);
+            var employees = await EmployeesFromResponse(response);
 
-            return json;
+            return employees;
         }
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using NewJobSurveyAdmin.Models;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -25,7 +23,7 @@ namespace NewJobSurveyAdmin.Services.PsaApi
 
         public async Task<object> GetCurrent()
         {
-            var response = await PsaApi.GetAll();
+            var response = await PsaApi.GetAllEmployees();
 
             return response;
         }
