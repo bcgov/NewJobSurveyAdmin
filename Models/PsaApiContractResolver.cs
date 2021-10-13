@@ -26,7 +26,7 @@ public class PsaApiContractResolver : DefaultContractResolver
             {"Gender", "GENDER"},
             {"StaffingAction", "HIRE STAFFING ACTION"},
             {"EffectiveDate", "HIRE STAFFING EFFDT"},
-            {"StaffingReason", "HIRE STAFFING_REASON"},
+            {"StaffingReason", "HIRE STAFFING REASON"},
             {"JobClassificationGroup", "JOBCLASGRP"},
             {"JobCode", "JOBCODE"},
             {"ChipsLastName", "LAST NAME"},
