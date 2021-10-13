@@ -6,27 +6,48 @@ namespace NewJobSurveyAdmin.Models
 {
     public class TaskEnum
     {
-        private static readonly string CodeReconcileCsv = "ReconcileCSV";
+        private static readonly string CodeReconcileEmployees = "ReconcileEmployees";
+        private static readonly string CodeLoadPsa = "LoadPsa";
+        private static readonly string CodeReadCsv = "ReadCsv";
+        private static readonly string CodeLoadFromJson = "LoadFromJson";
+        private static readonly string CodeLoadFromCsv = "LoadFromCsv";
         private static readonly string CodeRefreshStatuses = "RefreshStatuses";
-        private static readonly string CodeEmailUsers = "EmailUsers";
         private static readonly string CodeRetrieveSurveyStatus = "RetrieveSurveyStatus";
 
-        public static readonly TaskEnum ReconcileCsv = new TaskEnum
+        public static readonly TaskEnum ReconcileEmployees = new TaskEnum
         {
-            Code = CodeReconcileCsv,
-            Description = "The task to reconcile the new CSV with the existing database."
+            Code = CodeReconcileEmployees,
+            Description = "The task to reconcile candidate employees with the existing database."
+        };
+
+        public static readonly TaskEnum LoadPsa = new TaskEnum
+        {
+            Code = CodeLoadPsa,
+            Description = "The task to load data from the PSA API."
+        };
+
+        public static readonly TaskEnum ReadCsv = new TaskEnum
+        {
+            Code = CodeReadCsv,
+            Description = "The task to read data from a supplied CSV."
+        };
+
+        public static readonly TaskEnum LoadFromJson = new TaskEnum
+        {
+            Code = CodeLoadFromJson,
+            Description = "The task to insert POSTed employee JSON data into the database."
+        };
+
+        public static readonly TaskEnum LoadFromCsv = new TaskEnum
+        {
+            Code = CodeLoadFromCsv,
+            Description = "The task to insert POSTed employee CSV data into the database."
         };
 
         public static readonly TaskEnum RefreshStatuses = new TaskEnum
         {
             Code = CodeRefreshStatuses,
             Description = "A manually-triggered refresh of employee statuses."
-        };
-
-        public static readonly TaskEnum EmailUsers = new TaskEnum
-        {
-            Code = CodeEmailUsers,
-            Description = "The task to email employees."
         };
 
         public static readonly TaskEnum RetrieveSurveyStatus = new TaskEnum
@@ -37,9 +58,12 @@ namespace NewJobSurveyAdmin.Models
 
         public static readonly List<TaskEnum> AllValues = new List<TaskEnum>
         {
-            ReconcileCsv,
+            ReconcileEmployees,
+            LoadPsa,
+            ReadCsv,
+            LoadFromJson,
+            LoadFromCsv,
             RefreshStatuses,
-            EmailUsers,
             RetrieveSurveyStatus
         };
 
