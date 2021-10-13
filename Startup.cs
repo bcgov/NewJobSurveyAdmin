@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NewJobSurveyAdmin.Models;
 using NewJobSurveyAdmin.Services;
+using NewJobSurveyAdmin.Services.CsvService;
 using NewJobSurveyAdmin.Services.CallWeb;
 using NewJobSurveyAdmin.Services.PsaApi;
 using Sieve.Models;
@@ -55,18 +56,18 @@ namespace NewJobSurveyAdmin
 
             // Service to consume the CallWeb API.
             services.Configure<CallWebServiceOptions>(Configuration.GetSection("CallWebApi"));
-            services.AddSingleton<CallWebService>();
+            services.AddScoped<CallWebService>();
 
             // Service to consume the PSA API.
             services.Configure<PsaApiServiceOptions>(Configuration.GetSection("PsaApi"));
-            services.AddSingleton<PsaApiService>();
+            services.AddScoped<PsaApiService>();
 
             // CSV reader.
-            services.AddSingleton<CsvService>();
+            services.AddScoped<CsvService>();
 
             // LDAP employee information lookup.
             services.Configure<EmployeeInfoLookupServiceOptions>(Configuration.GetSection("LdapLookup"));
-            services.AddSingleton<EmployeeInfoLookupService>();
+            services.AddScoped<EmployeeInfoLookupService>();
 
             // Employee reconciler: update Employee statuses with CallWeb.
             services.AddScoped<EmployeeReconciliationService>();
