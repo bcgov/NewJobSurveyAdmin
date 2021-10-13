@@ -29,56 +29,63 @@ namespace NewJobSurveyAdmin.Services
         {
             EmployeeInfo infoModel = new EmployeeInfo();
 
-            // Use the LDAP connection to filter by the employee ID and find the
-            // user's attributes, setting as necessary.
-            using (var ldapConnection = new LdapConnection())
+            try
             {
-                ldapConnection.Connect(Host, Port);
-                ldapConnection.Bind(Username, Password);
-
-                // In LDAP:
-                //   `mail`      is the email
-                //   `company`   is the organization
-                //   `sn`        is the surname / last name
-                //   `givenName` is the given name / first name
-                ILdapSearchResults results = ldapConnection.Search(
-                    Base,
-                    LdapConnection.ScopeSub,
-                    $"(employeeID={employeeId})",
-                    new string[] { "mail", "company", "sn", "givenName" },
-                    false
-                );
-
-                while (results.HasMore())
+                // Use the LDAP connection to filter by the employee ID and find the
+                // user's attributes, setting as necessary.
+                using (var ldapConnection = new LdapConnection())
                 {
-                    LdapEntry nextEntry = results.Next();
-                    LdapAttributeSet attributes = nextEntry.GetAttributeSet();
-                    System.Collections.IEnumerator ienum = attributes.GetEnumerator();
+                    ldapConnection.Connect(Host, Port);
+                    ldapConnection.Bind(Username, Password);
 
-                    // Parse through the attribute set to get the attributes and the
-                    // corresponding values
-                    while (ienum.MoveNext())
+                    // In LDAP:
+                    //   `mail`      is the email
+                    //   `company`   is the organization
+                    //   `sn`        is the surname / last name
+                    //   `givenName` is the given name / first name
+                    ILdapSearchResults results = ldapConnection.Search(
+                        Base,
+                        LdapConnection.ScopeSub,
+                        $"(employeeID={employeeId})",
+                        new string[] { "mail", "company", "sn", "givenName" },
+                        false
+                    );
+
+                    while (results.HasMore())
                     {
-                        LdapAttribute attribute = (LdapAttribute)ienum.Current;
-                        string attributeName = attribute.Name;
-                        string attributeVal = attribute.StringValue;
+                        LdapEntry nextEntry = results.Next();
+                        LdapAttributeSet attributes = nextEntry.GetAttributeSet();
+                        System.Collections.IEnumerator ienum = attributes.GetEnumerator();
 
-                        if (attributeName.Equals("mail")) infoModel.Email = attributeVal;
-                        if (attributeName.Equals("company")) infoModel.Organization = attributeVal;
-                        if (attributeName.Equals("sn")) infoModel.LastName = attributeVal;
-                        if (attributeName.Equals("givenName")) infoModel.FirstName = attributeVal;
+                        // Parse through the attribute set to get the attributes and the
+                        // corresponding values
+                        while (ienum.MoveNext())
+                        {
+                            LdapAttribute attribute = (LdapAttribute)ienum.Current;
+                            string attributeName = attribute.Name;
+                            string attributeVal = attribute.StringValue;
+
+                            if (attributeName.Equals("mail")) infoModel.Email = attributeVal;
+                            if (attributeName.Equals("company")) infoModel.Organization = attributeVal;
+                            if (attributeName.Equals("sn")) infoModel.LastName = attributeVal;
+                            if (attributeName.Equals("givenName")) infoModel.FirstName = attributeVal;
+                        }
                     }
                 }
-            }
 
-            // If the OverrideEmail config setting is set to a string, then
-            // we set it.
-            if (!string.IsNullOrWhiteSpace(OverrideEmail))
+                // If the OverrideEmail config setting is set to a string, then
+                // we set it.
+                if (!string.IsNullOrWhiteSpace(OverrideEmail))
+                {
+                    infoModel.EmailOverride = OverrideEmail;
+                }
+
+                return infoModel;
+            }
+            catch (Exception exception)
             {
-                infoModel.EmailOverride = OverrideEmail;
+                throw new LdapConnectionException("Could not connect to LDAP server; check login info and network status.", exception);
             }
-
-            return infoModel;
         }
     }
 }
