@@ -225,11 +225,12 @@ namespace NewJobSurveyAdmin.Controllers
             try
             {
                 // Update existing employee statuses.
-                await employeeReconciler.UpdateEmployeeStatuses();
-
+                var taskResult = await employeeReconciler.UpdateEmployeeStatusesAndLog();
                 await logger.LogSuccess(TaskEnum.RefreshStatuses,
                     $"Triggered refresh of employee statuses."
                 );
+
+                return Ok();
             }
             catch (Exception e)
             {
@@ -237,9 +238,12 @@ namespace NewJobSurveyAdmin.Controllers
                     $"Error refreshing employee statuses: {e.Message} Stacktrace:\r\n" +
                     e.StackTrace
                 );
-            }
 
-            return Ok();
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { message = e.StackTrace }
+                );
+            }
         }
 
         private bool EmployeeExists(int id)
