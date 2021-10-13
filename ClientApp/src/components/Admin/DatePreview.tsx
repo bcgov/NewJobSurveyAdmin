@@ -51,7 +51,12 @@ const DatePreview = ({
     .add(dataPullDayOfWeek, 'days')
   const now = moment()
 
-  if (now.unix() > basePullDate.unix()) {
+  if (
+    now.unix() >
+    moment(basePullDate)
+      .add(1, 'days')
+      .unix()
+  ) {
     basePullDate.add(1, 'week')
   }
 
