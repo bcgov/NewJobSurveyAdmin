@@ -237,8 +237,11 @@ namespace NewJobSurveyAdmin.Services
             return employee;
         }
 
-        public async Task UpdateEmployeeStatuses()
+        public async Task<EmployeeTaskResult> UpdateEmployeeStatusesAndLog()
         {
+            var updatedEmployeeList = new List<Employee>();
+            var exceptionList = new List<string>();
+
             // For all non-final employees and expired employees, update.
             var candidateEmployees = context.Employees
                 .Include(e => e.TimelineEntries)
@@ -254,13 +257,39 @@ namespace NewJobSurveyAdmin.Services
                 try
                 {
                     var employee = await UpdateEmployeeStatus(e);
+                    updatedEmployeeList.Add(employee);
                 }
-                catch (Exception except)
+                catch (Exception exception)
                 {
-                    // TODO: Handle this better.
-                    continue;
+                    exceptionList.Add(
+                        $"Exception updating status of employee {e.FullName} " +
+                        $"(ID: {e.GovernmentEmployeeId}): {exception.GetType()}: {exception.Message} "
+                    );
                 }
             }
+
+            var updateResult = new EmployeeTaskResult(updatedEmployeeList, exceptionList);
+
+            var newLine = System.Environment.NewLine;
+
+            var message =
+                $"Tried to update {candidateEmployees.Count} employee " +
+                $"statuses. {updateResult.GoodRecordCount} were successful. ";
+
+            if (!updateResult.HasExceptions)
+            {
+                // No exceptions. Log a success.
+                await logger.LogSuccess(TaskEnum.ReconcileEmployees, message);
+            }
+            else
+            {
+                message +=
+                    $"There were {updateResult.ExceptionCount} employees with errors: " +
+                    $"{string.Join(newLine, updateResult.Exceptions)} ";
+                await logger.LogWarning(TaskEnum.ReconcileEmployees, message);
+            }
+
+            return updateResult;
         }
     }
 }
