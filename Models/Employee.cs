@@ -257,7 +257,16 @@ namespace NewJobSurveyAdmin.Models
         {
             var ldapInfo = infoLookupService.GetEmployeeInfoFromLdap(GovernmentEmployeeId);
 
-            if (ldapInfo.Organization.Equals("BC Assessment"))
+            LdapFirstName = ldapInfo.FirstName;
+            LdapLastName = ldapInfo.LastName;
+            LdapEmail = ldapInfo.Email;
+            LdapOrganization = ldapInfo.Organization;
+
+            if (LdapFirstName == null && LdapLastName == null && LdapEmail == null)
+            {
+                throw new NoLdapInfoException($"No LDAP info for user with ID {GovernmentEmployeeId}.");
+            }
+            else if (ldapInfo.Organization.Equals("BC Assessment"))
             {
                 // If the organization is "BC Assessment", we need to use the
                 // CHIPS values regardless. This is due to an ID clash.
