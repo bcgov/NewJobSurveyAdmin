@@ -10,6 +10,8 @@ namespace NewJobSurveyAdmin.Models
         private static readonly string CodeRefreshStatuses = "RefreshStatuses";
         private static readonly string CodeEmailUsers = "EmailUsers";
         private static readonly string CodeRetrieveSurveyStatus = "RetrieveSurveyStatus";
+        private static readonly string CodeScheduledTask = "ScheduledTask";
+        private static readonly string CodeBlackoutPeriodUpdate = "BlackoutPeriodUpdate";
 
         public static readonly TaskEnum ReconcileCsv = new TaskEnum
         {
@@ -35,12 +37,25 @@ namespace NewJobSurveyAdmin.Models
             Description = "The task to retrieve the survey completion statuses from CallWeb."
         };
 
+        public static readonly TaskEnum ScheduledTask = new TaskEnum
+        {
+            Code = CodeScheduledTask,
+            Description = "The scheduled task that runs daily, pulling from PSA API and updating statuses as required."
+        };
+
+        public static readonly TaskEnum BlackoutPeriodUpdate = new TaskEnum
+        {
+            Code = CodeBlackoutPeriodUpdate,
+            Description = "The task to identify whether the blackout period is finished."
+        };
+
         public static readonly List<TaskEnum> AllValues = new List<TaskEnum>
         {
             ReconcileCsv,
             RefreshStatuses,
-            EmailUsers,
-            RetrieveSurveyStatus
+            RetrieveSurveyStatus,
+            ScheduledTask,
+            BlackoutPeriodUpdate
         };
 
         [Key] [Required] public string Code { get; set; }
