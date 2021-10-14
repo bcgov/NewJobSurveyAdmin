@@ -53,7 +53,8 @@ const fieldLabels: { [key: string]: string } = {
   comment: 'Comment',
   blankEmail: 'Preferred email',
   triedToUpdateInFinalState: 'Tried to update in final state',
-  newHireOrInternalStaffing: 'New hire or internal staffing'
+  newHireOrInternalStaffing: 'New hire or internal staffing',
+  taskCode: 'Task'
 }
 
 const optionsForEnum: { [key: string]: () => SelectOption[] } = {
