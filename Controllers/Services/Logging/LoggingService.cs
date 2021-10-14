@@ -49,6 +49,9 @@ namespace NewJobSurveyAdmin.Services
 
         public Task<TaskLogEntry> LogEmployeeTaskResult(EmployeeTaskResult taskResult)
         {
+            // If the task result is null, this is a no-op.
+            if (taskResult == null) return Task.FromResult<TaskLogEntry>(null);
+
             var message =
                 $"Tried to {taskResult.TaskVerb} " +
                 $"{taskResult.CandidateEmployeesCount} " +
@@ -60,13 +63,15 @@ namespace NewJobSurveyAdmin.Services
                 // No exceptions. Log a success.
                 return Log(taskResult.Task, TaskOutcomeEnum.Success, message);
             }
+            else
+            {
+                // There were exceptions. Log them appropriately.
+                message +=
+                    $"There were {taskResult.ExceptionCount} errors: " +
+                    $"{string.Join(NEW_LINE, taskResult.Exceptions)} ";
 
-            // There were exceptions. Log them appropriately.
-            message +=
-                $"There were {taskResult.ExceptionCount} errors: " +
-                $"{string.Join(NEW_LINE, taskResult.Exceptions)} ";
-
-            return Log(taskResult.Task, TaskOutcomeEnum.Warn, message);
+                return Log(taskResult.Task, TaskOutcomeEnum.Warn, message);
+            }
         }
     }
 }
