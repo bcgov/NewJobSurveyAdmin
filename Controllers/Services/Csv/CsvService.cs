@@ -83,7 +83,12 @@ namespace NewJobSurveyAdmin.Services.CsvService
                     line++;
                 }
 
-                return new EmployeeTaskResult(goodRecords, badRecords);
+                return new EmployeeTaskResult(
+                    TaskEnum.ReadCsv,
+                    goodRecords.Count + badRecords.Count,
+                    goodRecords,
+                    badRecords
+                );
             }
         }
 
