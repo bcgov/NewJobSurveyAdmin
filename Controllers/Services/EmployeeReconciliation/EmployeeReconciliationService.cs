@@ -67,7 +67,7 @@ namespace NewJobSurveyAdmin.Services
             {
                 EmployeeActionCode = EmployeeActionEnum.UpdateByTask.Code,
                 EmployeeStatusCode = newStatusCode,
-                Comment = $"Updated dates based on : " +
+                Comment = $"Status updated by script: " +
                           $"{oldStatusCode} → {newStatusCode}."
             });
             context.Entry(employee).State = EntityState.Modified;
@@ -310,8 +310,19 @@ namespace NewJobSurveyAdmin.Services
             // Check if the employee has completed the survey.
             if (callWebStatusCode.Equals(EmployeeStatusEnum.SurveyComplete.Code))
             {
-                return await SaveStatusAndAddTimelineEntry(employee,
+                await SaveStatusAndAddTimelineEntry(employee,
                     EmployeeStatusEnum.SurveyComplete);
+            }
+
+            // An employee only has a set amount of time to complete a survey.
+            // If that time has expired, then expire the user.
+            if (
+                employee.DeadlineDate.AddDays(1) <= DateTime.UtcNow &&
+                employee.CurrentEmployeeStatusCode != EmployeeStatusEnum.Expired.Code
+            )
+            {
+                await SaveStatusAndAddTimelineEntry(employee,
+                    EmployeeStatusEnum.Expired);
             }
 
             return employee;
