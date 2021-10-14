@@ -301,21 +301,26 @@ namespace NewJobSurveyAdmin.Models
         /// field, and set up all calculated date fields. This should only be
         /// run when the Employee is created.
         /// </summary>
-        /// <param name="inviteDate">The date to invite the user to the survey.</param>
-        /// <param name="reminder1Date">The date to send the first survey reminder.</param>
-        /// <param name="reminder2Date">The date to send the second survey reminder.</param>
-        /// <param name="deadlineDate">The deadline date for completing the survey.</param>
-        public void InstantiateFields(DateTime inviteDate, DateTime reminder1Date, DateTime reminder2Date,
-            DateTime deadlineDate)
+        /// <param name="dates">The SurveyDates to use to populate the employee.</param>
+        public void InstantiateFields(SurveyDates dates)
         {
             PreferredFirstName = FirstName;
             PreferredFirstNameFlag = false;
             PreferredEmail = GovernmentEmail;
             PreferredEmailFlag = false;
-            InviteDate = inviteDate;
-            Reminder1Date = reminder1Date;
-            Reminder2Date = reminder2Date;
-            DeadlineDate = deadlineDate;
+            SetDates(dates);
+        }
+
+        /// <summary>
+        /// Set all employee date fields to the provided date fields.
+        /// </summary>
+        /// <param name="dates">The SurveyDates to use to populate the employee.</param>
+        public void SetDates(SurveyDates dates)
+        {
+            InviteDate = dates.InviteDate;
+            Reminder1Date = dates.Reminder1Date;
+            Reminder2Date = dates.Reminder2Date;
+            DeadlineDate = dates.DeadlineDate;
         }
 
         /// <summary>
