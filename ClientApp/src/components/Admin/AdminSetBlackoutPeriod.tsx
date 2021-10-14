@@ -13,8 +13,8 @@ interface Props {
 }
 
 const OPTIONS = [
-  { name: 'Yes', value: '1' },
-  { name: 'No', value: '0' }
+  { name: 'Yes', value: 'True' },
+  { name: 'No', value: 'False' }
 ]
 
 const AdminSetBlackoutPeriod = ({
@@ -30,7 +30,7 @@ const AdminSetBlackoutPeriod = ({
       key={id}
       label={displayName}
       columnClass="col-6"
-      helperText={`If "Yes," all invitation-related dates on imported employees will be set to January 1, 9999. Otherwise, employees will be imported as normal.`}
+      helperText={`If "Yes," all invitation-related dates on imported employees will be set to January 1, 2099. Otherwise, employees will be imported as normal.`}
     >
       <h3 className="mt-2">
         <EditableSelect
