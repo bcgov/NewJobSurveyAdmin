@@ -29,9 +29,9 @@ namespace NewJobSurveyAdmin.Services
         }
 
         public async Task<Employee> SaveStatusAndAddTimelineEntry(
-                    Employee employee,
-                    EmployeeStatusEnum newStatus
-                )
+            Employee employee,
+            EmployeeStatusEnum newStatus
+        )
         {
             var newStatusCode = newStatus.Code;
             var oldStatusCode = employee.CurrentEmployeeStatusCode;
