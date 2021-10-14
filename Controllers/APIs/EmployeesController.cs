@@ -162,13 +162,8 @@ namespace NewJobSurveyAdmin.Controllers
             }
             catch (Exception e)
             {
-                await logger.LogFailure(TaskEnum.LoadPsa,
-                    $"Error reconciling employee records: {e.Message} Stacktrace:\r\n" +
-                    e.StackTrace
-                );
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new { message = e.StackTrace }
+                return await ApiResponseHelper.LogFailureAndSendStacktrace(
+                  this, TaskEnum.LoadPsa, e, logger
                 );
             }
         }
@@ -190,13 +185,8 @@ namespace NewJobSurveyAdmin.Controllers
             }
             catch (Exception e)
             {
-                await logger.LogFailure(TaskEnum.LoadFromJson,
-                    $"EmployeesFromJson: Error reconciling employee records: {e.Message} Stacktrace:\r\n" +
-                    e.StackTrace
-                );
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new { message = e.StackTrace }
+                return await ApiResponseHelper.LogFailureAndSendStacktrace(
+                  this, TaskEnum.LoadFromJson, e, logger
                 );
             }
         }
@@ -223,13 +213,8 @@ namespace NewJobSurveyAdmin.Controllers
             }
             catch (Exception e)
             {
-                await logger.LogFailure(TaskEnum.LoadFromCsv,
-                    $"Error reconciling employee records: {e.Message} Stacktrace:\r\n" +
-                    e.StackTrace
-                );
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new { message = e.StackTrace }
+                return await ApiResponseHelper.LogFailureAndSendStacktrace(
+                    this, TaskEnum.LoadFromCsv, e, logger
                 );
             }
         }
@@ -241,18 +226,13 @@ namespace NewJobSurveyAdmin.Controllers
             {
                 // Update existing employee statuses.
                 var taskResult = await employeeReconciler.UpdateEmployeeStatusesAndLog();
+
                 return Ok();
             }
             catch (Exception e)
             {
-                await logger.LogFailure(TaskEnum.RefreshStatuses,
-                    $"Error refreshing employee statuses: {e.Message} Stacktrace:\r\n" +
-                    e.StackTrace
-                );
-
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new { message = e.StackTrace }
+                return await ApiResponseHelper.LogFailureAndSendStacktrace(
+                    this, TaskEnum.RefreshStatuses, e, logger
                 );
             }
         }
@@ -291,14 +271,8 @@ namespace NewJobSurveyAdmin.Controllers
             }
             catch (Exception e)
             {
-                await logger.LogFailure(TaskEnum.ScheduledTask,
-                    $"Error during scheduled load and update: {e.Message} " +
-                    "Stacktrace:\r\n" + e.StackTrace
-                );
-
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new { message = e.StackTrace }
+                return await ApiResponseHelper.LogFailureAndSendStacktrace(
+                    this, TaskEnum.ScheduledTask, e, logger
                 );
             }
         }
