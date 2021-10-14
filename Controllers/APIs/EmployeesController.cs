@@ -141,7 +141,7 @@ namespace NewJobSurveyAdmin.Controllers
                 var currentEmployees = await psaApiService.GetCurrent();
 
                 // Reconcile the employees with the database.
-                var taskResult = await employeeReconciler.InsertEmployeesAndLog(currentEmployees.GetRange(10, 5));
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(currentEmployees);
                 await logger.LogSuccess(TaskEnum.LoadPsa, $"EmployeesFromPsaApi: Success.");
                 return Ok(taskResult.GoodEmployees);
 
