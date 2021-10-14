@@ -120,6 +120,94 @@ namespace NewJobSurveyAdmin.Controllers
             }
         }
 
+        // EmployeesFromPsaApi: Load employees from the PSA API and immediately
+        // try to insert them.
+        // POST: api/Employees/FromPsaApi
+        [HttpPost("FromPsaApi")]
+        public async Task<ActionResult<List<Employee>>> EmployeesFromPsaApi()
+        {
+            try
+            {
+                // Get a list of candidate Employee objects based on the PSA API.
+                var currentEmployees = await psaApiService.GetCurrent();
+
+                // Reconcile the employees with the database.
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(currentEmployees);
+                await logger.LogSuccess(TaskEnum.LoadPsa, $"EmployeesFromPsaApi: Success.");
+                return Ok(taskResult.GoodEmployees);
+
+            }
+            catch (Exception e)
+            {
+                await logger.LogFailure(TaskEnum.LoadPsa,
+                    $"Error reconciling employee records: {e.Message} Stacktrace:\r\n" +
+                    e.StackTrace
+                );
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { message = e.StackTrace }
+                );
+            }
+        }
+
+        // EmployeesFromJson: Given incomplete Employees in JSON format (as
+        // obtained, for instance, from the PSA API), reconcile those employees.
+        // POST: api/Employees/FromJson
+        [HttpPost("FromJson")]
+        public async Task<ActionResult<List<Employee>>> EmployeesFromJson(List<Employee> employees)
+        {
+            try
+            {
+                // Reconcile the employees with the database.
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(employees);
+                await logger.LogSuccess(TaskEnum.LoadFromJson, $"EmployeesFromJson: Success.");
+                return Ok(taskResult.GoodEmployees);
+            }
+            catch (Exception e)
+            {
+                await logger.LogFailure(TaskEnum.LoadFromJson,
+                    $"EmployeesFromJson: Error reconciling employee records: {e.Message} Stacktrace:\r\n" +
+                    e.StackTrace
+                );
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { message = e.StackTrace }
+                );
+            }
+        }
+
+        // EmployeesFromCsv: Given the raw text of the PSA CSV extract (as
+        // obtained, for instance, from the PSA CSV file drop), transform it
+        // into an array of nicely-formatted Employee JSON objects, then
+        // reconcile each of those Employees.
+        // POST: api/Employees/FromCsv
+        [HttpPost("FromCsv")]
+        public async Task<ActionResult<List<Employee>>> EmployeesFromCsv()
+        {
+            try
+            {
+                // Get a list of candidate Employee objects based on the CSV.
+                var readResult = await csvService.ProcessCsvAndLog(Request);
+
+                // Reconcile the employees with the database.
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(readResult.GoodEmployees);
+                await logger.LogSuccess(TaskEnum.LoadFromCsv, $"EmployeesFromCsv: Success.");
+                return Ok(taskResult.GoodEmployees);
+
+            }
+            catch (Exception e)
+            {
+                await logger.LogFailure(TaskEnum.LoadFromCsv,
+                    $"Error reconciling employee records: {e.Message} Stacktrace:\r\n" +
+                    e.StackTrace
+                );
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { message = e.StackTrace }
+                );
+            }
+        }
+
         [HttpPost("RefreshEmployeeStatus")]
         public async Task<ActionResult> RefreshEmployeeStatus()
         {
