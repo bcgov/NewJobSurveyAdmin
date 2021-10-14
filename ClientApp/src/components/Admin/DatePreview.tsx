@@ -21,7 +21,7 @@ const DatePreview = ({
   const blackoutPeriodSetting = adminSettings.find(
     as => as.key === AdminSettingKeyEnum.IsBlackoutPeriod
   )!
-  const isBlackoutPeriodActive = blackoutPeriodSetting.value === '1'
+  const isBlackoutPeriodActive = blackoutPeriodSetting.value === 'True'
 
   // NB: We are using ISO DAY OF WEEK, where 1 is Monday and 7 is Sunday
   // So subtract 1 when adding to startOf('isoWeek'), which is a Monday

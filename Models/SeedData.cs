@@ -76,7 +76,7 @@ namespace NewJobSurveyAdmin.Models
                         {
                             Key = AdminSetting.IsBlackoutPeriod,
                             DisplayName = "Is blackout period active?",
-                            Value = "0"
+                            Value = "False"
                         }
                     }
                 );
