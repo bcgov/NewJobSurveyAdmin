@@ -23,7 +23,6 @@ namespace NewJobSurveyAdmin.Controllers
     {
         private readonly NewJobSurveyAdminContext context;
         private readonly SieveProcessor sieveProcessor;
-        private readonly EmployeeInfoLookupService employeeInfoLookup;
         private readonly EmployeeReconciliationService employeeReconciler;
         private readonly CallWebService callWebService;
         private readonly LoggingService logger;
@@ -33,7 +32,6 @@ namespace NewJobSurveyAdmin.Controllers
         public EmployeesController(
             NewJobSurveyAdminContext context,
             SieveProcessor sieveProcessor,
-            EmployeeInfoLookupService employeeInfoLookup,
             EmployeeReconciliationService employeeReconciler,
             CallWebService callWebService,
             LoggingService loggingService,
@@ -43,7 +41,6 @@ namespace NewJobSurveyAdmin.Controllers
         {
             this.context = context;
             this.sieveProcessor = sieveProcessor;
-            this.employeeInfoLookup = employeeInfoLookup;
             this.employeeReconciler = employeeReconciler;
             this.callWebService = callWebService;
             this.csvService = csvService;
@@ -133,18 +130,33 @@ namespace NewJobSurveyAdmin.Controllers
         // try to insert them.
         // POST: api/Employees/FromPsaApi
         [HttpPost("FromPsaApi")]
-        public async Task<ActionResult<List<Employee>>> EmployeesFromPsaApi()
+        public async Task<ActionResult<List<Employee>>> EmployeesFromPsaApi(
+            int startIndex, int count
+        )
         {
             try
             {
-                // Get a list of candidate Employee objects based on the CSV.
+                // Get a list of candidate Employee objects based on the PSA
+                // API. They will be in JSON format.
                 var currentEmployees = await psaApiService.GetCurrent();
 
-                var newEmployees = currentEmployees;
+                List<Employee> employeesToLoad;
+
+                if (startIndex > -1 && count > 0)
+                {
+                    // TODO: Validate.
+                    employeesToLoad = currentEmployees.GetRange(startIndex, count);
+                }
+                else
+                {
+                    employeesToLoad = currentEmployees;
+                }
 
                 // Reconcile the employees with the database.
-                var taskResult = await employeeReconciler.InsertEmployeesAndLog(newEmployees);
-                await logger.LogSuccess(TaskEnum.LoadPsa, $"EmployeesFromPsaApi: Success.");
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(
+                    TaskEnum.LoadFromJson,
+                    employeesToLoad
+                );
                 return Ok(taskResult.GoodEmployees);
 
             }
@@ -170,8 +182,10 @@ namespace NewJobSurveyAdmin.Controllers
             try
             {
                 // Reconcile the employees with the database.
-                var taskResult = await employeeReconciler.InsertEmployeesAndLog(employees);
-                await logger.LogSuccess(TaskEnum.LoadFromJson, $"EmployeesFromJson: Success.");
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(
+                    TaskEnum.LoadFromJson,
+                    employees
+                );
                 return Ok(taskResult.GoodEmployees);
             }
             catch (Exception e)
@@ -201,10 +215,11 @@ namespace NewJobSurveyAdmin.Controllers
                 var readResult = await csvService.ProcessCsvAndLog(Request);
 
                 // Reconcile the employees with the database.
-                var taskResult = await employeeReconciler.InsertEmployeesAndLog(readResult.GoodEmployees);
-                await logger.LogSuccess(TaskEnum.LoadFromCsv, $"EmployeesFromCsv: Success.");
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(
+                    TaskEnum.LoadFromCsv,
+                    readResult.GoodEmployees
+                );
                 return Ok(taskResult.GoodEmployees);
-
             }
             catch (Exception e)
             {
@@ -226,10 +241,6 @@ namespace NewJobSurveyAdmin.Controllers
             {
                 // Update existing employee statuses.
                 var taskResult = await employeeReconciler.UpdateEmployeeStatusesAndLog();
-                await logger.LogSuccess(TaskEnum.RefreshStatuses,
-                    $"Triggered refresh of employee statuses."
-                );
-
                 return Ok();
             }
             catch (Exception e)
@@ -237,6 +248,52 @@ namespace NewJobSurveyAdmin.Controllers
                 await logger.LogFailure(TaskEnum.RefreshStatuses,
                     $"Error refreshing employee statuses: {e.Message} Stacktrace:\r\n" +
                     e.StackTrace
+                );
+
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { message = e.StackTrace }
+                );
+            }
+        }
+
+        [HttpPost("ScheduledLoadAndUpdate")]
+        public async Task<ActionResult> ScheduledLoadAndUpdate(
+            int startIndex, int count
+        )
+        {
+            try
+            {
+                // In all cases, update existing employee statuses.
+                await RefreshEmployeeStatus();
+
+                // Also update the blackout periods, if required.
+                await employeeReconciler.UpdateBlackoutPeriodsAndLog();
+
+                // Get the day of the week to pull data on.
+                var pullDayOfWeek = await context.AdminSettings.FirstOrDefaultAsync(
+                    i => i.Key.Equals(AdminSetting.DataPullDayOfWeek)
+                );
+                int dataPullDayOfWeek = Convert.ToInt32(pullDayOfWeek.Value);
+
+                if (dataPullDayOfWeek == (int)DateTime.Today.DayOfWeek)
+                {
+                    // If today is the same day of the week as a pull day, pull
+                    // the data.
+                    await EmployeesFromPsaApi(startIndex, count);
+                }
+
+                await logger.LogSuccess(
+                    TaskEnum.ScheduledTask,
+                    "Scheduled load and update ran successfully.");
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                await logger.LogFailure(TaskEnum.ScheduledTask,
+                    $"Error during scheduled load and update: {e.Message} " +
+                    "Stacktrace:\r\n" + e.StackTrace
                 );
 
                 return StatusCode(
