@@ -10,4 +10,8 @@ $backgroundLineLeft: 8%;
       rgba($gray-700,1) calc(#{$backgroundLineLeft}), 
       rgba(0,0,0,0) calc(#{$backgroundLineLeft} + 0.5px));
   }
+
+  .DatePreviewDate .Dates {
+    transition: background-color 2s ease;
+  }
 }

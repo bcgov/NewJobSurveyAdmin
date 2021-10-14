@@ -7,6 +7,7 @@ import AdminDataPullDayOfWeek from './AdminDataPullDayOfWeek'
 import DatePreviewDate from './DatePreviewDate'
 
 import './DatePreview.scss'
+import AdminSetBlackoutPeriod from './AdminSetBlackoutPeriod'
 
 interface Props {
   adminSettings: AdminSetting[]
@@ -17,6 +18,11 @@ const DatePreview = ({
   adminSettings,
   setAdminSettings
 }: Props): JSX.Element => {
+  const blackoutPeriodSetting = adminSettings.find(
+    as => as.key === AdminSettingKeyEnum.IsBlackoutPeriod
+  )!
+  const isBlackoutPeriodActive = blackoutPeriodSetting.value === '1'
+
   // NB: We are using ISO DAY OF WEEK, where 1 is Monday and 7 is Sunday
   // So subtract 1 when adding to startOf('isoWeek'), which is a Monday
   const dataPullSetting = adminSettings.find(
@@ -79,9 +85,14 @@ const DatePreview = ({
           updateAdminSetting={updateAdminSetting}
           dataPullSetting={dataPullSetting}
         />
+        <AdminSetBlackoutPeriod
+          updateAdminSetting={updateAdminSetting}
+          blackoutPeriodSetting={blackoutPeriodSetting}
+        />
       </div>
       <div className="row DatePreviewDates">
         <DatePreviewDate
+          isBlackoutPeriodActive={isBlackoutPeriodActive}
           adminSetting={inviteDaysSetting}
           updateAdminSetting={updateAdminSetting}
           dayNum={0}
@@ -92,6 +103,7 @@ const DatePreview = ({
           color={'primary'}
         />
         <DatePreviewDate
+          isBlackoutPeriodActive={isBlackoutPeriodActive}
           adminSetting={reminder1DaysSetting}
           updateAdminSetting={updateAdminSetting}
           dayNum={0 + inviteDays}
@@ -102,6 +114,7 @@ const DatePreview = ({
           color={'success'}
         />
         <DatePreviewDate
+          isBlackoutPeriodActive={isBlackoutPeriodActive}
           adminSetting={reminder2DaysSetting}
           updateAdminSetting={updateAdminSetting}
           dayNum={0 + inviteDays + reminder1Days}
@@ -112,6 +125,7 @@ const DatePreview = ({
           color={'warning'}
         />
         <DatePreviewDate
+          isBlackoutPeriodActive={isBlackoutPeriodActive}
           adminSetting={apparentCloseDaysSetting}
           updateAdminSetting={updateAdminSetting}
           dayNum={0 + inviteDays + reminder1Days + reminder2Days}
@@ -122,6 +136,7 @@ const DatePreview = ({
           color={'warning'}
         />
         <DatePreviewDate
+          isBlackoutPeriodActive={isBlackoutPeriodActive}
           updateAdminSetting={updateAdminSetting}
           dayNum={
             0 + inviteDays + reminder1Days + reminder2Days + apparentCloseDays
@@ -133,6 +148,7 @@ const DatePreview = ({
           color={'danger'}
         />
         <DatePreviewDate
+          isBlackoutPeriodActive={isBlackoutPeriodActive}
           updateAdminSetting={updateAdminSetting}
           dayNum={
             0 +

@@ -45,25 +45,28 @@ const AdminDataPullDayOfWeek = ({
   const { id, displayName, value } = dataPullSetting
 
   return (
-    <div className="AdminDataPullDayOfWeek">
-      <ColumnarLabelledText key={id} label={displayName} columnClass="col">
-        <h3 className="mt-1">
-          <EditableSelect
-            modelDatabaseId={id!}
-            fieldName="value"
-            fieldValue={value!}
-            options={ISO_DAYS_OF_WEEK_SELECT_ITEMS}
-            modelPath={'adminSettings'}
-            valueToDisplayAccessor={(value: string): string => {
-              return mapIsoWeekdayToOption(value).name
-            }}
-            refreshDataCallback={(responseJson: AnyJson): void => {
-              updateAdminSetting(plainToClass(AdminSetting, responseJson))
-            }}
-          />
-        </h3>
-      </ColumnarLabelledText>
-    </div>
+    <ColumnarLabelledText
+      key={id}
+      label={displayName}
+      columnClass="col"
+      helperText="The day of the week new employee information will be pulled from the PSA API. CallWeb status will still be updated on other days."
+    >
+      <h3 className="mt-2">
+        <EditableSelect
+          modelDatabaseId={id!}
+          fieldName="value"
+          fieldValue={value!}
+          options={ISO_DAYS_OF_WEEK_SELECT_ITEMS}
+          modelPath={'adminSettings'}
+          valueToDisplayAccessor={(value: string): string => {
+            return mapIsoWeekdayToOption(value).name
+          }}
+          refreshDataCallback={(responseJson: AnyJson): void => {
+            updateAdminSetting(plainToClass(AdminSetting, responseJson))
+          }}
+        />
+      </h3>
+    </ColumnarLabelledText>
   )
 }
 
