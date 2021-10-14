@@ -15,10 +15,11 @@ export class AdminSetting {
 }
 
 export enum AdminSettingKeyEnum {
-  EmployeeExpirationThreshold = "EmployeeExpirationThreshold",
-  DataPullDayOfWeek = "DataPullDayOfWeek",
-  InviteDays = "InviteDays",
-  Reminder1Days = "Reminder1Days",
-  Reminder2Days = "Reminder2Days",
-  CloseDays = "CloseDays",
+  IsBlackoutPeriod = 'IsBlackoutPeriod',
+  EmployeeExpirationThreshold = 'EmployeeExpirationThreshold',
+  DataPullDayOfWeek = 'DataPullDayOfWeek',
+  InviteDays = 'InviteDays',
+  Reminder1Days = 'Reminder1Days',
+  Reminder2Days = 'Reminder2Days',
+  CloseDays = 'CloseDays'
 }
