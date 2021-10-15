@@ -237,6 +237,7 @@ namespace NewJobSurveyAdmin.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("ScheduledLoadAndUpdate")]
         public async Task<ActionResult> ScheduledLoadAndUpdate(
             int startIndex, int count
