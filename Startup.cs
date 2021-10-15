@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using NewJobSurveyAdmin.Models;
 using NewJobSurveyAdmin.Services;
 using NewJobSurveyAdmin.Services.CallWeb;
+using NewJobSurveyAdmin.Services.PsaApi;
 using Sieve.Models;
 using Sieve.Services;
 using System.Net.Http;
@@ -50,6 +51,10 @@ namespace NewJobSurveyAdmin
             // Service to consume the CallWeb API.
             services.Configure<CallWebServiceOptions>(Configuration.GetSection("CallWebApi"));
             services.AddSingleton<CallWebService>();
+
+            // Service to consume the PSA API.
+            services.Configure<PsaApiServiceOptions>(Configuration.GetSection("PsaApi"));
+            services.AddSingleton<PsaApiService>();
 
             // CSV reader.
             services.AddSingleton<CsvService>();
