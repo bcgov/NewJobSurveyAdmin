@@ -6,13 +6,13 @@ import { userNameFromState } from '../../helpers/userHelper'
 import SuccessMessage from './SuccessMessage'
 
 interface Props {
-  employeeDatabaseId: string
+  modelDatabaseId: string
   employeeStatusCode: string
   refreshDataCallback: () => void
 }
 
 const AddComment = (props: Props): JSX.Element => {
-  const { employeeDatabaseId, employeeStatusCode, refreshDataCallback } = props
+  const { modelDatabaseId, employeeStatusCode, refreshDataCallback } = props
 
   const [comment, setComment] = React.useState('')
   const [successTime, setSuccessTime] = React.useState(0)
@@ -25,7 +25,7 @@ const AddComment = (props: Props): JSX.Element => {
         `api/employeetimelineentries`,
         'post',
         {
-          EmployeeId: employeeDatabaseId,
+          EmployeeId: modelDatabaseId,
           EmployeeActionCode: 'UpdateByAdmin',
           EmployeeStatusCode: employeeStatusCode,
           Comment: comment,
@@ -39,7 +39,7 @@ const AddComment = (props: Props): JSX.Element => {
         }
       )
     },
-    [comment, employeeDatabaseId, employeeStatusCode, refreshDataCallback]
+    [comment, modelDatabaseId, employeeStatusCode, refreshDataCallback]
   )
 
   return (

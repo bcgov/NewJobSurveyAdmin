@@ -4,7 +4,7 @@ import * as EmailValidator from 'email-validator'
 import { Employee } from '../../../types/Employee'
 import { labelFor, labelForWithFlag } from '../../../helpers/labelHelper'
 import CLText from '../../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
-import EditableStringField from '../EditableStringField'
+import EditableStringField from '../../DisplayHelpers/Interface/EditableFields/EditableStringField'
 
 interface Props {
   employee: Employee
@@ -14,13 +14,16 @@ interface Props {
 const EmployeeContact = ({ employee: e, populateData }: Props): JSX.Element => {
   return (
     <div className="row">
+      <CLText extraClasses="text-extra-muted" label={labelFor('chipsEmail')}>
+        {e.chipsEmail}
+      </CLText>
       <CLText label={labelFor('governmentEmail')}>{e.governmentEmail}</CLText>
       <CLText label={labelForWithFlag('preferredEmail', e)}>
         <EditableStringField
           validator={(email: string): boolean =>
             email.length === 0 || EmailValidator.validate(email)
           }
-          employeeDatabaseId={e.id!}
+          modelDatabaseId={e.id!}
           fieldName={'preferredEmail'}
           fieldValue={e.preferredEmail!}
           refreshDataCallback={populateData}

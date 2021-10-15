@@ -70,6 +70,12 @@ namespace NewJobSurveyAdmin.Migrations
                     b.Property<string>("ChipsEmail")
                         .HasColumnType("text");
 
+                    b.Property<string>("ChipsFirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ChipsLastName")
+                        .HasColumnType("text");
+
                     b.Property<string>("Classification")
                         .IsRequired()
                         .HasColumnType("text");

@@ -44,20 +44,6 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'newHireOrInternalStaffing'
   },
   {
-    Header: 'Appointment status',
-    Cell: (props: EmployeeCellProps): JSX.Element => {
-      const appointmentStatus = (props.value as unknown) as AppointmentStatus
-      return (
-        <>
-          {appointmentStatus
-            ? appointmentStatus.code
-            : '[Unknown Appointment Status]'}
-        </>
-      )
-    },
-    accessor: 'appointmentStatus'
-  },
-  {
     Header: 'Hire effective date',
     Cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate

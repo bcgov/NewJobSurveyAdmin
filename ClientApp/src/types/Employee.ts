@@ -7,6 +7,8 @@ import { Transform, Type } from 'class-transformer'
 export class Employee {
   public age?: string
   public chipsEmail?: string
+  public chipsFirstName?: string
+  public chipsLastName?: string
   public classification?: string
   public currentEmployeeStatus?: string
   public departmentId?: string

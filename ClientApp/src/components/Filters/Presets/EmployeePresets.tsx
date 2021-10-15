@@ -16,7 +16,6 @@ const EmployeePresets = ({
         <strong>Predefined filters</strong>
       </p>
       <SetActiveEmployees submitId={submitId} setSubmitId={setSubmitId} />
-      <SetPreviousMonth submitId={submitId} setSubmitId={setSubmitId} />
       <SetPreviousFiscalYear submitId={submitId} setSubmitId={setSubmitId} />
       <SetBlankEmail submitId={submitId} setSubmitId={setSubmitId} />
     </div>

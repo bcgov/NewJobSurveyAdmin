@@ -7,12 +7,12 @@ $navbar-margin: 24px;
   height: $navbar-height;
 }
 
-.Centered {
-  height: calc(100vh - #{$navbar-height + $navbar-margin});
-}
+// .Centered {
+//   height: calc(100vh - #{$navbar-height + $navbar-margin});
+// }
 
 .text-extra-muted {
-  color: $gray-400;
+  color: $gray-500;
 }
 
 .table-sm {

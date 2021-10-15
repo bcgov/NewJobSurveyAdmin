@@ -3,58 +3,65 @@ import React from 'react'
 import { AppointmentStatus } from '../types/AppointmentStatus'
 import { Employee } from '../types/Employee'
 import { EmployeeStatus } from '../types/EmployeeStatus'
-import { SelectOption } from '../components/Employees/EditableSelect'
+import { SelectOption } from '../components/DisplayHelpers/Interface/EditableFields/EditableSelect'
 import { TaskOutcome } from '../types/TaskOutcome'
 import FAIcon from '../components/DisplayHelpers/Interface/Icons/FAIcon'
+import { NewHireOrInternalStaffing } from '../types/NewHireOrInternalStaffing'
 
 const fieldLabels: { [key: string]: string } = {
-  id: 'Database ID',
-  telkey: 'Telkey',
-  recordCount: 'Record count',
-  governmentEmployeeId: 'Employee ID',
-  firstName: 'First name',
-  preferredFirstName: 'Preferred first name',
-  lastName: 'Last name',
+  age: 'Age',
+  ageGroup: 'Age group',
+  appointmentStatus: 'Appointment status',
+  backDated: 'Back dated',
   birthDate: 'Birth date',
+  blankEmail: 'Preferred email',
+  chipsEmail: 'PSA Extract email',
+  chipsFirstName: 'PSA extract first name',
+  chipsLastName: 'PSA extract last name',
+  classification: 'Classification',
+  classificationGroup: 'Classification group',
+  comment: 'Comment',
+  createdTs: 'Created date',
+  currentEmployeeStatusCode: 'Current status',
+  departmentId: 'Department ID',
+  effectiveDate: 'Hire effective date',
+  exitCount: 'Exit count',
+  firstName: 'First name',
   gender: 'Gender',
   governmentEmail: 'Email',
-  preferredEmail: 'Preferred email',
-  classification: 'Classification',
-  ministry: 'Ministry',
-  departmentId: 'Department ID',
+  governmentEmployeeId: 'Employee ID',
+  id: 'Database ID',
+  jobCode: 'Job code',
   jobFunctionCode: 'Job function code',
-  locationCity: 'Location city',
-  originalHireDate: 'Original hire date',
   lastDayWorkedDate: 'Last day worked date',
-  effectiveDate: 'Hire effective date',
-  staffingReason: 'Hiring reason',
-  appointmentStatus: 'Appointment status',
+  lastName: 'Last name',
+  leaveDate: 'Leave date',
+  locationCity: 'Location city',
+  locationGroup: 'Location group',
+  ministry: 'Ministry',
+  modifiedTs: 'Last modified date',
+  newHireOrInternalStaffing: 'New hire or internal staffing',
+  originalHireDate: 'Original hire date',
   positionCode: 'Position code',
   positionTitle: 'Position title',
-  age: 'Age',
-  leaveDate: 'Leave date',
-  serviceYears: 'Service years',
-  jobCode: 'Job code',
-  backDated: 'Back dated',
-  exitCount: 'Exit count',
-  ageGroup: 'Age group',
-  classificationGroup: 'Classification group',
+  preferredEmail: 'Preferred email',
+  preferredFirstName: 'Preferred first name',
+  recordCount: 'Record count',
   serviceGroup: 'Service group',
-  locationGroup: 'Location group',
-  currentEmployeeStatusCode: 'Current status',
-  timelineEntries: '',
-  createdTs: 'Created date',
-  modifiedTs: 'Last modified date',
+  serviceYears: 'Service years',
+  staffingReason: 'Hiring reason',
+  taskCode: 'Task',
   taskOutcomeCode: 'Status',
-  comment: 'Comment',
-  blankEmail: 'Preferred email',
+  telkey: 'Telkey',
+  timelineEntries: '',
   triedToUpdateInFinalState: 'Tried to update in final state'
 }
 
 const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   currentEmployeeStatusCode: EmployeeStatus.toOptions,
   taskOutcomeCode: TaskOutcome.toOptions,
-  appointmentStatus: AppointmentStatus.toOptions
+  appointmentStatus: AppointmentStatus.toOptions,
+  newHireOrInternalStaffing: NewHireOrInternalStaffing.toOptions
 }
 
 export const labelFor = (fieldName: string): string => fieldLabels[fieldName]

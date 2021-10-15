@@ -16,12 +16,12 @@ const DEFAULT_PAGE_SIZE = 20
 /** Maps the sortBy array produced by the react-table to a string that can be
 used by the server API, of the kind &sorts=Col1,Col2. A minus sign prefixes
 a desc sort. If the sortBy array is empty, return the empty string. */
-const processSorts = (sortBy: ITableSort[]): string => {
+const processSorts = (sortBy: ITableSort[]): string | undefined => {
   return sortBy.length
     ? `&sorts=${sortBy
         .map((s: FixTypeLater) => `${s.desc ? '-' : ''}${s.id}`)
         .join(',')}`
-    : ''
+    : undefined
 }
 
 const extractFilters = (
@@ -30,7 +30,7 @@ const extractFilters = (
 ): string =>
   MasterFilterHandler.extractFromRawQueryString(filters, propLocationSearch)
 
-export interface IGenericListingProps<T extends object> {
+export interface GenericListingProps<T extends object> {
   filterableFields: Filter[]
   listingPath: string
   modelName: string
@@ -39,11 +39,12 @@ export interface IGenericListingProps<T extends object> {
   dataMapper: (responseJSON: FixTypeLater[]) => T[]
   exportedDataMapper: (responseJSON: FixTypeLater[]) => FixTypeLater[]
   pageSize?: number
+  sortProp?: string
 }
 
 interface Props<T extends object>
   extends RouteComponentProps,
-    IGenericListingProps<T> {}
+    GenericListingProps<T> {}
 
 const GenericListing = <T extends object>({
   columns,
@@ -54,7 +55,8 @@ const GenericListing = <T extends object>({
   location,
   pageSize: propPageSize,
   presetComponent,
-  modelName
+  modelName,
+  sortProp
 }: Props<T>): JSX.Element => {
   const [data, setData] = React.useState<T[]>([])
   const [loading, setLoading] = React.useState<boolean>(false)
@@ -86,7 +88,9 @@ const GenericListing = <T extends object>({
       const fetchId = ++fetchIdRef.current
       setLoading(true)
 
-      const sortByQuery = processSorts(sortBy)
+      // If there are no sorts from the table, use the passed-in sort prop, if
+      // any, and otherwise just use an empty string.
+      const sortByQuery = processSorts(sortBy) || sortProp || ''
 
       // Set page index
       let newPageIndex = pageIndex
