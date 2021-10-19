@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewJobSurveyAdmin.Models;
 using NewJobSurveyAdmin.Services;
 using NewJobSurveyAdmin.Services.CallWeb;
+using NewJobSurveyAdmin.Services.CsvService;
+using NewJobSurveyAdmin.Services.PsaApi;
 using Sieve.Models;
 using Sieve.Services;
 using System;
@@ -19,27 +22,30 @@ namespace NewJobSurveyAdmin.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly NewJobSurveyAdminContext context;
-        private readonly SieveProcessor SieveProcessor;
-        private readonly EmployeeInfoLookupService EmployeeInfoLookup;
-        private readonly EmployeeReconciliationService EmployeeReconciler;
+        private readonly SieveProcessor sieveProcessor;
+        private readonly EmployeeReconciliationService employeeReconciler;
         private readonly CallWebService callWebService;
         private readonly LoggingService logger;
+        private readonly CsvService csvService;
+        private readonly PsaApiService psaApiService;
 
         public EmployeesController(
             NewJobSurveyAdminContext context,
             SieveProcessor sieveProcessor,
-            EmployeeInfoLookupService employeeInfoLookup,
             EmployeeReconciliationService employeeReconciler,
             CallWebService callWebService,
-            LoggingService loggingService
+            LoggingService loggingService,
+            CsvService csvService,
+            PsaApiService psaApiService
         )
         {
             this.context = context;
-            SieveProcessor = sieveProcessor;
-            EmployeeInfoLookup = employeeInfoLookup;
-            EmployeeReconciler = employeeReconciler;
+            this.sieveProcessor = sieveProcessor;
+            this.employeeReconciler = employeeReconciler;
             this.callWebService = callWebService;
-            logger = loggingService;
+            this.csvService = csvService;
+            this.logger = loggingService;
+            this.psaApiService = psaApiService;
         }
 
         // GET: api/Employees
@@ -64,7 +70,7 @@ namespace NewJobSurveyAdmin.Controllers
                 .AsNoTracking()
                 .Include(e => e.TimelineEntries);
 
-            var sievedEmployees = await SieveProcessor
+            var sievedEmployees = await sieveProcessor
                 .GetPagedAsync(employees, sieveModel);
             Response.Headers.Add("X-Pagination", sievedEmployees
                 .SerializeMetadataToJson());
@@ -124,16 +130,33 @@ namespace NewJobSurveyAdmin.Controllers
         // try to insert them.
         // POST: api/Employees/FromPsaApi
         [HttpPost("FromPsaApi")]
-        public async Task<ActionResult<List<Employee>>> EmployeesFromPsaApi()
+        public async Task<ActionResult<List<Employee>>> EmployeesFromPsaApi(
+            int startIndex, int count
+        )
         {
             try
             {
-                // Get a list of candidate Employee objects based on the PSA API.
+                // Get a list of candidate Employee objects based on the PSA
+                // API. They will be in JSON format.
                 var currentEmployees = await psaApiService.GetCurrent();
 
+                List<Employee> employeesToLoad;
+
+                if (startIndex > -1 && count > 0)
+                {
+                    // TODO: Validate.
+                    employeesToLoad = currentEmployees.GetRange(startIndex, count);
+                }
+                else
+                {
+                    employeesToLoad = currentEmployees;
+                }
+
                 // Reconcile the employees with the database.
-                var taskResult = await employeeReconciler.InsertEmployeesAndLog(currentEmployees.GetRange(10, 5));
-                await logger.LogSuccess(TaskEnum.LoadPsa, $"EmployeesFromPsaApi: Success.");
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(
+                    TaskEnum.LoadFromJson,
+                    employeesToLoad
+                );
                 return Ok(taskResult.GoodEmployees);
 
             }
@@ -154,8 +177,10 @@ namespace NewJobSurveyAdmin.Controllers
             try
             {
                 // Reconcile the employees with the database.
-                var taskResult = await employeeReconciler.InsertEmployeesAndLog(employees);
-                await logger.LogSuccess(TaskEnum.LoadFromJson, $"EmployeesFromJson: Success.");
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(
+                    TaskEnum.LoadFromJson,
+                    employees
+                );
                 return Ok(taskResult.GoodEmployees);
             }
             catch (Exception e)
@@ -180,10 +205,11 @@ namespace NewJobSurveyAdmin.Controllers
                 var readResult = await csvService.ProcessCsvAndLog(Request);
 
                 // Reconcile the employees with the database.
-                var taskResult = await employeeReconciler.InsertEmployeesAndLog(readResult.GoodEmployees);
-                await logger.LogSuccess(TaskEnum.LoadFromCsv, $"EmployeesFromCsv: Success.");
+                var taskResult = await employeeReconciler.InsertEmployeesAndLog(
+                    TaskEnum.LoadFromCsv,
+                    readResult.GoodEmployees
+                );
                 return Ok(taskResult.GoodEmployees);
-
             }
             catch (Exception e)
             {
@@ -209,12 +235,12 @@ namespace NewJobSurveyAdmin.Controllers
                     this, TaskEnum.RefreshStatuses, e, logger
                 );
             }
-
-            return Ok();
         }
 
         [HttpPost("ScheduledLoadAndUpdate")]
-        public async Task<ActionResult> ScheduledLoadAndUpdate()
+        public async Task<ActionResult> ScheduledLoadAndUpdate(
+            int startIndex, int count
+        )
         {
             try
             {
@@ -234,7 +260,7 @@ namespace NewJobSurveyAdmin.Controllers
                 {
                     // If today is the same day of the week as a pull day, pull
                     // the data.
-                    await EmployeesFromPsaApi();
+                    await EmployeesFromPsaApi(startIndex, count);
                 }
 
                 await logger.LogSuccess(

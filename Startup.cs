@@ -64,6 +64,9 @@ namespace NewJobSurveyAdmin
             services.AddSingleton<EmployeeInfoLookupService>();
 
             // Employee reconciler: update Employee statuses with CallWeb.
+            services.AddScoped<EmployeeCreationService>();
+            services.AddScoped<EmployeeUpdateService>();
+            services.AddScoped<EmployeeBlackoutPeriodService>();
             services.AddScoped<EmployeeReconciliationService>();
 
             // Logging to TaskLogEntries.
