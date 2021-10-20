@@ -85,18 +85,6 @@ namespace NewJobSurveyAdmin.Models
             ObjectNoun = "blackout period dates"
         };
 
-        public static readonly TaskEnum ScheduledTask = new TaskEnum
-        {
-            Code = CodeScheduledTask,
-            Description = "The scheduled task that runs daily, pulling from PSA API and updating statuses as required."
-        };
-
-        public static readonly TaskEnum BlackoutPeriodUpdate = new TaskEnum
-        {
-            Code = CodeBlackoutPeriodUpdate,
-            Description = "The task to identify whether the blackout period is finished."
-        };
-
         public static readonly List<TaskEnum> AllValues = new List<TaskEnum>
         {
             ReconcileEmployees,
