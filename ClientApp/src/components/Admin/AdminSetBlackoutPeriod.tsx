@@ -26,12 +26,7 @@ const AdminSetBlackoutPeriod = ({
   const { id, displayName, value } = blackoutPeriodSetting
 
   return (
-    <ColumnarLabelledText
-      key={id}
-      label={displayName}
-      columnClass="col-6"
-      helperText={`If "Yes," all invitation-related dates on imported employees will be set to January 1, 2099. Otherwise, employees will be imported as normal.`}
-    >
+    <ColumnarLabelledText key={id} label={displayName} columnClass="col-6">
       <h3 className="mt-2">
         <EditableSelect
           modelDatabaseId={id!}

@@ -39,7 +39,7 @@ const DatePreviewDate = ({
   return (
     <div className="DatePreviewDate col-12">
       <div className="row align-items-center">
-        <div className="col-8">
+        <div className="col-12">
           <div
             className={`Dates border bg-${color}-light border-${color} p-3 shadow d-flex align-items-center`}
           >
