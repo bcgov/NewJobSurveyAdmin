@@ -1,10 +1,13 @@
 using NewJobSurveyAdmin.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace NewJobSurveyAdmin.Services
 {
     public class LoggingService
     {
+        private static string NEW_LINE = System.Environment.NewLine;
+
         private readonly NewJobSurveyAdminContext context;
 
         public LoggingService(NewJobSurveyAdminContext context)
