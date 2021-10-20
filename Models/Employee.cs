@@ -28,29 +28,26 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true)] [Required] public string GovernmentEmployeeId { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string FirstName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string PreferredFirstName { get; set; }
 
-        [Required] public Boolean PreferredFirstNameFlag { get; set; }
+        public Boolean PreferredFirstNameFlag { get; set; }
 
-        [Required] public string MiddleName { get; set; }
+        public string MiddleName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)] [Required] public DateTime BirthDate { get; set; }
 
         [Required] public string Gender { get; set; }
 
-        [Required] public string Age { get; set; }
+        public string Age { get; set; }
 
 
-        // Contact information
+        // Chips information (from the PSA extract)
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsEmail { get; set; }
 
@@ -59,6 +56,22 @@ namespace NewJobSurveyAdmin.Models
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsLastName { get; set; }
+
+
+        // Ldap information (from the LDAP lookup)
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapEmail { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapFirstName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapLastName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapOrganization { get; set; }
+
+        // Contact info
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string GovernmentEmail { get; set; }
@@ -135,33 +148,33 @@ namespace NewJobSurveyAdmin.Models
 
         // Prior job info
 
-        [Required] public string PriorAppointmentStatus { get; set; }
+        public string PriorAppointmentStatus { get; set; }
 
-        [Required] public string PriorClassification { get; set; }
+        public string PriorClassification { get; set; }
 
-        [Required] public string PriorDepartmentId { get; set; }
+        public string PriorDepartmentId { get; set; }
 
-        [Required] public string PriorDepartmentIdDescription { get; set; }
+        public string PriorDepartmentIdDescription { get; set; }
 
-        [Required] public string PriorEffectiveDate { get; set; }
+        public string PriorEffectiveDate { get; set; }
 
-        [Required] public string PriorEmployeeStatus { get; set; }
+        public string PriorEmployeeStatus { get; set; }
 
-        [Required] public string PriorJobClassificationGroup { get; set; }
+        public string PriorJobClassificationGroup { get; set; }
 
-        [Required] public string PriorJobCode { get; set; }
+        public string PriorJobCode { get; set; }
 
-        [Required] public string PriorNocCode { get; set; }
+        public string PriorNocCode { get; set; }
 
-        [Required] public string PriorNocDescription { get; set; }
+        public string PriorNocDescription { get; set; }
 
-        [Required] public string PriorOrganization { get; set; }
+        public string PriorOrganization { get; set; }
 
-        [Required] public string PriorPositionCode { get; set; }
+        public string PriorPositionCode { get; set; }
 
-        [Required] public string PriorPositionTitle { get; set; }
+        public string PriorPositionTitle { get; set; }
 
-        [Required] public string PriorUnionCode { get; set; }
+        public string PriorUnionCode { get; set; }
 
 
         // Calculated date fields
@@ -190,7 +203,6 @@ namespace NewJobSurveyAdmin.Models
         // Additional generated fields
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string CurrentEmployeeStatusCode { get; set; }
 
         public virtual EmployeeStatusEnum CurrentEmployeeStatus { get; set; }
@@ -316,11 +328,11 @@ namespace NewJobSurveyAdmin.Models
         /// CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the survey is inactive (closed), "1" if it is active (open).
+        /// "" if the survey is inactive (closed), "1" if it is active (open).
         /// </returns>
         public string SurveyWindowFlag()
         {
-            return IsActive() ? "0" : "1";
+            return IsActive() ? "" : "1";
         }
 
         /// <summary>
@@ -328,12 +340,14 @@ namespace NewJobSurveyAdmin.Models
         /// For use when posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a temporary appointment, or "1" if they
+        /// "" if the employee is not a temporary appointment, or "1" if they
         /// are.
         /// </returns>
         public string TaU7Flag()
         {
-            return StaffingReason.Equals("Temporary Appointment <7 Mnths") ? "1" : "0";
+            return StaffingReason.Equals("Temporary Appointment <7 Mnths")
+                ? "1"
+                : "";
         }
 
         /// <summary>
@@ -341,11 +355,11 @@ namespace NewJobSurveyAdmin.Models
         /// when posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a lateral transfer, or "1" if they are.
+        /// "" if the employee is not a lateral transfer, or "1" if they are.
         /// </returns>
         public string LatTransferFlag()
         {
-            return StaffingReason.Equals("Lateral Transfer") ? "1" : "0";
+            return StaffingReason.Equals("Lateral Transfer") ? "1" : "";
         }
 
         /// <summary>
@@ -353,11 +367,11 @@ namespace NewJobSurveyAdmin.Models
         /// posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a new hire, or "1" if they are.
+        /// "" if the employee is not a new hire, or "1" if they are.
         /// </returns>
         public string NewHireFlag()
         {
-            return NewHireOrInternalStaffing.Equals("New Hires") ? "1" : "0";
+            return NewHireOrInternalStaffing.Equals("New Hires") ? "1" : "";
         }
 
         /// <summary>

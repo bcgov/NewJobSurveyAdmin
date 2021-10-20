@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NewJobSurveyAdmin.Migrations
 {
     [DbContext(typeof(NewJobSurveyAdminContext))]
-    [Migration("20211008202225_InitialCreate")]
+    [Migration("20211013200716_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,7 +59,6 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Age")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("AppointmentStatus")
@@ -86,7 +85,6 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CurrentEmployeeStatusCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("DeadlineDate")
@@ -108,7 +106,6 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Gender")
@@ -134,7 +131,18 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LdapEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LdapFirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LdapLastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LdapOrganization")
                         .HasColumnType("text");
 
                     b.Property<string>("LocationCity")
@@ -146,7 +154,6 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ModifiedTs")
@@ -187,66 +194,51 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("PreferredFirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("PreferredFirstNameFlag")
                         .HasColumnType("boolean");
 
                     b.Property<string>("PriorAppointmentStatus")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorClassification")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorDepartmentId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorDepartmentIdDescription")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorEffectiveDate")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorEmployeeStatus")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorJobClassificationGroup")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorJobCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorNocCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorNocDescription")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorOrganization")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorPositionCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorPositionTitle")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PriorUnionCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RecordCount")
@@ -439,8 +431,7 @@ namespace NewJobSurveyAdmin.Migrations
                     b.HasOne("NewJobSurveyAdmin.Models.EmployeeStatusEnum", "CurrentEmployeeStatus")
                         .WithMany("Employees")
                         .HasForeignKey("CurrentEmployeeStatusCode")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("NewJobSurveyAdmin.Models.EmployeeTimelineEntry", b =>
