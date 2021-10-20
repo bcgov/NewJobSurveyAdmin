@@ -124,8 +124,8 @@ const FilterForm = ({
       <div className="FilterForm">
         <form onSubmit={submitForm} ref={formRef}>
           <div className="row">{inputs}</div>
-          <div className="row align-items-center">
-            <div className="col-8 form-group">
+          <div className="row align-items-center mt-2">
+            <div className="col-8 form-group mb-0">
               {PresetComponent && (
                 <PresetComponent
                   submitId={submitId}
@@ -133,7 +133,7 @@ const FilterForm = ({
                 />
               )}
             </div>
-            <div className="col-4 form-group LabelledItem">
+            <div className="col-4 form-group mb-0">
               <div className="text-right">
                 <IconButton
                   label="Set filters"
