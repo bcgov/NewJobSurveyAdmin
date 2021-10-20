@@ -17,6 +17,9 @@ $transitionTime: 0.3s;
       // color: $primary;
     }
     border-bottom: solid $gray-400 2px;
+    button {
+      color: $secondary;
+    }
   }
 
   .FilterPanelBody {
