@@ -45,12 +45,7 @@ const AdminDataPullDayOfWeek = ({
   const { id, displayName, value } = dataPullSetting
 
   return (
-    <ColumnarLabelledText
-      key={id}
-      label={displayName}
-      columnClass="col"
-      helperText="The day of the week new employee information will be pulled from the PSA API. CallWeb status will still be updated on other days."
-    >
+    <ColumnarLabelledText key={id} label={displayName} columnClass="col">
       <h3 className="mt-2">
         <EditableSelect
           modelDatabaseId={id!}
