@@ -15,7 +15,7 @@ const TASK_TIME = SCHEDULED_TASK_UTC_TIME.clone()
 
 const AdminInterfaceHelp = (): JSX.Element => {
   return (
-    <div className="AdminInterfaceHelp text-muted">
+    <div className="AdminInterfaceHelp text-muted border border-secondary p-3 shadow mt-4">
       <h2>
         <i className="fas fa-info-circle mr-2" /> Information
       </h2>
@@ -27,7 +27,6 @@ const AdminInterfaceHelp = (): JSX.Element => {
             hire employee data will be pulled from the PSA API only on the date
             specified.
           </AdminInterfaceHelpTopic>
-
           <AdminInterfaceHelpTopic title="Days between invites">
             You can set the days between invitations. Remember to adjust the
             email template in CallWeb to reflect any changes made to the closing

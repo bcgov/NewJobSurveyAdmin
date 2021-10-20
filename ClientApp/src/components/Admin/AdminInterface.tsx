@@ -5,8 +5,9 @@ import { AdminSetting } from '../../types/AdminSetting'
 import { FixTypeLater } from '../../types/FixTypeLater'
 import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
 import DatePreview from './DatePreview'
-import RefreshStatusButton from './RefreshStatusButton'
+
 import AdminInterfaceHelp from './AdminInterfaceHelp'
+import AdminActionButtons from './AdminActionButtons'
 
 const AdminInterface = (): JSX.Element => {
   const [adminSettings, setAdminSettings] = React.useState<AdminSetting[]>([])
@@ -35,11 +36,11 @@ const AdminInterface = (): JSX.Element => {
                   adminSettings={adminSettings}
                   setAdminSettings={setAdminSettings}
                 />
-                <RefreshStatusButton />
               </>
             )}
           </div>
           <div className="col-6 offset-1">
+            <AdminActionButtons />
             <AdminInterfaceHelp />
           </div>
         </div>
