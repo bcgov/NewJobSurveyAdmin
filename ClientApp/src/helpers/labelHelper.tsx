@@ -31,6 +31,7 @@ const fieldLabels: { [key: string]: string } = {
   governmentEmail: 'Email',
   governmentEmployeeId: 'Employee ID',
   id: 'Database ID',
+  importDate: 'Import date',
   jobCode: 'Job code',
   jobFunctionCode: 'Job function code',
   lastDayWorkedDate: 'Last day worked date',

@@ -41,8 +41,8 @@ const DateFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
   return (
     <div className="LabelledItem">
       <label htmlFor={`${name}-From`}>{labelFor(name)}</label>
-      <div key={`${resetTimestamp}`} className="d-flex w-100">
-        <div className="w-50 mr-2">
+      <div key={`${resetTimestamp}`} className="d-flex">
+        <div className="w-50 mr-1">
           <DatePicker
             selected={fromDate}
             onChange={fromChange}
@@ -50,7 +50,7 @@ const DateFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
             placeholderText={'From'}
           />
         </div>
-        <div className="w-50 ml-2">
+        <div className="w-50 ml-1">
           <DatePicker
             selected={toDate}
             onChange={toChange}

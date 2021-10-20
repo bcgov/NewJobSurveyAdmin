@@ -1,5 +1,6 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
 
 $transitionTime: 0.3s;
 
@@ -17,8 +18,10 @@ $transitionTime: 0.3s;
       // color: $primary;
     }
     border-bottom: solid $gray-400 2px;
-    button {
-      color: $secondary;
+    .FilterPanelExpandButton, .FilterPanelHideButton {
+      button {
+        color: $secondary;
+      }
     }
   }
 
@@ -30,6 +33,12 @@ $transitionTime: 0.3s;
     &.Expanded {
       border-bottom: solid $gray-500 2px;
       overflow: visible;
+    }
+  }
+
+  .LabelledItem {
+    .form-group {
+      margin-bottom: 0;
     }
   }
 }
