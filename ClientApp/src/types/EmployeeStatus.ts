@@ -1,6 +1,6 @@
 /* globals Map */
 
-import { SelectOption } from '../components/Employees/EditableSelect'
+import { SelectOption } from '../components/DisplayHelpers/Interface/EditableFields/EditableSelect'
 
 export enum EmployeeStatusEnum {
   Active = 'Active',

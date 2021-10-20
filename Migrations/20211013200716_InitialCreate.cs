@@ -13,15 +13,17 @@ namespace NewJobSurveyAdmin.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy",
-                            NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedTs = table.Column<DateTime>(nullable: false),
                     ModifiedTs = table.Column<DateTime>(nullable: false),
                     Key = table.Column<string>(nullable: false),
                     DisplayName = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_AdminSettings", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminSettings", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "EmployeeActionEnums",
@@ -30,7 +32,10 @@ namespace NewJobSurveyAdmin.Migrations
                     Code = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_EmployeeActionEnums", x => x.Code); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeActionEnums", x => x.Code);
+                });
 
             migrationBuilder.CreateTable(
                 name: "EmployeeStatusEnums",
@@ -40,7 +45,10 @@ namespace NewJobSurveyAdmin.Migrations
                     State = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_EmployeeStatusEnums", x => x.Code); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeStatusEnums", x => x.Code);
+                });
 
             migrationBuilder.CreateTable(
                 name: "TaskEnums",
@@ -49,7 +57,10 @@ namespace NewJobSurveyAdmin.Migrations
                     Code = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_TaskEnums", x => x.Code); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaskEnums", x => x.Code);
+                });
 
             migrationBuilder.CreateTable(
                 name: "TaskOutcomeEnums",
@@ -58,28 +69,36 @@ namespace NewJobSurveyAdmin.Migrations
                     Code = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_TaskOutcomeEnums", x => x.Code); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaskOutcomeEnums", x => x.Code);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy",
-                            NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedTs = table.Column<DateTime>(nullable: false),
                     ModifiedTs = table.Column<DateTime>(nullable: false),
                     Telkey = table.Column<string>(nullable: true),
                     GovernmentEmployeeId = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: false),
-                    PreferredFirstName = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    PreferredFirstName = table.Column<string>(nullable: true),
                     PreferredFirstNameFlag = table.Column<bool>(nullable: false),
-                    MiddleName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
+                    MiddleName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
                     BirthDate = table.Column<DateTime>(nullable: false),
                     Gender = table.Column<string>(nullable: false),
-                    Age = table.Column<string>(nullable: false),
+                    Age = table.Column<string>(nullable: true),
                     ChipsEmail = table.Column<string>(nullable: true),
+                    ChipsFirstName = table.Column<string>(nullable: true),
+                    ChipsLastName = table.Column<string>(nullable: true),
+                    LdapEmail = table.Column<string>(nullable: true),
+                    LdapFirstName = table.Column<string>(nullable: true),
+                    LdapLastName = table.Column<string>(nullable: true),
+                    LdapOrganization = table.Column<string>(nullable: true),
                     GovernmentEmail = table.Column<string>(nullable: true),
                     PreferredEmail = table.Column<string>(nullable: true),
                     PreferredEmailFlag = table.Column<bool>(nullable: false),
@@ -107,25 +126,25 @@ namespace NewJobSurveyAdmin.Migrations
                     StaffingReason = table.Column<string>(nullable: false),
                     NewHireOrInternalStaffing = table.Column<string>(nullable: false),
                     TaToPermanent = table.Column<string>(nullable: false),
-                    PriorAppointmentStatus = table.Column<string>(nullable: false),
-                    PriorClassification = table.Column<string>(nullable: false),
-                    PriorDepartmentId = table.Column<string>(nullable: false),
-                    PriorDepartmentIdDescription = table.Column<string>(nullable: false),
-                    PriorEffectiveDate = table.Column<string>(nullable: false),
-                    PriorEmployeeStatus = table.Column<string>(nullable: false),
-                    PriorJobClassificationGroup = table.Column<string>(nullable: false),
-                    PriorJobCode = table.Column<string>(nullable: false),
-                    PriorNocCode = table.Column<string>(nullable: false),
-                    PriorNocDescription = table.Column<string>(nullable: false),
-                    PriorOrganization = table.Column<string>(nullable: false),
-                    PriorPositionCode = table.Column<string>(nullable: false),
-                    PriorPositionTitle = table.Column<string>(nullable: false),
-                    PriorUnionCode = table.Column<string>(nullable: false),
+                    PriorAppointmentStatus = table.Column<string>(nullable: true),
+                    PriorClassification = table.Column<string>(nullable: true),
+                    PriorDepartmentId = table.Column<string>(nullable: true),
+                    PriorDepartmentIdDescription = table.Column<string>(nullable: true),
+                    PriorEffectiveDate = table.Column<string>(nullable: true),
+                    PriorEmployeeStatus = table.Column<string>(nullable: true),
+                    PriorJobClassificationGroup = table.Column<string>(nullable: true),
+                    PriorJobCode = table.Column<string>(nullable: true),
+                    PriorNocCode = table.Column<string>(nullable: true),
+                    PriorNocDescription = table.Column<string>(nullable: true),
+                    PriorOrganization = table.Column<string>(nullable: true),
+                    PriorPositionCode = table.Column<string>(nullable: true),
+                    PriorPositionTitle = table.Column<string>(nullable: true),
+                    PriorUnionCode = table.Column<string>(nullable: true),
                     InviteDate = table.Column<DateTime>(nullable: false),
                     Reminder1Date = table.Column<DateTime>(nullable: false),
                     Reminder2Date = table.Column<DateTime>(nullable: false),
                     DeadlineDate = table.Column<DateTime>(nullable: false),
-                    CurrentEmployeeStatusCode = table.Column<string>(nullable: false),
+                    CurrentEmployeeStatusCode = table.Column<string>(nullable: true),
                     TriedToUpdateInFinalState = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -144,8 +163,7 @@ namespace NewJobSurveyAdmin.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy",
-                            NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedTs = table.Column<DateTime>(nullable: false),
                     ModifiedTs = table.Column<DateTime>(nullable: false),
                     TaskCode = table.Column<string>(nullable: false),
@@ -174,8 +192,7 @@ namespace NewJobSurveyAdmin.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy",
-                            NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedTs = table.Column<DateTime>(nullable: false),
                     ModifiedTs = table.Column<DateTime>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),

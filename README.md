@@ -8,7 +8,7 @@ The New Job Survey Admin tool will assist BC Stats in administering the BCPS New
 
 ### Prerequisites
 
-1. Ensure the [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+1. Ensure the [.NET Core SDK 3.1.20](https://dotnet.microsoft.com/download/dotnet-core/3.1)
    is installed.
 2. Ensure the [.NET Core HTTPS development certificate is trusted](https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-3.1&tabs=visual-studio#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos).
 3. Install [Postgres](https://www.postgresql.org/download/) and create a

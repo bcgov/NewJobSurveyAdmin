@@ -28,32 +28,50 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true)] [Required] public string GovernmentEmployeeId { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string FirstName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string PreferredFirstName { get; set; }
 
-        [Required] public Boolean PreferredFirstNameFlag { get; set; }
+        public Boolean PreferredFirstNameFlag { get; set; }
 
-        [Required] public string MiddleName { get; set; }
+        public string MiddleName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)] [Required] public DateTime BirthDate { get; set; }
 
         [Required] public string Gender { get; set; }
 
-        [Required] public string Age { get; set; }
+        public string Age { get; set; }
 
 
-        // Contact information
-
+        // Chips information (from the PSA extract)
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsEmail { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string ChipsFirstName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string ChipsLastName { get; set; }
+
+
+        // Ldap information (from the LDAP lookup)
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapEmail { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapFirstName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapLastName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapOrganization { get; set; }
+
+        // Contact info
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string GovernmentEmail { get; set; }
@@ -122,6 +140,7 @@ namespace NewJobSurveyAdmin.Models
         [Required]
         public string StaffingReason { get; set; }
 
+        [Sieve(CanFilter = true, CanSort = true)]
         [Required] public string NewHireOrInternalStaffing { get; set; }
 
         [Required] public string TaToPermanent { get; set; }
@@ -129,33 +148,33 @@ namespace NewJobSurveyAdmin.Models
 
         // Prior job info
 
-        [Required] public string PriorAppointmentStatus { get; set; }
+        public string PriorAppointmentStatus { get; set; }
 
-        [Required] public string PriorClassification { get; set; }
+        public string PriorClassification { get; set; }
 
-        [Required] public string PriorDepartmentId { get; set; }
+        public string PriorDepartmentId { get; set; }
 
-        [Required] public string PriorDepartmentIdDescription { get; set; }
+        public string PriorDepartmentIdDescription { get; set; }
 
-        [Required] public string PriorEffectiveDate { get; set; }
+        public string PriorEffectiveDate { get; set; }
 
-        [Required] public string PriorEmployeeStatus { get; set; }
+        public string PriorEmployeeStatus { get; set; }
 
-        [Required] public string PriorJobClassificationGroup { get; set; }
+        public string PriorJobClassificationGroup { get; set; }
 
-        [Required] public string PriorJobCode { get; set; }
+        public string PriorJobCode { get; set; }
 
-        [Required] public string PriorNocCode { get; set; }
+        public string PriorNocCode { get; set; }
 
-        [Required] public string PriorNocDescription { get; set; }
+        public string PriorNocDescription { get; set; }
 
-        [Required] public string PriorOrganization { get; set; }
+        public string PriorOrganization { get; set; }
 
-        [Required] public string PriorPositionCode { get; set; }
+        public string PriorPositionCode { get; set; }
 
-        [Required] public string PriorPositionTitle { get; set; }
+        public string PriorPositionTitle { get; set; }
 
-        [Required] public string PriorUnionCode { get; set; }
+        public string PriorUnionCode { get; set; }
 
 
         // Calculated date fields
@@ -184,7 +203,6 @@ namespace NewJobSurveyAdmin.Models
         // Additional generated fields
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string CurrentEmployeeStatusCode { get; set; }
 
         public virtual EmployeeStatusEnum CurrentEmployeeStatus { get; set; }
@@ -237,16 +255,45 @@ namespace NewJobSurveyAdmin.Models
         }
 
         /// <summary>
-        /// Retrieve an employee's email address from LDAP, as it is not
-        /// reliably supplied from the PSA data extract.
+        /// Retrieve an employee's first name, last name, and email from LDAP,
+        /// as they may have been updated since the PSA data extract.
+        /// 
+        /// If the LDAP lookup finds a person with the employee's employee ID
+        /// who works at BC Assessment, we must ignore the LDAP values. This is
+        /// because there is a clash between employee IDs — they are not unique.
         /// </summary>
-        /// <param name="infoLookupService">The <see cref="NewJobSurveyAdmin.Services.EmployeeInfoLookupService" /> to be used to look up the email.</param>
-        public void UpdateEmail(
+        /// <param name="infoLookupService">The <see cref="NewJobSurveyAdmin.Services.EmployeeInfoLookupService" /> to be used to look up the info.</param>
+        public void UpdateInfoFromLdap(
             EmployeeInfoLookupService infoLookupService
         )
         {
-            GovernmentEmail = infoLookupService
-                .EmailByEmployeeId(GovernmentEmployeeId);
+            var ldapInfo = infoLookupService.GetEmployeeInfoFromLdap(GovernmentEmployeeId);
+
+            LdapFirstName = ldapInfo.FirstName;
+            LdapLastName = ldapInfo.LastName;
+            LdapEmail = ldapInfo.Email;
+            LdapOrganization = ldapInfo.Organization;
+
+            if (LdapFirstName == null && LdapLastName == null && LdapEmail == null)
+            {
+                throw new NoLdapInfoException($"No LDAP info for user with ID {GovernmentEmployeeId}.");
+            }
+            else if (ldapInfo.Organization.Equals("BC Assessment"))
+            {
+                // If the organization is "BC Assessment", we need to use the
+                // CHIPS values regardless. This is due to an ID clash.
+                FirstName = ChipsFirstName;
+                LastName = ChipsLastName;
+                GovernmentEmail = ldapInfo.EmailOverride ?? ChipsEmail;
+            }
+            else
+            {
+                // Otherwise we can use the LDAP info, defaulting back to CHIPS
+                // if anything is null.
+                FirstName = ldapInfo.FirstName ?? ChipsFirstName;
+                LastName = ldapInfo.LastName ?? ChipsLastName;
+                GovernmentEmail = ldapInfo.EmailOverride ?? ldapInfo.Email ?? ChipsEmail;
+            }
         }
 
         /// <summary>
@@ -254,21 +301,26 @@ namespace NewJobSurveyAdmin.Models
         /// field, and set up all calculated date fields. This should only be
         /// run when the Employee is created.
         /// </summary>
-        /// <param name="inviteDate">The date to invite the user to the survey.</param>
-        /// <param name="reminder1Date">The date to send the first survey reminder.</param>
-        /// <param name="reminder2Date">The date to send the second survey reminder.</param>
-        /// <param name="deadlineDate">The deadline date for completing the survey.</param>
-        public void InstantiateFields(DateTime inviteDate, DateTime reminder1Date, DateTime reminder2Date,
-            DateTime deadlineDate)
+        /// <param name="dates">The SurveyDates to use to populate the employee.</param>
+        public void InstantiateFields(SurveyDates dates)
         {
             PreferredFirstName = FirstName;
             PreferredFirstNameFlag = false;
             PreferredEmail = GovernmentEmail;
             PreferredEmailFlag = false;
-            InviteDate = inviteDate;
-            Reminder1Date = reminder1Date;
-            Reminder2Date = reminder2Date;
-            DeadlineDate = deadlineDate;
+            SetDates(dates);
+        }
+
+        /// <summary>
+        /// Set all employee date fields to the provided date fields.
+        /// </summary>
+        /// <param name="dates">The SurveyDates to use to populate the employee.</param>
+        public void SetDates(SurveyDates dates)
+        {
+            InviteDate = dates.InviteDate;
+            Reminder1Date = dates.Reminder1Date;
+            Reminder2Date = dates.Reminder2Date;
+            DeadlineDate = dates.DeadlineDate;
         }
 
         /// <summary>
@@ -276,11 +328,11 @@ namespace NewJobSurveyAdmin.Models
         /// CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the survey is inactive (closed), "1" if it is active (open).
+        /// "" if the survey is inactive (closed), "1" if it is active (open).
         /// </returns>
         public string SurveyWindowFlag()
         {
-            return IsActive() ? "0" : "1";
+            return IsActive() ? "" : "1";
         }
 
         /// <summary>
@@ -288,12 +340,14 @@ namespace NewJobSurveyAdmin.Models
         /// For use when posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a temporary appointment, or "1" if they
+        /// "" if the employee is not a temporary appointment, or "1" if they
         /// are.
         /// </returns>
         public string TaU7Flag()
         {
-            return StaffingReason.Equals("Temporary Appointment <7 Mnths") ? "1" : "0";
+            return StaffingReason.Equals("Temporary Appointment <7 Mnths")
+                ? "1"
+                : "";
         }
 
         /// <summary>
@@ -301,11 +355,11 @@ namespace NewJobSurveyAdmin.Models
         /// when posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a lateral transfer, or "1" if they are.
+        /// "" if the employee is not a lateral transfer, or "1" if they are.
         /// </returns>
         public string LatTransferFlag()
         {
-            return StaffingReason.Equals("Lateral Transfer") ? "1" : "0";
+            return StaffingReason.Equals("Lateral Transfer") ? "1" : "";
         }
 
         /// <summary>
@@ -313,11 +367,11 @@ namespace NewJobSurveyAdmin.Models
         /// posting to CallWeb.
         /// </summary>
         /// <returns>
-        /// "0" if the employee is not a new hire, or "1" if they are.
+        /// "" if the employee is not a new hire, or "1" if they are.
         /// </returns>
         public string NewHireFlag()
         {
-            return NewHireOrInternalStaffing.Equals("New Hires") ? "1" : "0";
+            return NewHireOrInternalStaffing.Equals("New Hires") ? "1" : "";
         }
 
         /// <summary>

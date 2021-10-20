@@ -4,26 +4,40 @@ import { Employee } from '../../../types/Employee'
 import { labelFor, labelForWithFlag } from '../../../helpers/labelHelper'
 import CLText from '../../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
 import Date from '../../DisplayHelpers/FormattedDate'
-import EditableStringField from '../EditableStringField'
+import EditableStringField from '../../DisplayHelpers/Interface/EditableFields/EditableStringField'
 
 interface Props {
   employee: Employee
   populateData: () => void
 }
 
-const EmployeePersonalInfo = ({ employee: e, populateData }: Props): JSX.Element => {
+const EmployeePersonalInfo = ({
+  employee: e,
+  populateData
+}: Props): JSX.Element => {
   return (
     <div className="row">
+      <CLText
+        extraClasses="text-extra-muted"
+        label={labelFor('chipsFirstName')}
+      >
+        {e.chipsFirstName}
+      </CLText>
       <CLText label={labelFor('firstName')}>{e.firstName}</CLText>
       <CLText label={labelForWithFlag('preferredFirstName', e)}>
         <EditableStringField
-          employeeDatabaseId={e.id!}
+          modelDatabaseId={e.id!}
           fieldName={'preferredFirstName'}
           fieldValue={e.preferredFirstName!}
           refreshDataCallback={populateData}
         />
       </CLText>
-      <CLText label={labelFor('lastName')}>{e.lastName}</CLText>
+      <CLText extraClasses="text-extra-muted" label={labelFor('chipsLastName')}>
+        {e.chipsLastName}
+      </CLText>
+      <CLText columnClass="col-8" label={labelFor('lastName')}>
+        {e.lastName}
+      </CLText>
       <CLText label={labelFor('gender')}>{e.gender}</CLText>
       <CLText label={labelFor('birthDate')}>
         <Date date={e.birthDate} />

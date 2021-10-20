@@ -11,7 +11,7 @@ import {
 import { requestJSONWithErrorHandler } from '../../../helpers/requestHelpers'
 import AddComment from '../AddComment'
 import ContentWrapper from '../../Wrappers/ContentWrapper'
-import EditableDropdown from '../EditableSelect'
+import EditableDropdown from '../../DisplayHelpers/Interface/EditableFields/EditableSelect'
 import EmployeeContact from './_EmployeeContact'
 import EmployeeCurrentJobInfo from './_EmployeeCurrentJobInfo'
 import EmployeeHireInfo from './_EmployeeHireInfo'
@@ -63,7 +63,7 @@ class EmployeeDetail extends React.Component<Props, State> {
             <LabelledText label={'Current status'}>
               <h3 className="mt-1">
                 <EditableDropdown
-                  employeeDatabaseId={e.id!}
+                  modelDatabaseId={e.id!}
                   fieldName="currentEmployeeStatusCode"
                   fieldValue={e.currentEmployeeStatusCode!.code}
                   refreshDataCallback={this.populateData}
@@ -105,7 +105,7 @@ class EmployeeDetail extends React.Component<Props, State> {
           <div className="col-4">
             <h3>Timeline</h3>
             <AddComment
-              employeeDatabaseId={e.id!}
+              modelDatabaseId={e.id!}
               employeeStatusCode={e.currentEmployeeStatusCode!.code}
               refreshDataCallback={this.populateData}
             />

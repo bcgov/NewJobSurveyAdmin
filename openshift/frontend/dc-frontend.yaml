@@ -91,6 +91,9 @@ objects:
     kind: Route
     spec:
       host: ${NAME}-${DEPLOY_NAMESPACE}.${BASE_OPENSHIFT_URL}
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
       port:
         targetPort: 8080-tcp
       to:
@@ -113,8 +116,8 @@ objects:
         window.__ENV = {
           NODE_ENV: 'production',
           REACT_APP_AUTH_CLIENT_ID: '${KEYCLOAK_CLIENT_ID}',
-          REACT_APP_APP_DOMAIN: 'http://${NAME}-${DEPLOY_NAMESPACE}.${BASE_OPENSHIFT_URL}',
-          REACT_APP_API_DOMAIN: 'http://${API_NAME}-${DEPLOY_NAMESPACE}.${BASE_OPENSHIFT_URL}',
+          REACT_APP_APP_DOMAIN: 'https://${NAME}-${DEPLOY_NAMESPACE}.${BASE_OPENSHIFT_URL}',
+          REACT_APP_API_DOMAIN: 'https://${API_NAME}-${DEPLOY_NAMESPACE}.${BASE_OPENSHIFT_URL}',
           REACT_APP_APP_PATH: '/',
           REACT_APP_AUTH_RESPONSE_TYPE: 'code',
           REACT_APP_AUTH_SCOPE: 'openid profile resourceApi',

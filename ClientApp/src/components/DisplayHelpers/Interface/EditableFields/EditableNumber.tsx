@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
-import { userNameFromState } from '../../helpers/userHelper'
-import SuccessMessage from './SuccessMessage'
+import { FixTypeLater } from '../../../../types/FixTypeLater'
+import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
+import { userNameFromState } from '../../../../helpers/userHelper'
+import SuccessMessage from '../../../Employees/SuccessMessage'
 
 import './EditableField.scss'
 
@@ -12,23 +13,30 @@ export interface SelectOption {
 }
 
 interface Props {
-  employeeDatabaseId: string
+  modelDatabaseId: string
   fieldName: string
   fieldValue: string
-  options: SelectOption[]
-  refreshDataCallback: () => void
+  inline?: boolean
+  max?: number
+  min?: number
+  modelPath?: string
+  refreshDataCallback?: (response: FixTypeLater) => void
+  step?: number
   valueToDisplayAccessor?: (value: string) => string
 }
 
-const EditableSelect = (props: Props): JSX.Element => {
-  const {
-    employeeDatabaseId,
-    fieldName,
-    fieldValue,
-    options,
-    valueToDisplayAccessor
-  } = props
-
+const EditableNumber = ({
+  modelDatabaseId,
+  fieldName,
+  fieldValue,
+  inline,
+  max,
+  min,
+  modelPath,
+  refreshDataCallback,
+  step,
+  valueToDisplayAccessor
+}: Props): JSX.Element => {
   const [newValue, setNewValue] = React.useState(fieldValue || '')
   const [isEditable, setIsEditable] = React.useState(false)
   const [successTime, setSuccessTime] = React.useState(0)
@@ -40,50 +48,47 @@ const EditableSelect = (props: Props): JSX.Element => {
   const submitEdit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     requestJSONWithErrorHandler(
-      `api/employees/${employeeDatabaseId}`,
+      `api/${modelPath || 'employees'}/${modelDatabaseId}`,
       'patch',
       {
         [fieldName]: newValue,
         AdminUserName: userNameFromState()
       },
       'CANNOT_EDIT_EMPLOYEE',
-      (): void => {
+      (response): void => {
         toggleEditable()
-        props.refreshDataCallback()
+        if (refreshDataCallback) {
+          refreshDataCallback(response)
+        }
         setSuccessTime(Date.now())
       }
     )
   }
 
   return (
-    <div className="EditableField EditableDropdown">
+    <div className={`EditableField EditableNumber ${inline && 'd-inline'}`}>
       {isEditable ? (
-        <form onSubmit={submitEdit}>
-          <select
+        <form onSubmit={submitEdit} className={`${inline && 'form-inline'}`}>
+          <input
             className="form-control form-control-sm"
+            type="number"
+            min={min}
+            max={max}
+            step={step}
             value={newValue}
             onChange={(e): void => setNewValue(e.target.value)}
-          >
-            {options.map(
-              (option): JSX.Element => {
-                return (
-                  <option key={option.value} value={option.value}>
-                    {option.name}
-                  </option>
-                )
-              }
-            )}
-          </select>
+          />
           <input
             type="button"
             value="Cancel"
-            className="btn btn-sm btn-outline-danger mt-2 mr-2"
+            className={`btn btn-sm btn-outline-danger ${!inline &&
+              'mt-2'} ${inline && 'ml-2'} mr-2`}
             onClick={toggleEditable}
           />
           <input
             type="submit"
             value="Save"
-            className="btn btn-sm btn-primary mt-2"
+            className={`btn btn-sm btn-primary ${!inline && 'mt-2'}`}
           />
         </form>
       ) : (
@@ -93,9 +98,13 @@ const EditableSelect = (props: Props): JSX.Element => {
             : fieldValue}
         </span>
       )}
-      <SuccessMessage className="pt-1 mt-2" successTime={successTime} />
+      <SuccessMessage
+        className={`pt-1 ${!inline && 'mt-2'} ${inline && 'ml-2'}`}
+        successTime={successTime}
+        inline={inline}
+      />
     </div>
   )
 }
 
-export default EditableSelect
+export default EditableNumber

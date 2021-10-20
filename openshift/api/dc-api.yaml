@@ -89,6 +89,9 @@ objects:
     kind: Route
     spec:
       host: ${NAME}-${DEPLOY_NAMESPACE}.${BASE_OPENSHIFT_URL}
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
       port:
         targetPort: 8080-tcp
       to:
@@ -117,7 +120,7 @@ objects:
             }
           },
           "CallWebApi": {
-            "BaseUrl": "http://${CALLWEBAPI_NAME}-${DEPLOY_NAMESPACE}.${BASE_OPENSHIFT_URL}/api/NjsaCallWeb/"
+            "BaseUrl": "https://${CALLWEBAPI_NAME}-${DEPLOY_NAMESPACE}.${BASE_OPENSHIFT_URL}/api/NjsaCallWeb/"
           },
           "Sieve": {
             "ThrowExceptions": true
