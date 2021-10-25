@@ -23,6 +23,10 @@ export class Employee {
   public jobClassificationGroup?: string
   public jobCode?: string
   public lastName?: string
+  public ldapEmail?: string
+  public ldapFirstName?: string
+  public ldapLastName?: string
+  public ldapOrganization?: string
   public locationCity?: string
   public locationGroup?: string
   public middleName?: string

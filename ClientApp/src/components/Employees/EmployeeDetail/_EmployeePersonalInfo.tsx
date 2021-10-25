@@ -17,12 +17,6 @@ const EmployeePersonalInfo = ({
 }: Props): JSX.Element => {
   return (
     <div className="row">
-      <CLText
-        extraClasses="text-extra-muted"
-        label={labelFor('chipsFirstName')}
-      >
-        {e.chipsFirstName}
-      </CLText>
       <CLText label={labelFor('firstName')}>{e.firstName}</CLText>
       <CLText label={labelForWithFlag('preferredFirstName', e)}>
         <EditableStringField
@@ -32,12 +26,7 @@ const EmployeePersonalInfo = ({
           refreshDataCallback={populateData}
         />
       </CLText>
-      <CLText extraClasses="text-extra-muted" label={labelFor('chipsLastName')}>
-        {e.chipsLastName}
-      </CLText>
-      <CLText columnClass="col-8" label={labelFor('lastName')}>
-        {e.lastName}
-      </CLText>
+      <CLText label={labelFor('lastName')}>{e.lastName}</CLText>
       <CLText label={labelFor('gender')}>{e.gender}</CLText>
       <CLText label={labelFor('birthDate')}>
         <Date date={e.birthDate} />

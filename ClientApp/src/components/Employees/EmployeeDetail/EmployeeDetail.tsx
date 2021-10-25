@@ -10,19 +10,19 @@ import {
 } from '../../../types/EmployeeStatus'
 import { requestJSONWithErrorHandler } from '../../../helpers/requestHelpers'
 import AddComment from '../AddComment'
+import ColumnarLabelledText from '../../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
 import ContentWrapper from '../../Wrappers/ContentWrapper'
 import EditableDropdown from '../../DisplayHelpers/Interface/EditableFields/EditableSelect'
 import EmployeeContact from './_EmployeeContact'
 import EmployeeCurrentJobInfo from './_EmployeeCurrentJobInfo'
+import EmployeeExtraDetails from './_EmployeeExtraDetails'
 import EmployeeHireInfo from './_EmployeeHireInfo'
 import EmployeeIds from './_EmployeeIds'
 import EmployeeMetadataFooter from './_EmployeeMetadataFooter'
 import EmployeePersonalInfo from './_EmployeePersonalInfo'
 import EmployeePriorJobInfo from './_EmployeePriorJobInfo'
 import EmployeeSurveyDates from './_EmployeeSurveyDates'
-import LabelledText from '../../DisplayHelpers/Interface/LabelledItems/LabelledText'
 import TimelineEntryList from '../TimelineEntryList'
-import ColumnarLabelledText from '../../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
 
 interface Params {
   employeeId: string
@@ -106,6 +106,8 @@ class EmployeeDetail extends React.Component<Props, State> {
                 <EmployeeCurrentJobInfo employee={e} />
               </div>
             </div>
+            <hr />
+            <EmployeeExtraDetails employee={e} />
             <hr />
             <EmployeeMetadataFooter employee={e} />
           </div>
