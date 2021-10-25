@@ -10,16 +10,18 @@ import {
 } from '../../../types/EmployeeStatus'
 import { requestJSONWithErrorHandler } from '../../../helpers/requestHelpers'
 import AddComment from '../AddComment'
+import ColumnarLabelledText from '../../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
 import ContentWrapper from '../../Wrappers/ContentWrapper'
 import EditableDropdown from '../../DisplayHelpers/Interface/EditableFields/EditableSelect'
 import EmployeeContact from './_EmployeeContact'
 import EmployeeCurrentJobInfo from './_EmployeeCurrentJobInfo'
+import EmployeeExtraDetails from './_EmployeeExtraDetails'
 import EmployeeHireInfo from './_EmployeeHireInfo'
 import EmployeeIds from './_EmployeeIds'
 import EmployeeMetadataFooter from './_EmployeeMetadataFooter'
 import EmployeePersonalInfo from './_EmployeePersonalInfo'
 import EmployeePriorJobInfo from './_EmployeePriorJobInfo'
-import LabelledText from '../../DisplayHelpers/Interface/LabelledItems/LabelledText'
+import EmployeeSurveyDates from './_EmployeeSurveyDates'
 import TimelineEntryList from '../TimelineEntryList'
 
 interface Params {
@@ -53,28 +55,33 @@ class EmployeeDetail extends React.Component<Props, State> {
           <Link to="/employees">&larr; Back to exiting employees list</Link>
         </div>
         <div className="row">
-          <div className="col">
+          <div className="col-lg-6 col-xl-2">
             <h3 className="text-muted">Employee</h3>
             <h2>
               {e.preferredFirstName} {e.lastName}
             </h2>
           </div>
-          <div className="col">
-            <LabelledText label={'Current status'}>
-              <h3 className="mt-1">
-                <EditableDropdown
-                  modelDatabaseId={e.id!}
-                  fieldName="currentEmployeeStatusCode"
-                  fieldValue={e.currentEmployeeStatusCode!.code}
-                  refreshDataCallback={this.populateData}
-                  options={EmployeeStatus.toOptions()}
-                  valueToDisplayAccessor={(value: string): string =>
-                    EmployeeStatus.fromKey(value as EmployeeStatusEnum)
-                      .displayName
-                  }
-                />
-              </h3>
-            </LabelledText>
+          <ColumnarLabelledText
+            label={'Current status'}
+            columnClass="col-lg-6 col-xl-3"
+            extraClasses="mt-3"
+          >
+            <h3 className="mt-1">
+              <EditableDropdown
+                modelDatabaseId={e.id!}
+                fieldName="currentEmployeeStatusCode"
+                fieldValue={e.currentEmployeeStatusCode!.code}
+                refreshDataCallback={this.populateData}
+                options={EmployeeStatus.toOptions()}
+                valueToDisplayAccessor={(value: string): string =>
+                  EmployeeStatus.fromKey(value as EmployeeStatusEnum)
+                    .displayName
+                }
+              />
+            </h3>
+          </ColumnarLabelledText>
+          <div className="col-md-12 col-lg-12 col-xl-7 mt-3">
+            <EmployeeSurveyDates employee={e} />
           </div>
         </div>
         <hr />
@@ -99,6 +106,8 @@ class EmployeeDetail extends React.Component<Props, State> {
                 <EmployeeCurrentJobInfo employee={e} />
               </div>
             </div>
+            <hr />
+            <EmployeeExtraDetails employee={e} />
             <hr />
             <EmployeeMetadataFooter employee={e} />
           </div>

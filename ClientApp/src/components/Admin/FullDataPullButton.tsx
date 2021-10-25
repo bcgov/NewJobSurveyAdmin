@@ -4,7 +4,7 @@ import { requestJSONWithErrorHandler } from '../../helpers/requestHelpers'
 import ColumnarLabelledText from '../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
 import SuccessMessage from '../Employees/SuccessMessage'
 
-const RefreshStatusButton = (): JSX.Element => {
+const FullDataPull = (): JSX.Element => {
   const [successTime, setSuccessTime] = React.useState(0)
   const [successMessage, setSuccessMessage] = React.useState<
     string | undefined
@@ -14,22 +14,22 @@ const RefreshStatusButton = (): JSX.Element => {
   const reconcileEmployees = React.useCallback(() => {
     setRefreshButtonActive(true)
     requestJSONWithErrorHandler(
-      `api/Employees/RefreshEmployeeStatus`,
+      `api/Employees/ScheduledLoadAndUpdate`,
       'post',
       null,
-      'RECONCILIATION_FAILED',
+      'DATA_PULL_FAILED',
       (): void => {
         setRefreshButtonActive(false)
         setSuccessTime(Date.now())
-        setSuccessMessage('The refresh finished.')
+        setSuccessMessage('The scheduled task finished.')
       }
     )
   }, [])
 
   return (
     <ColumnarLabelledText
-      helperText="This will refresh all employee statuses and reconcile employees with CallWeb."
-      label="Refresh from CallWeb"
+      helperText="This will trigger an execution of the daily scheduled task."
+      label="Run scheduled task"
       columnClass="col-6"
     >
       <button
@@ -37,7 +37,7 @@ const RefreshStatusButton = (): JSX.Element => {
         onClick={reconcileEmployees}
         disabled={refreshButtonActive}
       >
-        {refreshButtonActive ? 'Refreshing...' : 'Refresh from CallWeb'}
+        {refreshButtonActive ? 'Running...' : 'Run scheduled task'}
       </button>
       <SuccessMessage
         className="mt-2"
@@ -48,4 +48,4 @@ const RefreshStatusButton = (): JSX.Element => {
   )
 }
 
-export default RefreshStatusButton
+export default FullDataPull

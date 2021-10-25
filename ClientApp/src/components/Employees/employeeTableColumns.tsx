@@ -77,28 +77,6 @@ export const employeeTableColumns = (): Column<Employee>[] => [
     accessor: 'inviteDate'
   },
   {
-    Header: 'Reminder 1 date',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
-      <FormattedDate
-        noWrap
-        showLocalTimezone
-        date={(props.value as unknown) as Date}
-      />
-    ),
-    accessor: 'reminder1Date'
-  },
-  {
-    Header: 'Reminder 2 date',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
-      <FormattedDate
-        noWrap
-        showLocalTimezone
-        date={(props.value as unknown) as Date}
-      />
-    ),
-    accessor: 'reminder2Date'
-  },
-  {
     Header: 'Deadline date',
     Cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate

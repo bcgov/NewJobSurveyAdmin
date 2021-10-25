@@ -2,7 +2,7 @@ import { plainToClass } from 'class-transformer'
 import moment from 'moment'
 import React from 'react'
 
-import { AdminSetting, AdminSettingKeyEnum } from '../../types/AdminSetting'
+import { AdminSetting } from '../../types/AdminSetting'
 import { AnyJson } from '../../types/JsonType'
 import EditableNumber from '../DisplayHelpers/Interface/EditableFields/EditableNumber'
 
@@ -39,7 +39,7 @@ const DatePreviewDate = ({
   return (
     <div className="DatePreviewDate col-12">
       <div className="row align-items-center">
-        <div className="col-8">
+        <div className="col-12">
           <div
             className={`Dates border bg-${color}-light border-${color} p-3 shadow d-flex align-items-center`}
           >
@@ -51,7 +51,7 @@ const DatePreviewDate = ({
               <h3 className="mb-0">
                 {isBlackoutPeriodActive && dayNum !== 0
                   ? 'Blackout period active'
-                  : date?.format('dddd, MMM D')}
+                  : date?.format('dddd, MMM D, YYYY')}
               </h3>
             </div>
             <div className="ml-auto">
