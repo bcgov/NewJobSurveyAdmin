@@ -285,6 +285,8 @@ namespace NewJobSurveyAdmin.Migrations
 
                     b.HasIndex("GovernmentEmployeeId");
 
+                    b.HasIndex("StaffingReason");
+
                     b.ToTable("Employees");
                 });
 

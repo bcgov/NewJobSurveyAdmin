@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { Filter, FilterType } from './FilterTypes'
 import { optionsFor } from '../../../helpers/labelHelper'
+import { Filter, FilterType } from './FilterTypes'
 
 const OR_OPERATOR = '|'
 
@@ -9,10 +9,12 @@ export default class EnumFilter implements Filter {
   _type = FilterType.Enum
   _fieldName: string
   _enumKeys: string[]
+  _apiUrl?: string
 
-  constructor(fieldName: string, enumKeys?: string[]) {
+  constructor(fieldName: string, enumKeys?: string[], apiUrl?: string) {
     this._fieldName = fieldName
     this._enumKeys = enumKeys || []
+    this._apiUrl = apiUrl
   }
 
   get type(): FilterType {
@@ -47,6 +49,10 @@ export default class EnumFilter implements Filter {
     return false
   }
 
+  get apiUrl(): string | undefined {
+    return this._apiUrl
+  }
+
   encode(): string {
     if (!this.isSet) {
       console.warn(`EnumFilter for ${this._fieldName}: value is 0-length`)
@@ -73,10 +79,18 @@ export default class EnumFilter implements Filter {
   }
 
   get displayString(): string {
-    const valueString = this._enumKeys
-      .map(v => optionsFor(this._fieldName).find(opt => opt.value === v)!.name)
-      .filter(v => v && v.length > 0)
-      .join(' or ')
-    return valueString
+    let keyNames = this._enumKeys
+
+    const predefinedOptions = optionsFor(this._fieldName)
+
+    // If there are predefined options, try mapping them to their names;
+    // otherwise, we will just use the key names
+    if (predefinedOptions && predefinedOptions.length) {
+      keyNames = keyNames
+        .map(v => predefinedOptions.find(opt => opt.value === v)!.name)
+        .filter(v => v && v.length > 0)
+    }
+
+    return keyNames.join(' or ')
   }
 }

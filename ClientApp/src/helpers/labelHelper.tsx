@@ -72,7 +72,8 @@ const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   currentEmployeeStatusCode: EmployeeStatus.toOptions,
   taskOutcomeCode: TaskOutcome.toOptions,
   appointmentStatus: AppointmentStatus.toOptions,
-  newHireOrInternalStaffing: NewHireOrInternalStaffing.toOptions
+  newHireOrInternalStaffing: NewHireOrInternalStaffing.toOptions,
+  staffingReason: () => []
 }
 
 export const labelFor = (fieldName: string): string => fieldLabels[fieldName]

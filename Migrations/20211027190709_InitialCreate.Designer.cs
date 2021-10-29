@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NewJobSurveyAdmin.Migrations
 {
     [DbContext(typeof(NewJobSurveyAdminContext))]
-    [Migration("20211013200716_InitialCreate")]
+    [Migration("20211027190709_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,6 +286,8 @@ namespace NewJobSurveyAdmin.Migrations
                     b.HasIndex("CurrentEmployeeStatusCode");
 
                     b.HasIndex("GovernmentEmployeeId");
+
+                    b.HasIndex("StaffingReason");
 
                     b.ToTable("Employees");
                 });

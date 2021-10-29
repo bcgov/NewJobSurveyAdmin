@@ -92,6 +92,21 @@ namespace NewJobSurveyAdmin.Controllers
             return employee;
         }
 
+        // GET: api/Employees/Values/StaffingReason
+        [HttpGet("Values/StaffingReason")]
+        public async Task<ActionResult<List<string>>> ValuesStaffingReason(int id)
+        {
+            var uniqueValues = await context
+                .Employees
+                .Select(e => e.StaffingReason)
+                .Distinct()
+                .ToListAsync();
+
+            uniqueValues.Sort();
+
+            return uniqueValues;
+        }
+
         // PATCH: api/Employees/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
