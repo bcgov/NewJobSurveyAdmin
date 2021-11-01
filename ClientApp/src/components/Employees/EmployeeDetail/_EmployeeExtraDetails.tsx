@@ -23,6 +23,9 @@ const EmployeeExtraDetails = ({ employee: e }: Props): JSX.Element => {
       <CLText label={labelFor('chipsEmail')}>{e.chipsEmail}</CLText>
       <CLText label={labelFor('ldapEmail')}>{e.ldapEmail}</CLText>
       <CLText label={labelFor('governmentEmail')}>{e.governmentEmail}</CLText>
+      <CLText label={labelFor('chipsCity')}>{e.chipsCity}</CLText>
+      <CLText label={labelFor('ldapCity')}>{e.ldapCity}</CLText>
+      <CLText label={labelFor('locationCity')}>{e.locationCity}</CLText>
       <CLText label={labelFor('organization')}>{e.organization}</CLText>
       <CLText label={labelFor('ldapOrganization')}>{e.ldapOrganization}</CLText>
     </div>

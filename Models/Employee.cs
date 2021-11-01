@@ -57,6 +57,9 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsLastName { get; set; }
 
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string ChipsCity { get; set; }
+
 
         // Ldap information (from the LDAP lookup)
         [Sieve(CanFilter = true, CanSort = true)]
@@ -69,7 +72,11 @@ namespace NewJobSurveyAdmin.Models
         public string LdapLastName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapCity { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string LdapOrganization { get; set; }
+
 
         // Contact info
 
@@ -273,6 +280,7 @@ namespace NewJobSurveyAdmin.Models
             LdapLastName = ldapInfo.LastName;
             LdapEmail = ldapInfo.Email;
             LdapOrganization = ldapInfo.Organization;
+            LdapCity = ldapInfo.City;
 
             if (LdapEmail == null && (ChipsEmail == null || ChipsEmail.Equals("")))
             {
@@ -291,6 +299,7 @@ namespace NewJobSurveyAdmin.Models
                 FirstName = ChipsFirstName;
                 LastName = ChipsLastName;
                 GovernmentEmail = ldapInfo.EmailOverride ?? ChipsEmail;
+                LocationCity = ChipsCity;
             }
             else
             {
@@ -299,6 +308,7 @@ namespace NewJobSurveyAdmin.Models
                 FirstName = ldapInfo.FirstName ?? ChipsFirstName;
                 LastName = ldapInfo.LastName ?? ChipsLastName;
                 GovernmentEmail = ldapInfo.EmailOverride ?? ldapInfo.Email ?? ChipsEmail;
+                LocationCity = ldapInfo.City ?? ChipsCity;
             }
         }
 
