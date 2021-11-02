@@ -15,6 +15,23 @@ namespace NewJobSurveyAdmin.Models
             return result; // Must return modified IQueryable<TEntity>
         }
 
+        public IQueryable<Employee> HiringReason(
+            IQueryable<Employee> source, string op, string[] values)
+        {
+            // We need to replace the :gt: and :lt: values with > and <
+            // respectively.
+            var unescapedValues = values.Select(v =>
+                v.Replace(":gt:", ">")
+                 .Replace(":lt:", "<")
+            );
+
+            var result = source.Where(
+                e => unescapedValues.Contains(e.StaffingReason)
+            );
+
+            return result;
+        }
+
         // Override filtering based on createTs. We only want to look at the
         // day portion of the timestamp (for filtering purposes, at least),
         // not including the hours and minutes.

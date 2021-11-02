@@ -72,6 +72,7 @@ namespace NewJobSurveyAdmin.Controllers
 
             var sievedEmployees = await sieveProcessor
                 .GetPagedAsync(employees, sieveModel);
+
             Response.Headers.Add("X-Pagination", sievedEmployees
                 .SerializeMetadataToJson());
 

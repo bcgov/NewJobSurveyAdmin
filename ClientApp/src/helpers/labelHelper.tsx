@@ -33,6 +33,7 @@ const fieldLabels: { [key: string]: string } = {
   gender: 'Gender',
   governmentEmail: 'Email',
   governmentEmployeeId: 'Employee ID',
+  hiringReason: 'Hiring reason',
   id: 'Database ID',
   importDate: 'Import date',
   inviteDate: 'Invite date',
@@ -75,7 +76,7 @@ const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   taskOutcomeCode: TaskOutcome.toOptions,
   appointmentStatus: AppointmentStatus.toOptions,
   newHireOrInternalStaffing: NewHireOrInternalStaffing.toOptions,
-  staffingReason: () => []
+  hiringReason: () => []
 }
 
 export const labelFor = (fieldName: string): string => fieldLabels[fieldName]

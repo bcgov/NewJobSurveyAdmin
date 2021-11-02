@@ -14,10 +14,6 @@ export const employeeFilters: Filter[] = [
   new DateFilter('importDate'),
   new EnumFilter('newHireOrInternalStaffing'),
   new EnumFilter('currentEmployeeStatusCode'),
-  new EnumFilter(
-    'staffingReason',
-    undefined,
-    'Employees/Values/StaffingReason'
-  ),
+  new EnumFilter('hiringReason', undefined, 'Employees/Values/StaffingReason'),
   new CustomFilter('blankEmail')
 ]

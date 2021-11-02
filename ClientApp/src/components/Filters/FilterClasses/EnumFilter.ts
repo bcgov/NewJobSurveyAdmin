@@ -58,7 +58,11 @@ export default class EnumFilter implements Filter {
       console.warn(`EnumFilter for ${this._fieldName}: value is 0-length`)
       return ''
     }
-    return `${this._fieldName}==${this._enumKeys.join(OR_OPERATOR)}`
+    const encodedFilter = `${this._fieldName}==${this._enumKeys
+      .join(OR_OPERATOR)
+      .replaceAll('<', ':lt:')
+      .replaceAll('>', ':gt:')}`
+    return encodedFilter
   }
 
   decode(inputs: string[]): EnumFilter {
@@ -69,7 +73,11 @@ export default class EnumFilter implements Filter {
       if (!fieldName || !values) {
         throw new Error(`EnumFilter: Could not parse input '${input}'`)
       }
-      valueString.split(OR_OPERATOR).forEach(v => values.push(v))
+      valueString
+        .replaceAll(':lt:', '<')
+        .replaceAll(':gt:', '>')
+        .split(OR_OPERATOR)
+        .forEach(v => values.push(v))
     })
     return new EnumFilter(fieldName, values)
   }
