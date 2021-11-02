@@ -37,6 +37,9 @@ namespace NewJobSurveyAdmin.Models
             modelBuilder.Entity<Employee>()
                 .HasIndex(e => new { e.StaffingReason });
 
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => new { e.NewHireOrInternalStaffing });
+
             // Do not permit cascade deletes should either the Employee or the
             // EmployeeStatusEnum be deleted.
             modelBuilder.Entity<Employee>()

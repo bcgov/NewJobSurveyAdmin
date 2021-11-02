@@ -12,7 +12,11 @@ export const employeeFilters: Filter[] = [
   new TextFilter('preferredEmail'),
   new DateFilter('effectiveDate'),
   new DateFilter('importDate'),
-  new EnumFilter('newHireOrInternalStaffing'),
+  new EnumFilter(
+    'newHireOrInternalStaffing',
+    undefined,
+    'Employees/Values/NewHireOrInternalStaffing'
+  ),
   new EnumFilter('currentEmployeeStatusCode'),
   new EnumFilter('hiringReason', undefined, 'Employees/Values/StaffingReason'),
   new CustomFilter('blankEmail')

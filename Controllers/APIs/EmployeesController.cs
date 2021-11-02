@@ -95,11 +95,26 @@ namespace NewJobSurveyAdmin.Controllers
 
         // GET: api/Employees/Values/StaffingReason
         [HttpGet("Values/StaffingReason")]
-        public async Task<ActionResult<List<string>>> ValuesStaffingReason(int id)
+        public async Task<ActionResult<List<string>>> ValuesStaffingReason()
         {
             var uniqueValues = await context
                 .Employees
                 .Select(e => e.StaffingReason)
+                .Distinct()
+                .ToListAsync();
+
+            uniqueValues.Sort();
+
+            return uniqueValues;
+        }
+
+        // GET: api/Employees/Values/NewHireOrInternalStaffing
+        [HttpGet("Values/NewHireOrInternalStaffing")]
+        public async Task<ActionResult<List<string>>> ValuesNewHireOrInternalStaffing()
+        {
+            var uniqueValues = await context
+                .Employees
+                .Select(e => e.NewHireOrInternalStaffing)
                 .Distinct()
                 .ToListAsync();
 

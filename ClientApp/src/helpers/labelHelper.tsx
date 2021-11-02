@@ -75,7 +75,7 @@ const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   currentEmployeeStatusCode: EmployeeStatus.toOptions,
   taskOutcomeCode: TaskOutcome.toOptions,
   appointmentStatus: AppointmentStatus.toOptions,
-  newHireOrInternalStaffing: NewHireOrInternalStaffing.toOptions,
+  newHireOrInternalStaffing: () => [],
   hiringReason: () => []
 }
 
