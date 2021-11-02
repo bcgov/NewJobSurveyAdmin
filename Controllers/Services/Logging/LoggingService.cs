@@ -49,8 +49,12 @@ namespace NewJobSurveyAdmin.Services
 
         public Task<TaskLogEntry> LogEmployeeTaskResult(EmployeeTaskResult taskResult)
         {
-            // If the task result is null, this is a no-op.
-            if (taskResult == null) return Task.FromResult<TaskLogEntry>(null);
+            // If the task result is null, or if we tried to address a total
+            // of zero candidates, this is a no-op.
+            if (taskResult == null || taskResult.CandidateEmployeesCount == 0)
+            {
+                return Task.FromResult<TaskLogEntry>(null);
+            }
 
             var message =
                 $"Tried to {taskResult.TaskVerb} " +
