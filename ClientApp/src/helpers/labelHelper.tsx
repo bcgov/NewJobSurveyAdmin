@@ -4,9 +4,9 @@ import { AppointmentStatus } from '../types/AppointmentStatus'
 import { Employee } from '../types/Employee'
 import { EmployeeStatus } from '../types/EmployeeStatus'
 import { SelectOption } from '../components/DisplayHelpers/Interface/EditableFields/EditableSelect'
+import { TaskEnum } from '../types/TaskEnum'
 import { TaskOutcome } from '../types/TaskOutcome'
 import FAIcon from '../components/DisplayHelpers/Interface/Icons/FAIcon'
-import { NewHireOrInternalStaffing } from '../types/NewHireOrInternalStaffing'
 
 const fieldLabels: { [key: string]: string } = {
   age: 'Age',
@@ -72,9 +72,26 @@ const fieldLabels: { [key: string]: string } = {
   triedToUpdateInFinalState: 'Tried to update in final state'
 }
 
+const mapEnumToOptions = (
+  enumeration: Record<string, string>
+): (() => SelectOption[]) => {
+  console.log('enumeration', enumeration)
+  Object.values(enumeration).map(v => {
+    console.log('v', v)
+  })
+
+  return (): SelectOption[] => {
+    return Object.keys(enumeration).map(enumKey => ({
+      name: enumeration[enumKey],
+      value: enumKey
+    }))
+  }
+}
+
 const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   currentEmployeeStatusCode: EmployeeStatus.toOptions,
   taskOutcomeCode: TaskOutcome.toOptions,
+  taskCode: mapEnumToOptions(TaskEnum),
   appointmentStatus: AppointmentStatus.toOptions,
   newHireOrInternalStaffing: () => [],
   hiringReason: () => []

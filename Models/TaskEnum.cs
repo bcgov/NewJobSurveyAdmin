@@ -13,7 +13,6 @@ namespace NewJobSurveyAdmin.Models
         private static readonly string CodeLoadFromJson = "LoadFromJson";
         private static readonly string CodeLoadFromCsv = "LoadFromCsv";
         private static readonly string CodeRefreshStatuses = "RefreshStatuses";
-        private static readonly string CodeRetrieveSurveyStatus = "RetrieveSurveyStatus";
         private static readonly string CodeScheduledTask = "ScheduledTask";
         private static readonly string CodeBlackoutPeriodUpdate = "BlackoutPeriodUpdate";
 
@@ -63,14 +62,6 @@ namespace NewJobSurveyAdmin.Models
             ObjectNoun = "employee statuses"
         };
 
-        public static readonly TaskEnum RetrieveSurveyStatus = new TaskEnum
-        {
-            Code = CodeRetrieveSurveyStatus,
-            Description = "The task to retrieve the survey completion statuses from CallWeb.",
-            Verb = "retrieve",
-            ObjectNoun = "survey completion statuses"
-        };
-
         public static readonly TaskEnum ScheduledTask = new TaskEnum
         {
             Code = CodeScheduledTask,
@@ -93,7 +84,6 @@ namespace NewJobSurveyAdmin.Models
             LoadFromJson,
             LoadFromCsv,
             RefreshStatuses,
-            RetrieveSurveyStatus,
             ScheduledTask,
             BlackoutPeriodUpdate
         };
