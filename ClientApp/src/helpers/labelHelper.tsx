@@ -49,6 +49,7 @@ const fieldLabels: { [key: string]: string } = {
   leaveDate: 'Leave date',
   locationCity: 'Location city',
   locationGroup: 'Location group',
+  logDate: 'Log date',
   ministry: 'Ministry',
   modifiedTs: 'Last modified date',
   newHireOrInternalStaffing: 'New hire or internal staffing',
