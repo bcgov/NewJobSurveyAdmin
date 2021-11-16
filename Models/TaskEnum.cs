@@ -9,6 +9,7 @@ namespace NewJobSurveyAdmin.Models
     {
         private static readonly string CodeReconcileEmployees = "ReconcileEmployees";
         private static readonly string CodeLoadPsa = "LoadPsa";
+        private static readonly string CodeParsePsa = "ParsePsa";
         private static readonly string CodeReadCsv = "ReadCsv";
         private static readonly string CodeLoadFromJson = "LoadFromJson";
         private static readonly string CodeLoadFromCsv = "LoadFromCsv";
@@ -27,7 +28,15 @@ namespace NewJobSurveyAdmin.Models
         public static readonly TaskEnum LoadPsa = new TaskEnum
         {
             Code = CodeLoadPsa,
-            Description = "The task to load data from the PSA API."
+            Description = "The task to get a response from the PSA API.",
+        };
+
+        public static readonly TaskEnum ParsePsa = new TaskEnum
+        {
+            Code = CodeParsePsa,
+            Description = "The task to parse loaded PSA API JSON data.",
+            Verb = "parse",
+            ObjectNoun = "JSON-encoded employee objects from the PSA API"
         };
 
         public static readonly TaskEnum ReadCsv = new TaskEnum
@@ -80,6 +89,7 @@ namespace NewJobSurveyAdmin.Models
         {
             ReconcileEmployees,
             LoadPsa,
+            ParsePsa,
             ReadCsv,
             LoadFromJson,
             LoadFromCsv,

@@ -9,10 +9,12 @@ namespace NewJobSurveyAdmin.Services.PsaApi
     public class PsaApiService
     {
         private PsaApi PsaApi;
+        private LoggingService logger;
 
         public PsaApiService(
             IOptions<PsaApiServiceOptions> options,
-            IHttpClientFactory clientFactory
+            IHttpClientFactory clientFactory,
+            LoggingService logger
         )
         {
             PsaApi = new PsaApi(
@@ -21,13 +23,16 @@ namespace NewJobSurveyAdmin.Services.PsaApi
                 options.Value.ClientPassword,
                 clientFactory
             );
+            this.logger = logger;
         }
 
-        public async Task<List<Employee>> GetCurrent()
+        public async Task<EmployeeTaskResult> GetCurrent()
         {
-            var response = await PsaApi.GetAllEmployees();
+            var taskResult = await PsaApi.GetAllEmployees(logger);
 
-            return response;
+            await logger.LogEmployeeTaskResult(taskResult);
+
+            return taskResult;
         }
     }
 }

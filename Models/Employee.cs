@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace NewJobSurveyAdmin.Models
 {
@@ -25,7 +26,10 @@ namespace NewJobSurveyAdmin.Models
 
         // Personal info (ID, names, etc.)
 
-        [Sieve(CanFilter = true)] [Required] public string GovernmentEmployeeId { get; set; }
+        [Sieve(CanFilter = true)]
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string GovernmentEmployeeId { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string FirstName { get; set; }
@@ -40,9 +44,14 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string LastName { get; set; }
 
-        [DataType(DataType.Date)] [Required] public DateTime BirthDate { get; set; }
+        [DataType(DataType.Date)]
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public DateTime BirthDate { get; set; }
 
-        [Required] public string Gender { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string Gender { get; set; }
 
         public string Age { get; set; }
 
@@ -86,44 +95,76 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string PreferredEmail { get; set; }
 
-        [Required] public Boolean PreferredEmailFlag { get; set; }
+        [Required]
+        public Boolean PreferredEmailFlag { get; set; }
 
 
         // Employee job info
 
         [Sieve(CanFilter = true, CanSort = true)]
         [Required]
+        [JsonProperty(Required = Required.Always)]
         public string Classification { get; set; }
 
-        [Required] public string Organization { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string Organization { get; set; }
 
-        [Required] public string DepartmentId { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string DepartmentId { get; set; }
 
-        [Required] public string DepartmentIdDescription { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string DepartmentIdDescription { get; set; }
 
-        [Required] public string DevelopmentRegion { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string DevelopmentRegion { get; set; }
 
-        [Required] public string LocationCity { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string LocationCity { get; set; }
 
-        [Required] public string LocationGroup { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string LocationGroup { get; set; }
 
-        [Required] public string JobCode { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string JobCode { get; set; }
 
-        [Required] public string PositionCode { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string PositionCode { get; set; }
 
-        [Required] public string PositionTitle { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string PositionTitle { get; set; }
 
-        [Required] public string JobClassificationGroup { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string JobClassificationGroup { get; set; }
 
-        [Required] public string NocCode { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string NocCode { get; set; }
 
-        [Required] public string NocDescription { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string NocDescription { get; set; }
 
-        [Required] public string OrganizationCount { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string OrganizationCount { get; set; }
 
-        [Required] public string RegionalDistrict { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string RegionalDistrict { get; set; }
 
-        [Required] public string UnionCode { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string UnionCode { get; set; }
 
 
         // Hiring info
@@ -131,26 +172,39 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         [DataType(DataType.Date)]
         [Required]
+        [JsonProperty(Required = Required.Always)]
         public DateTime EffectiveDate { get; set; }
 
         [Required]
+        [JsonProperty(Required = Required.Always)]
         [Sieve(CanFilter = true, CanSort = true)]
         public string AppointmentStatus { get; set; }
 
-        [Required] public string ServiceYears { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string ServiceYears { get; set; }
 
-        [Required] public string RecordCount { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string RecordCount { get; set; }
 
-        [Required] public string StaffingAction { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string StaffingAction { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         [Required]
+        [JsonProperty(Required = Required.Always)]
         public string StaffingReason { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required] public string NewHireOrInternalStaffing { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string NewHireOrInternalStaffing { get; set; }
 
-        [Required] public string TaToPermanent { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string TaToPermanent { get; set; }
 
 
         // Prior job info

@@ -1,17 +1,8 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using NewJobSurveyAdmin.Models;
 using NewJobSurveyAdmin.Services;
 using System;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NewJobSurveyAdmin.Services.CallWeb;
-using NewJobSurveyAdmin.Services.CsvService;
-using NewJobSurveyAdmin.Services.PsaApi;
-using Sieve.Models;
-using Sieve.Services;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace NewJobSurveyAdmin
@@ -20,6 +11,15 @@ namespace NewJobSurveyAdmin
     public class ApiResponseHelper : ControllerBase
     {
 
+        public static string MessageFromException(Exception exception)
+        {
+            var message =
+                $"Error: {exception.Message} " +
+                $"Stacktrace:\r\n {exception.StackTrace}";
+
+            return message;
+        }
+
         public static async Task<ObjectResult> LogFailureAndSendStacktrace(
             ControllerBase controllerBase,
             TaskEnum task,
@@ -27,9 +27,7 @@ namespace NewJobSurveyAdmin
             LoggingService logger
         )
         {
-            var message =
-                $"Error: {exception.Message} " +
-                $"Stacktrace:\r\n {exception.StackTrace}";
+            var message = MessageFromException(exception);
 
             await logger.LogFailure(task, message);
 

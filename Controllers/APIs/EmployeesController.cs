@@ -176,11 +176,11 @@ namespace NewJobSurveyAdmin.Controllers
                 if (startIndex > -1 && count > 0)
                 {
                     // TODO: Validate.
-                    employeesToLoad = currentEmployees.GetRange(startIndex, count);
+                    employeesToLoad = currentEmployees.GoodEmployees.GetRange(startIndex, count);
                 }
                 else
                 {
-                    employeesToLoad = currentEmployees;
+                    employeesToLoad = currentEmployees.GoodEmployees;
                 }
 
                 // Reconcile the employees with the database.
@@ -194,7 +194,7 @@ namespace NewJobSurveyAdmin.Controllers
             catch (Exception e)
             {
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                  this, TaskEnum.LoadPsa, e, logger
+                  this, TaskEnum.ParsePsa, e, logger
                 );
             }
         }
