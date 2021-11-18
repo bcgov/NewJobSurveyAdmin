@@ -130,12 +130,28 @@ namespace NewJobSurveyAdmin.Services
                     Comment = "Created automatically by script."
                 });
 
-                context.Employees.Add(employee);
+                try
+                {
+                    context.Employees.Add(employee);
 
-                await context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
 
-                // End Case A. Return the employee.
-                return employee;
+                    // End Case A. Return the employee.
+                    return employee;
+                }
+                catch (Exception e)
+                {
+                    // Remove the employee and the timeline entry from the
+                    // context, or else we will also get errors next time we
+                    // next try to save changes to the context.
+                    context.RemoveRange(employee.TimelineEntries);
+                    context.Remove(employee);
+
+                    throw new InvalidOperationException(
+                        $"Saving to the database failed. Message: {e.Message}" +
+                        $" Inner message: {e.InnerException.Message}"
+                    );
+                }
             }
             else
             {
