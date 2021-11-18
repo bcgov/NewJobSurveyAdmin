@@ -108,6 +108,17 @@ namespace NewJobSurveyAdmin.Services
                 // first time the employee is created.
                 employee.InstantiateFields(dates);
 
+                // Ensure that the employee is valid.
+                var nullRequiredProperties = employee.NullRequiredProperties();
+
+                if (nullRequiredProperties.Count() > 0)
+                {
+                    throw new InvalidOperationException(
+                        "Employee has null properties that are required: " +
+                        String.Join(",", nullRequiredProperties.Select(p => p.Name))
+                    );
+                }
+
                 // Try to insert a row into CallWeb, and set the telkey.
                 try
                 {

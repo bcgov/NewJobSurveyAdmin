@@ -1,11 +1,11 @@
 using NewJobSurveyAdmin.Services;
+using Newtonsoft.Json;
 using Sieve.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace NewJobSurveyAdmin.Models
 {
@@ -252,39 +252,18 @@ namespace NewJobSurveyAdmin.Models
 
         public Boolean TriedToUpdateInFinalState { get; set; }
 
-
         // Methods
 
-        /// <summary>
-        /// Method to compare properties between two Employees ("this" one, i.e.
-        /// the one this method is being called on, and another candidate one).
-        /// Used when we need to determine which fields have been updated on a
-        /// PATCHed user. Note the intentionally excluded properties; these will
-        /// never get set in a PATCH and so are not compared.
-        /// </summary>
-        /// <param name="candidate">The other Employee to compare this one against.</param>
-        /// <returns>
-        /// An enumerable list of properties that differ between the two
-        /// Employees, including the property name, the value in "this"
-        /// Employee, and the value in the candidate Employee.
-        /// </returns>
-        public IEnumerable<PropertyVariance> PropertyCompare(Employee candidate)
+        public System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> NullRequiredProperties()
         {
-            return this.DetailedCompare(candidate)
-                .Where(d =>
-                    d.PropertyInfo.Name != nameof(Id) &&
-                    d.PropertyInfo.Name != nameof(Telkey) &&
-                    d.PropertyInfo.Name != nameof(CurrentEmployeeStatusCode) &&
-                    d.PropertyInfo.Name != nameof(CurrentEmployeeStatus) &&
-                    d.PropertyInfo.Name != nameof(TimelineEntries) &&
-                    d.PropertyInfo.Name != nameof(CreatedTs) &&
-                    d.PropertyInfo.Name != nameof(ModifiedTs) &&
-                    d.PropertyInfo.Name != nameof(PreferredFirstName) &&
-                    d.PropertyInfo.Name != nameof(PreferredEmail) &&
-                    d.PropertyInfo.Name != nameof(PreferredFirstNameFlag) &&
-                    d.PropertyInfo.Name != nameof(PreferredEmailFlag)
-                );
+            var properties = this.GetType().GetProperties()
+                .Where(prop => prop.IsDefined(typeof(RequiredAttribute), false));
+
+            var nullProperties = properties.Where(p => p.GetValue(this) == null);
+
+            return nullProperties;
         }
+
 
         /// <summary>
         /// Convenience method to generate an employee's full name, which is a
