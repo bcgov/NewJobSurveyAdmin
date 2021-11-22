@@ -45,8 +45,6 @@ namespace NewJobSurveyAdmin.Models
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]
-        [Required]
-        [JsonProperty(Required = Required.Always)]
         public DateTime BirthDate { get; set; }
 
         public string Gender { get; set; }
@@ -99,8 +97,6 @@ namespace NewJobSurveyAdmin.Models
         // Employee job info
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
-        [JsonProperty(Required = Required.Always)]
         public string Classification { get; set; }
 
         [Required]
@@ -117,7 +113,6 @@ namespace NewJobSurveyAdmin.Models
 
         public string DevelopmentRegion { get; set; }
 
-        [Required]
         public string LocationCity { get; set; }
 
         public string LocationGroup { get; set; }
@@ -132,8 +127,6 @@ namespace NewJobSurveyAdmin.Models
         [JsonProperty(Required = Required.Always)]
         public string PositionTitle { get; set; }
 
-        [Required]
-        [JsonProperty(Required = Required.Always)]
         public string JobClassificationGroup { get; set; }
 
         public string NocCode { get; set; }
@@ -144,8 +137,6 @@ namespace NewJobSurveyAdmin.Models
 
         public string RegionalDistrict { get; set; }
 
-        [Required]
-        [JsonProperty(Required = Required.Always)]
         public string UnionCode { get; set; }
 
 
@@ -162,8 +153,6 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string AppointmentStatus { get; set; }
 
-        [Required]
-        [JsonProperty(Required = Required.Always)]
         public string ServiceYears { get; set; }
 
         [Required]
