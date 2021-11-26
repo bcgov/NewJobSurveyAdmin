@@ -235,6 +235,11 @@ namespace NewJobSurveyAdmin.Migrations
                 column: "GovernmentEmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employees_StaffingReason",
+                table: "Employees",
+                column: "StaffingReason");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EmployeeTimelineEntries_EmployeeActionCode",
                 table: "EmployeeTimelineEntries",
                 column: "EmployeeActionCode");

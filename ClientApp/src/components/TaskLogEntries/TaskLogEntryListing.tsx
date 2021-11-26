@@ -7,25 +7,34 @@ import { taskLogEntryFilters } from '../Filters/Presets/FieldSets/taskLogEntryFi
 import { taskLogEntryTableColumns } from './taskLogEntryTableColumns'
 import GenericListing from '../Listings/GenericListing'
 
-const TaskLogEntryListing = (): JSX.Element => (
-  <GenericListing
-    modelName="task log entries"
-    filterableFields={taskLogEntryFilters}
-    columns={taskLogEntryTableColumns}
-    listingPath="taskLogEntries"
-    pageSize={20}
-    dataMapper={(responseJSON: FixTypeLater[]): TaskLogEntry[] =>
-      responseJSON.map(t => plainToClass(TaskLogEntry, t))
-    }
-    sortProp={`&sorts=-createdTs`} // By default, sort reverse chronologically
-    exportedDataMapper={(responseJSON: FixTypeLater[]): FixTypeLater[] =>
+const TaskLogEntryListing = (): JSX.Element => {
+  const dataMapperCallback = React.useCallback(
+    (responseJSON: FixTypeLater[]): TaskLogEntry[] =>
+      responseJSON.map(t => plainToClass(TaskLogEntry, t)),
+    []
+  )
+
+  const exportedDataMapperCallback = React.useCallback(
+    (responseJSON: FixTypeLater[]): FixTypeLater[] =>
       responseJSON.map(t => {
         delete t.task
         delete t.taskOutcome
         return t
-      })
-    }
-  />
-)
+      }),
+    []
+  )
+
+  return (
+    <GenericListing
+      modelName="task log entries"
+      filterableFields={taskLogEntryFilters}
+      columns={taskLogEntryTableColumns}
+      listingPath="taskLogEntries"
+      dataMapper={dataMapperCallback}
+      sortProp={`&sorts=-createdTs`} // By default, sort reverse chronologically
+      exportedDataMapper={exportedDataMapperCallback}
+    />
+  )
+}
 
 export default TaskLogEntryListing

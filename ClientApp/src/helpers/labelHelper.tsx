@@ -4,9 +4,9 @@ import { AppointmentStatus } from '../types/AppointmentStatus'
 import { Employee } from '../types/Employee'
 import { EmployeeStatus } from '../types/EmployeeStatus'
 import { SelectOption } from '../components/DisplayHelpers/Interface/EditableFields/EditableSelect'
+import { TaskEnum } from '../types/TaskEnum'
 import { TaskOutcome } from '../types/TaskOutcome'
 import FAIcon from '../components/DisplayHelpers/Interface/Icons/FAIcon'
-import { NewHireOrInternalStaffing } from '../types/NewHireOrInternalStaffing'
 
 const fieldLabels: { [key: string]: string } = {
   age: 'Age',
@@ -15,7 +15,8 @@ const fieldLabels: { [key: string]: string } = {
   backDated: 'Back dated',
   birthDate: 'Birth date',
   blankEmail: 'Preferred email',
-  chipsEmail: 'PSA Extract email',
+  chipsCity: 'PSA extract city',
+  chipsEmail: 'PSA extract email',
   chipsFirstName: 'PSA extract first name',
   chipsLastName: 'PSA extract last name',
   classification: 'Classification',
@@ -32,6 +33,7 @@ const fieldLabels: { [key: string]: string } = {
   gender: 'Gender',
   governmentEmail: 'Email',
   governmentEmployeeId: 'Employee ID',
+  hiringReason: 'Hiring reason',
   id: 'Database ID',
   importDate: 'Import date',
   inviteDate: 'Invite date',
@@ -39,6 +41,7 @@ const fieldLabels: { [key: string]: string } = {
   jobFunctionCode: 'Job function code',
   lastDayWorkedDate: 'Last day worked date',
   lastName: 'Last name',
+  ldapCity: 'LDAP city',
   ldapEmail: 'LDAP email',
   ldapFirstName: 'LDAP first name',
   ldapLastName: 'LDAP last name',
@@ -46,6 +49,7 @@ const fieldLabels: { [key: string]: string } = {
   leaveDate: 'Leave date',
   locationCity: 'Location city',
   locationGroup: 'Location group',
+  logDate: 'Log date',
   ministry: 'Ministry',
   modifiedTs: 'Last modified date',
   newHireOrInternalStaffing: 'New hire or internal staffing',
@@ -68,11 +72,29 @@ const fieldLabels: { [key: string]: string } = {
   triedToUpdateInFinalState: 'Tried to update in final state'
 }
 
+const mapEnumToOptions = (
+  enumeration: Record<string, string>
+): (() => SelectOption[]) => {
+  console.log('enumeration', enumeration)
+  Object.values(enumeration).map(v => {
+    console.log('v', v)
+  })
+
+  return (): SelectOption[] => {
+    return Object.keys(enumeration).map(enumKey => ({
+      name: enumeration[enumKey],
+      value: enumKey
+    }))
+  }
+}
+
 const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   currentEmployeeStatusCode: EmployeeStatus.toOptions,
   taskOutcomeCode: TaskOutcome.toOptions,
+  taskCode: mapEnumToOptions(TaskEnum),
   appointmentStatus: AppointmentStatus.toOptions,
-  newHireOrInternalStaffing: NewHireOrInternalStaffing.toOptions
+  newHireOrInternalStaffing: () => [],
+  hiringReason: () => []
 }
 
 export const labelFor = (fieldName: string): string => fieldLabels[fieldName]

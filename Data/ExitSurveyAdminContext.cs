@@ -30,11 +30,18 @@ namespace NewJobSurveyAdmin.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Do not permit cascade deletes should either the Employee or the
-            // EmployeeStatusEnum be deleted.
+            // Add indices.
             modelBuilder.Entity<Employee>()
                 .HasIndex(e => new { e.GovernmentEmployeeId });
 
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => new { e.StaffingReason });
+
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => new { e.NewHireOrInternalStaffing });
+
+            // Do not permit cascade deletes should either the Employee or the
+            // EmployeeStatusEnum be deleted.
             modelBuilder.Entity<Employee>()
                 .HasOne(e => e.CurrentEmployeeStatus)
                 .WithMany(s => s.Employees)

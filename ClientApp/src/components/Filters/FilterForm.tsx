@@ -100,7 +100,6 @@ const FilterForm = ({
                   resetTimestamp={resetTimestamp}
                 />
               )
-              colWidth = 3
               break
             case FilterType.String:
             default:

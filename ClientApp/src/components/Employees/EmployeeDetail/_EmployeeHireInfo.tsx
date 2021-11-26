@@ -11,6 +11,9 @@ interface Props {
 const EmployeeHireInfo = ({ employee: e }: Props): JSX.Element => {
   return (
     <div className="EmployeeHireInfo row">
+      <CLText label={labelFor('newHireOrInternalStaffing')}>
+        {e.newHireOrInternalStaffing}
+      </CLText>
       <CLText label={labelFor('staffingReason')}>{e.staffingReason}</CLText>
       <CLText label={labelFor('recordCount')}>{e.recordCount}</CLText>
       <CLText label={labelFor('locationCity')}>{e.locationCity}</CLText>

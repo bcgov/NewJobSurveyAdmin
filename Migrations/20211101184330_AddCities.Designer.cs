@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewJobSurveyAdmin.Models;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NewJobSurveyAdmin.Migrations
 {
     [DbContext(typeof(NewJobSurveyAdminContext))]
-    partial class NewJobSurveyAdminContextModelSnapshot : ModelSnapshot
+    [Migration("20211101184330_AddCities")]
+    partial class AddCities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,6 +81,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Classification")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedTs")
@@ -99,6 +102,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("DevelopmentRegion")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("EffectiveDate")
@@ -108,6 +112,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("GovernmentEmail")
@@ -121,9 +126,11 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("JobClassificationGroup")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("JobCode")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
@@ -145,9 +152,11 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LocationCity")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationGroup")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MiddleName")
@@ -161,9 +170,11 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("NocCode")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NocDescription")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Organization")
@@ -171,6 +182,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("OrganizationCount")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PositionCode")
@@ -240,6 +252,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("RegionalDistrict")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Reminder1Date")
@@ -249,6 +262,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ServiceYears")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("StaffingAction")
@@ -260,6 +274,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("TaToPermanent")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Telkey")
@@ -269,6 +284,7 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UnionCode")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -276,8 +292,6 @@ namespace NewJobSurveyAdmin.Migrations
                     b.HasIndex("CurrentEmployeeStatusCode");
 
                     b.HasIndex("GovernmentEmployeeId");
-
-                    b.HasIndex("NewHireOrInternalStaffing");
 
                     b.HasIndex("StaffingReason");
 

@@ -6,6 +6,7 @@ import { Transform, Type } from 'class-transformer'
 
 export class Employee {
   public age?: string
+  public chipsCity?: string
   public chipsEmail?: string
   public chipsFirstName?: string
   public chipsLastName?: string
@@ -23,6 +24,7 @@ export class Employee {
   public jobClassificationGroup?: string
   public jobCode?: string
   public lastName?: string
+  public ldapCity?: string
   public ldapEmail?: string
   public ldapFirstName?: string
   public ldapLastName?: string

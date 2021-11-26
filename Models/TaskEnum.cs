@@ -9,11 +9,11 @@ namespace NewJobSurveyAdmin.Models
     {
         private static readonly string CodeReconcileEmployees = "ReconcileEmployees";
         private static readonly string CodeLoadPsa = "LoadPsa";
+        private static readonly string CodeParsePsa = "ParsePsa";
         private static readonly string CodeReadCsv = "ReadCsv";
         private static readonly string CodeLoadFromJson = "LoadFromJson";
         private static readonly string CodeLoadFromCsv = "LoadFromCsv";
         private static readonly string CodeRefreshStatuses = "RefreshStatuses";
-        private static readonly string CodeRetrieveSurveyStatus = "RetrieveSurveyStatus";
         private static readonly string CodeScheduledTask = "ScheduledTask";
         private static readonly string CodeBlackoutPeriodUpdate = "BlackoutPeriodUpdate";
 
@@ -28,7 +28,15 @@ namespace NewJobSurveyAdmin.Models
         public static readonly TaskEnum LoadPsa = new TaskEnum
         {
             Code = CodeLoadPsa,
-            Description = "The task to load data from the PSA API."
+            Description = "The task to get a response from the PSA API.",
+        };
+
+        public static readonly TaskEnum ParsePsa = new TaskEnum
+        {
+            Code = CodeParsePsa,
+            Description = "The task to parse loaded PSA API JSON data.",
+            Verb = "parse",
+            ObjectNoun = "JSON-encoded employee objects from the PSA API"
         };
 
         public static readonly TaskEnum ReadCsv = new TaskEnum
@@ -63,14 +71,6 @@ namespace NewJobSurveyAdmin.Models
             ObjectNoun = "employee statuses"
         };
 
-        public static readonly TaskEnum RetrieveSurveyStatus = new TaskEnum
-        {
-            Code = CodeRetrieveSurveyStatus,
-            Description = "The task to retrieve the survey completion statuses from CallWeb.",
-            Verb = "retrieve",
-            ObjectNoun = "survey completion statuses"
-        };
-
         public static readonly TaskEnum ScheduledTask = new TaskEnum
         {
             Code = CodeScheduledTask,
@@ -89,11 +89,11 @@ namespace NewJobSurveyAdmin.Models
         {
             ReconcileEmployees,
             LoadPsa,
+            ParsePsa,
             ReadCsv,
             LoadFromJson,
             LoadFromCsv,
             RefreshStatuses,
-            RetrieveSurveyStatus,
             ScheduledTask,
             BlackoutPeriodUpdate
         };

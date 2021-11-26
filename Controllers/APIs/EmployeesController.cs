@@ -72,6 +72,7 @@ namespace NewJobSurveyAdmin.Controllers
 
             var sievedEmployees = await sieveProcessor
                 .GetPagedAsync(employees, sieveModel);
+
             Response.Headers.Add("X-Pagination", sievedEmployees
                 .SerializeMetadataToJson());
 
@@ -90,6 +91,36 @@ namespace NewJobSurveyAdmin.Controllers
             }
 
             return employee;
+        }
+
+        // GET: api/Employees/Values/StaffingReason
+        [HttpGet("Values/StaffingReason")]
+        public async Task<ActionResult<List<string>>> ValuesStaffingReason()
+        {
+            var uniqueValues = await context
+                .Employees
+                .Select(e => e.StaffingReason)
+                .Distinct()
+                .ToListAsync();
+
+            uniqueValues.Sort();
+
+            return uniqueValues;
+        }
+
+        // GET: api/Employees/Values/NewHireOrInternalStaffing
+        [HttpGet("Values/NewHireOrInternalStaffing")]
+        public async Task<ActionResult<List<string>>> ValuesNewHireOrInternalStaffing()
+        {
+            var uniqueValues = await context
+                .Employees
+                .Select(e => e.NewHireOrInternalStaffing)
+                .Distinct()
+                .ToListAsync();
+
+            uniqueValues.Sort();
+
+            return uniqueValues;
         }
 
         // PATCH: api/Employees/5
@@ -145,11 +176,11 @@ namespace NewJobSurveyAdmin.Controllers
                 if (startIndex > -1 && count > 0)
                 {
                     // TODO: Validate.
-                    employeesToLoad = currentEmployees.GetRange(startIndex, count);
+                    employeesToLoad = currentEmployees.GoodEmployees.GetRange(startIndex, count);
                 }
                 else
                 {
-                    employeesToLoad = currentEmployees;
+                    employeesToLoad = currentEmployees.GoodEmployees;
                 }
 
                 // Reconcile the employees with the database.
@@ -163,7 +194,7 @@ namespace NewJobSurveyAdmin.Controllers
             catch (Exception e)
             {
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                  this, TaskEnum.LoadPsa, e, logger
+                  this, TaskEnum.ParsePsa, e, logger
                 );
             }
         }
