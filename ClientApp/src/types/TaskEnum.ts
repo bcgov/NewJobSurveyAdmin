@@ -6,5 +6,6 @@ export enum TaskEnum {
   LoadFromCsv = 'LoadFromCsv',
   RefreshStatuses = 'RefreshStatuses',
   ScheduledTask = 'ScheduledTask',
-  BlackoutPeriodUpdate = 'BlackoutPeriodUpdate'
+  BlackoutPeriodUpdate = 'BlackoutPeriodUpdate',
+  ParsePsa = 'ParsePsa'
 }
