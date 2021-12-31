@@ -67,7 +67,7 @@ namespace NewJobSurveyAdmin.Services
             // Check if the employee has completed the survey.
             if (callWebStatusCode.Equals(EmployeeStatusEnum.SurveyComplete.Code))
             {
-                await SaveStatusAndAddTimelineEntry(employee,
+                return await SaveStatusAndAddTimelineEntry(employee,
                     EmployeeStatusEnum.SurveyComplete);
             }
 
@@ -78,7 +78,7 @@ namespace NewJobSurveyAdmin.Services
                 employee.CurrentEmployeeStatusCode != EmployeeStatusEnum.Expired.Code
             )
             {
-                await SaveStatusAndAddTimelineEntry(employee,
+                return await SaveStatusAndAddTimelineEntry(employee,
                     EmployeeStatusEnum.Expired);
             }
 
