@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NewJobSurveyAdmin.Services;
 using NewJobSurveyAdmin.Services.CallWeb;
 using NewJobSurveyAdmin.Services.PsaApi;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace NewJobSurveyAdmin.Controllers
     public class HealthStatusController : ControllerBase
     {
         private readonly CallWebService callWebService;
+        private readonly EmailService emailService;
 
-        public HealthStatusController(CallWebService callWebService)
+        public HealthStatusController(CallWebService callWebService, EmailService emailService)
         {
             this.callWebService = callWebService;
+            this.emailService = emailService;
         }
 
         // GetStatus: Returns "Healthy." if the API is healthy.
@@ -21,7 +24,7 @@ namespace NewJobSurveyAdmin.Controllers
         [HttpGet("Status")]
         public ActionResult<string> GetStatus()
         {
-            string text = "{ \"msg\": \"Healthy.\" }";
+            string text = "{ \"msg\": \"NJSA API is healthy.\" }";
 
             return Ok(text);
         }

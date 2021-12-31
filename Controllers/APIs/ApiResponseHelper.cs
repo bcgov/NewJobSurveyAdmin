@@ -10,16 +10,6 @@ namespace NewJobSurveyAdmin
 
     public class ApiResponseHelper : ControllerBase
     {
-
-        public static string MessageFromException(Exception exception)
-        {
-            var message =
-                $"Error: {exception.Message} " +
-                $"Stacktrace:\r\n {exception.StackTrace}";
-
-            return message;
-        }
-
         public static async Task<ObjectResult> LogFailureAndSendStacktrace(
             ControllerBase controllerBase,
             TaskEnum task,
@@ -27,7 +17,7 @@ namespace NewJobSurveyAdmin
             LoggingService logger
         )
         {
-            var message = MessageFromException(exception);
+            var message = MessageHelper.MessageFromException(exception);
 
             await logger.LogFailure(task, message);
 

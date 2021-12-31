@@ -75,6 +75,10 @@ namespace NewJobSurveyAdmin
             services.AddScoped<EmployeeBlackoutPeriodService>();
             services.AddScoped<EmployeeReconciliationService>();
 
+            // Email service.
+            services.Configure<EmailServiceOptions>(Configuration.GetSection("Email"));
+            services.AddScoped<EmailService>();
+
             // Logging to TaskLogEntries.
             services.AddScoped<LoggingService>();
 
