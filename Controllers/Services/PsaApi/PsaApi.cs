@@ -148,8 +148,8 @@ namespace NewJobSurveyAdmin.Services.PsaApi
             if (response.IsSuccessStatusCode && responseString.Length > 0)
             {
                 await logger.LogSuccess(TaskEnum.LoadPsa, $"Load successful. JSON: {responseString}");
-                var employees = EmployeesFromResponseString(responseString);
-                return employees;
+                var taskResult = EmployeesFromResponseString(responseString);
+                return taskResult;
             }
             else
             {

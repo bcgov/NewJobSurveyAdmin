@@ -5,6 +5,8 @@ namespace NewJobSurveyAdmin.Services
 {
     public class EmployeeTaskResult
     {
+        private static string NEW_LINE = System.Environment.NewLine;
+
         public EmployeeTaskResult(
             TaskEnum task,
             int candidateEmployeesCount,
@@ -54,6 +56,37 @@ namespace NewJobSurveyAdmin.Services
         public bool HasExceptions
         {
             get { return (ExceptionCount > 0); }
+        }
+
+        public TaskOutcomeEnum TaskOutcome
+        {
+            get
+            {
+                return this.HasExceptions
+                    ? TaskOutcomeEnum.Warn
+                    : TaskOutcomeEnum.Success;
+            }
+        }
+
+        public string Message
+        {
+            get
+            {
+                var message = $"Tried to {this.TaskVerb} " +
+                    $"{this.CandidateEmployeesCount} " +
+                    $"{this.TaskObjectNoun}. " +
+                    $"{this.GoodRecordCount} were successful. ";
+
+                if (this.HasExceptions)
+                {
+                    // There were exceptions. Add to the text.
+                    message +=
+                        $"There were {this.ExceptionCount} errors: " +
+                        $"{string.Join(NEW_LINE, this.Exceptions)} ";
+                }
+
+                return message;
+            }
         }
     }
 }

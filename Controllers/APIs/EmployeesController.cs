@@ -28,6 +28,7 @@ namespace NewJobSurveyAdmin.Controllers
         private readonly LoggingService logger;
         private readonly CsvService csvService;
         private readonly PsaApiService psaApiService;
+        private readonly EmailService emailService;
 
         public EmployeesController(
             NewJobSurveyAdminContext context,
@@ -36,7 +37,8 @@ namespace NewJobSurveyAdmin.Controllers
             CallWebService callWebService,
             LoggingService loggingService,
             CsvService csvService,
-            PsaApiService psaApiService
+            PsaApiService psaApiService,
+            EmailService emailService
         )
         {
             this.context = context;
@@ -46,6 +48,7 @@ namespace NewJobSurveyAdmin.Controllers
             this.csvService = csvService;
             this.logger = loggingService;
             this.psaApiService = psaApiService;
+            this.emailService = emailService;
         }
 
         // GET: api/Employees
@@ -188,13 +191,17 @@ namespace NewJobSurveyAdmin.Controllers
                     TaskEnum.LoadFromJson,
                     employeesToLoad
                 );
-                return Ok(taskResult.GoodEmployees);
 
+                emailService.SendTaskResultEmail(taskResult);
+
+                return Ok(taskResult.GoodEmployees);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
+                emailService.SendFailureEmail(TaskEnum.ParsePsa, exception);
+
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                  this, TaskEnum.ParsePsa, e, logger
+                  this, TaskEnum.ParsePsa, exception, logger
                 );
             }
         }
