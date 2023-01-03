@@ -48,6 +48,9 @@ To get set up:
 
 8. From the root project directory, run `dotnet ef database update`. This will
    run the migrations and set up your development database.
+   ENSURE THAT 
+   dotnet add package Microsoft.EntityFrameworkCore --version 3.1.4
+   dotnet add package Microsoft.EntityFrameworkCore.design --version 3.1.4
 
    Note that the database will be seeded automatically when the application is
    started.
