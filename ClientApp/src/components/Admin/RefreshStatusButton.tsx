@@ -28,7 +28,7 @@ const RefreshStatusButton = (): JSX.Element => {
 
   return (
     <ColumnarLabelledText
-      helperText="This will refresh all employee statuses and reconcile employees with CallWeb."
+      helperText="This will update employee statuses from CallWeb, as outlined in step 1 below."
       label="Refresh from CallWeb"
       columnClass="col-6"
     >

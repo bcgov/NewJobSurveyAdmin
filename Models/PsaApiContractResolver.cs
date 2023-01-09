@@ -15,7 +15,7 @@ public class PsaApiContractResolver : DefaultContractResolver
             {"AppointmentStatus", "APPOINTMENT STATUS"},
             {"BirthDate", "BIRTHDATE"},
             {"ChipsEmail", "CHIPS EMAIL"},
-            {"LocationCity", "CITY"},
+            {"ChipsCity", "CITY"},
             {"Classification", "CLASSIFICATION"},
             {"DepartmentId", "DEPTID"},
             {"DepartmentIdDescription", "DEPTID DESCR"},

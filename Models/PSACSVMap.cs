@@ -51,7 +51,7 @@ public class PsaCsvMap : ClassMap<Employee>
         Map(m => m.ChipsEmail).Name("CHIPS EMAIL");
         Map(m => m.ChipsFirstName).Name("FIRST NAME");
         Map(m => m.ChipsLastName).Name("LAST NAME");
-        Map(m => m.LocationCity).Name("CITY");
+        Map(m => m.ChipsCity).Name("CITY");
         Map(m => m.Classification).Name("CLASSIFICATION");
         Map(m => m.DepartmentId).Name("DEPTID");
         Map(m => m.DepartmentIdDescription).Name("DEPTID DESCR");

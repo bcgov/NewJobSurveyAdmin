@@ -1,6 +1,8 @@
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using System;
+using NewJobSurveyAdmin.Models;
 
 namespace NewJobSurveyAdmin.Services
 {
@@ -8,6 +10,8 @@ namespace NewJobSurveyAdmin.Services
     {
         private string FromName { get; set; }
         private string FromAddress { get; set; }
+        private string ToName { get; set; }
+        private string ToAddress { get; set; }
         private string SmtpServer { get; set; }
         private int SmtpPort { get; set; }
 
@@ -16,19 +20,63 @@ namespace NewJobSurveyAdmin.Services
         {
             FromName = options.Value.FromName;
             FromAddress = options.Value.FromAddress;
+            ToName = options.Value.ToName;
+            ToAddress = options.Value.ToAddress;
             SmtpServer = options.Value.SmtpServer;
             SmtpPort = options.Value.SmtpPort;
         }
 
-        public void SendEmail(
-            string toName, string toAddress,
-            string subject, string text
-        )
+        public void SendTaskResultEmail(EmployeeTaskResult taskResult)
         {
+            try
+            {
+                SendEmail(
+                    MessageHelper.EmailSubjectFromTaskAndOutcome(
+                        taskResult.Task, taskResult.TaskOutcome
+                    ),
+                    taskResult.Message
+                );
+            }
+            catch
+            {
+                // Fail silently; this is currently offered on a best-effort
+                // basis.
+            }
+        }
+
+        public void SendFailureEmail(TaskEnum task, Exception e)
+        {
+            try
+            {
+                SendEmail(
+                    MessageHelper.EmailSubjectFromTaskAndOutcome(
+                        task, TaskOutcomeEnum.Fail
+                    ),
+                    MessageHelper.MessageFromException(e)
+                );
+            }
+            catch
+            {
+                // Fail silently; this is currently offered on a best-effort
+                // basis.
+            }
+        }
+
+        protected void SendEmail(string subject, string text)
+        {
+            // This is a no-op if either ToName and ToAddress are null or blank
+            if (
+                ToName == null || ToName.Equals("") ||
+                ToAddress == null || ToAddress.Equals("")
+            )
+            {
+                return;
+            }
+
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(FromName, FromAddress));
-            message.To.Add(new MailboxAddress(toName, toAddress));
-            message.Subject = subject;
+            message.To.Add(new MailboxAddress(ToName, ToAddress));
+            message.Subject = $"[NJSA] {subject}";
 
             message.Body = new TextPart("plain")
             {

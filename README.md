@@ -8,17 +8,24 @@ The New Job Survey Admin tool will assist BC Stats in administering the BCPS New
 
 ### Prerequisites
 
-1. Ensure the [.NET Core SDK 3.1.20](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+1. Ensure the [.NET Core SDK 3.1.20](https://dotnet.microsoft.com/download/dotnet-core/3.1) (on the linked page, scroll down and expand the 3.1.2 disclosure arrow to find the correct SDK)
    is installed.
-2. Ensure the [.NET Core HTTPS development certificate is trusted](https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-3.1&tabs=visual-studio#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos).
-3. Install [Postgres](https://www.postgresql.org/download/) and create a
+2. Ensure you have the .NET EF Core CLI installed: `dotnet tool install dotnet-ef --version 6.0.0`
+3. Ensure the [.NET Core HTTPS development certificate is trusted](https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-3.1&tabs=visual-studio#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos).
+4. Install [Postgres](https://www.postgresql.org/download/) and create a
    database named `njsa`.
-4. Check out the code from this repository.
+5. Check out the code from this repository.
 
 **NB**. To be fully functional, the application should be run in conjunction
 with the CallWeb API. The code for the CallWeb API is not publicly available.
 Please reach out to the project team for access. However, the project will still
 build and run without the CallWeb API.
+
+### Install EF Core dependencies
+
+`dotnet tool install dotnet-ef --version 6.0.0`
+`dotnet add package Microsoft.EntityFrameworkCore --version 3.1.4`
+`dotnet add package Microsoft.EntityFrameworkCore.Design --version 3.1.4`
 
 ### Config + secret settings
 
@@ -48,6 +55,9 @@ To get set up:
 
 8. From the root project directory, run `dotnet ef database update`. This will
    run the migrations and set up your development database.
+   ENSURE THAT 
+   dotnet add package Microsoft.EntityFrameworkCore --version 3.1.4
+   dotnet add package Microsoft.EntityFrameworkCore.design --version 3.1.4
 
    Note that the database will be seeded automatically when the application is
    started.

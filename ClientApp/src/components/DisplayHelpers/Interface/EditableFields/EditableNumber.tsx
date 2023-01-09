@@ -65,6 +65,18 @@ const EditableNumber = ({
     )
   }
 
+  const onNumberChange = React.useCallback(
+    (e): void => {
+      const newValue = +e.target.value
+
+      if (isNaN(newValue)) setNewValue(`${min || 0}`)
+      else if (min !== undefined && newValue < min) setNewValue(`${min}`)
+      else if (max !== undefined && newValue > max) setNewValue(`${max}`)
+      else setNewValue(`${newValue}`)
+    },
+    [setNewValue]
+  )
+
   return (
     <div className={`EditableField EditableNumber ${inline && 'd-inline'}`}>
       {isEditable ? (
@@ -76,7 +88,7 @@ const EditableNumber = ({
             max={max}
             step={step}
             value={newValue}
-            onChange={(e): void => setNewValue(e.target.value)}
+            onChange={onNumberChange}
           />
           <input
             type="button"

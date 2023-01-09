@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NewJobSurveyAdmin.Migrations
 {
     [DbContext(typeof(NewJobSurveyAdminContext))]
-    [Migration("20211013200716_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211102154659_AddNewHireInternalStaffingIndex")]
+    partial class AddNewHireInternalStaffingIndex
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,6 +67,9 @@ namespace NewJobSurveyAdmin.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ChipsCity")
+                        .HasColumnType("text");
 
                     b.Property<string>("ChipsEmail")
                         .HasColumnType("text");
@@ -131,6 +134,9 @@ namespace NewJobSurveyAdmin.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LdapCity")
                         .HasColumnType("text");
 
                     b.Property<string>("LdapEmail")
@@ -286,6 +292,10 @@ namespace NewJobSurveyAdmin.Migrations
                     b.HasIndex("CurrentEmployeeStatusCode");
 
                     b.HasIndex("GovernmentEmployeeId");
+
+                    b.HasIndex("NewHireOrInternalStaffing");
+
+                    b.HasIndex("StaffingReason");
 
                     b.ToTable("Employees");
                 });

@@ -43,11 +43,12 @@ namespace NewJobSurveyAdmin.Services
                     //   `company`   is the organization
                     //   `sn`        is the surname / last name
                     //   `givenName` is the given name / first name
+                    //   `l`         is the location / city
                     ILdapSearchResults results = ldapConnection.Search(
                         Base,
                         LdapConnection.ScopeSub,
                         $"(employeeID={employeeId})",
-                        new string[] { "mail", "company", "sn", "givenName" },
+                        new string[] { "mail", "company", "sn", "givenName", "l" },
                         false
                     );
 
@@ -69,6 +70,7 @@ namespace NewJobSurveyAdmin.Services
                             if (attributeName.Equals("company")) infoModel.Organization = attributeVal;
                             if (attributeName.Equals("sn")) infoModel.LastName = attributeVal;
                             if (attributeName.Equals("givenName")) infoModel.FirstName = attributeVal;
+                            if (attributeName.Equals("l")) infoModel.City = attributeVal;
                         }
                     }
                 }

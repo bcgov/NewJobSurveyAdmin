@@ -28,6 +28,7 @@ namespace NewJobSurveyAdmin.Controllers
         private readonly LoggingService logger;
         private readonly CsvService csvService;
         private readonly PsaApiService psaApiService;
+        private readonly EmailService emailService;
 
         public EmployeesController(
             NewJobSurveyAdminContext context,
@@ -36,7 +37,8 @@ namespace NewJobSurveyAdmin.Controllers
             CallWebService callWebService,
             LoggingService loggingService,
             CsvService csvService,
-            PsaApiService psaApiService
+            PsaApiService psaApiService,
+            EmailService emailService
         )
         {
             this.context = context;
@@ -46,6 +48,7 @@ namespace NewJobSurveyAdmin.Controllers
             this.csvService = csvService;
             this.logger = loggingService;
             this.psaApiService = psaApiService;
+            this.emailService = emailService;
         }
 
         // GET: api/Employees
@@ -72,6 +75,7 @@ namespace NewJobSurveyAdmin.Controllers
 
             var sievedEmployees = await sieveProcessor
                 .GetPagedAsync(employees, sieveModel);
+
             Response.Headers.Add("X-Pagination", sievedEmployees
                 .SerializeMetadataToJson());
 
@@ -90,6 +94,36 @@ namespace NewJobSurveyAdmin.Controllers
             }
 
             return employee;
+        }
+
+        // GET: api/Employees/Values/StaffingReason
+        [HttpGet("Values/StaffingReason")]
+        public async Task<ActionResult<List<string>>> ValuesStaffingReason()
+        {
+            var uniqueValues = await context
+                .Employees
+                .Select(e => e.StaffingReason)
+                .Distinct()
+                .ToListAsync();
+
+            uniqueValues.Sort();
+
+            return uniqueValues;
+        }
+
+        // GET: api/Employees/Values/NewHireOrInternalStaffing
+        [HttpGet("Values/NewHireOrInternalStaffing")]
+        public async Task<ActionResult<List<string>>> ValuesNewHireOrInternalStaffing()
+        {
+            var uniqueValues = await context
+                .Employees
+                .Select(e => e.NewHireOrInternalStaffing)
+                .Distinct()
+                .ToListAsync();
+
+            uniqueValues.Sort();
+
+            return uniqueValues;
         }
 
         // PATCH: api/Employees/5
@@ -145,11 +179,11 @@ namespace NewJobSurveyAdmin.Controllers
                 if (startIndex > -1 && count > 0)
                 {
                     // TODO: Validate.
-                    employeesToLoad = currentEmployees.GetRange(startIndex, count);
+                    employeesToLoad = currentEmployees.GoodEmployees.GetRange(startIndex, count);
                 }
                 else
                 {
-                    employeesToLoad = currentEmployees;
+                    employeesToLoad = currentEmployees.GoodEmployees;
                 }
 
                 // Reconcile the employees with the database.
@@ -157,13 +191,17 @@ namespace NewJobSurveyAdmin.Controllers
                     TaskEnum.LoadFromJson,
                     employeesToLoad
                 );
-                return Ok(taskResult.GoodEmployees);
 
+                emailService.SendTaskResultEmail(taskResult);
+
+                return Ok(taskResult.GoodEmployees);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
+                emailService.SendFailureEmail(TaskEnum.ParsePsa, exception);
+
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                  this, TaskEnum.LoadPsa, e, logger
+                  this, TaskEnum.ParsePsa, exception, logger
                 );
             }
         }

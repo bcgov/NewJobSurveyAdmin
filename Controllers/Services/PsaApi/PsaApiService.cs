@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using NewJobSurveyAdmin.Models;
+using NewJobSurveyAdmin.Services;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,10 +10,14 @@ namespace NewJobSurveyAdmin.Services.PsaApi
     public class PsaApiService
     {
         private PsaApi PsaApi;
+        private LoggingService logger;
+        private EmailService emailService;
 
         public PsaApiService(
             IOptions<PsaApiServiceOptions> options,
-            IHttpClientFactory clientFactory
+            IHttpClientFactory clientFactory,
+            LoggingService logger,
+            EmailService emailService
         )
         {
             PsaApi = new PsaApi(
@@ -21,13 +26,20 @@ namespace NewJobSurveyAdmin.Services.PsaApi
                 options.Value.ClientPassword,
                 clientFactory
             );
+            this.logger = logger;
+            this.emailService = emailService;
         }
 
-        public async Task<List<Employee>> GetCurrent()
+        public async Task<EmployeeTaskResult> GetCurrent()
         {
-            var response = await PsaApi.GetAllEmployees();
+            var taskResult = await PsaApi.GetAllEmployees(logger);
 
-            return response;
+            await logger.LogEmployeeTaskResult(taskResult);
+
+            // Send email on best effort basis
+            emailService.SendTaskResultEmail(taskResult);
+
+            return taskResult;
         }
     }
 }

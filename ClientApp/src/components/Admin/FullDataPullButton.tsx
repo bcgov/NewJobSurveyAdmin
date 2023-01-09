@@ -28,7 +28,7 @@ const FullDataPull = (): JSX.Element => {
 
   return (
     <ColumnarLabelledText
-      helperText="This will trigger an execution of the daily scheduled task."
+      helperText="This will trigger an execution of the daily scheduled task, as outlined in steps 1&ndash;3 below."
       label="Run scheduled task"
       columnClass="col-6"
     >

@@ -1,4 +1,5 @@
 using NewJobSurveyAdmin.Services;
+using Newtonsoft.Json;
 using Sieve.Attributes;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,10 @@ namespace NewJobSurveyAdmin.Models
 
         // Personal info (ID, names, etc.)
 
-        [Sieve(CanFilter = true)] [Required] public string GovernmentEmployeeId { get; set; }
+        [Sieve(CanFilter = true)]
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string GovernmentEmployeeId { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string FirstName { get; set; }
@@ -40,9 +44,10 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string LastName { get; set; }
 
-        [DataType(DataType.Date)] [Required] public DateTime BirthDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime BirthDate { get; set; }
 
-        [Required] public string Gender { get; set; }
+        public string Gender { get; set; }
 
         public string Age { get; set; }
 
@@ -57,6 +62,9 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsLastName { get; set; }
 
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string ChipsCity { get; set; }
+
 
         // Ldap information (from the LDAP lookup)
         [Sieve(CanFilter = true, CanSort = true)]
@@ -69,7 +77,11 @@ namespace NewJobSurveyAdmin.Models
         public string LdapLastName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
+        public string LdapCity { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string LdapOrganization { get; set; }
+
 
         // Contact info
 
@@ -79,44 +91,53 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string PreferredEmail { get; set; }
 
-        [Required] public Boolean PreferredEmailFlag { get; set; }
+        public Boolean PreferredEmailFlag { get; set; }
 
 
         // Employee job info
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required]
         public string Classification { get; set; }
 
-        [Required] public string Organization { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string Organization { get; set; }
 
-        [Required] public string DepartmentId { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string DepartmentId { get; set; }
 
-        [Required] public string DepartmentIdDescription { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string DepartmentIdDescription { get; set; }
 
-        [Required] public string DevelopmentRegion { get; set; }
+        public string DevelopmentRegion { get; set; }
 
-        [Required] public string LocationCity { get; set; }
+        public string LocationCity { get; set; }
 
-        [Required] public string LocationGroup { get; set; }
+        public string LocationGroup { get; set; }
 
-        [Required] public string JobCode { get; set; }
+        public string JobCode { get; set; }
 
-        [Required] public string PositionCode { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string PositionCode { get; set; }
 
-        [Required] public string PositionTitle { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string PositionTitle { get; set; }
 
-        [Required] public string JobClassificationGroup { get; set; }
+        public string JobClassificationGroup { get; set; }
 
-        [Required] public string NocCode { get; set; }
+        public string NocCode { get; set; }
 
-        [Required] public string NocDescription { get; set; }
+        public string NocDescription { get; set; }
 
-        [Required] public string OrganizationCount { get; set; }
+        public string OrganizationCount { get; set; }
 
-        [Required] public string RegionalDistrict { get; set; }
+        public string RegionalDistrict { get; set; }
 
-        [Required] public string UnionCode { get; set; }
+        public string UnionCode { get; set; }
 
 
         // Hiring info
@@ -124,26 +145,35 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         [DataType(DataType.Date)]
         [Required]
+        [JsonProperty(Required = Required.Always)]
         public DateTime EffectiveDate { get; set; }
 
         [Required]
+        [JsonProperty(Required = Required.Always)]
         [Sieve(CanFilter = true, CanSort = true)]
         public string AppointmentStatus { get; set; }
 
-        [Required] public string ServiceYears { get; set; }
+        public string ServiceYears { get; set; }
 
-        [Required] public string RecordCount { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string RecordCount { get; set; }
 
-        [Required] public string StaffingAction { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string StaffingAction { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         [Required]
+        [JsonProperty(Required = Required.Always)]
         public string StaffingReason { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        [Required] public string NewHireOrInternalStaffing { get; set; }
+        [Required]
+        [JsonProperty(Required = Required.Always)]
+        public string NewHireOrInternalStaffing { get; set; }
 
-        [Required] public string TaToPermanent { get; set; }
+        public string TaToPermanent { get; set; }
 
 
         // Prior job info
@@ -211,39 +241,18 @@ namespace NewJobSurveyAdmin.Models
 
         public Boolean TriedToUpdateInFinalState { get; set; }
 
-
         // Methods
 
-        /// <summary>
-        /// Method to compare properties between two Employees ("this" one, i.e.
-        /// the one this method is being called on, and another candidate one).
-        /// Used when we need to determine which fields have been updated on a
-        /// PATCHed user. Note the intentionally excluded properties; these will
-        /// never get set in a PATCH and so are not compared.
-        /// </summary>
-        /// <param name="candidate">The other Employee to compare this one against.</param>
-        /// <returns>
-        /// An enumerable list of properties that differ between the two
-        /// Employees, including the property name, the value in "this"
-        /// Employee, and the value in the candidate Employee.
-        /// </returns>
-        public IEnumerable<PropertyVariance> PropertyCompare(Employee candidate)
+        public System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> NullRequiredProperties()
         {
-            return this.DetailedCompare(candidate)
-                .Where(d =>
-                    d.PropertyInfo.Name != nameof(Id) &&
-                    d.PropertyInfo.Name != nameof(Telkey) &&
-                    d.PropertyInfo.Name != nameof(CurrentEmployeeStatusCode) &&
-                    d.PropertyInfo.Name != nameof(CurrentEmployeeStatus) &&
-                    d.PropertyInfo.Name != nameof(TimelineEntries) &&
-                    d.PropertyInfo.Name != nameof(CreatedTs) &&
-                    d.PropertyInfo.Name != nameof(ModifiedTs) &&
-                    d.PropertyInfo.Name != nameof(PreferredFirstName) &&
-                    d.PropertyInfo.Name != nameof(PreferredEmail) &&
-                    d.PropertyInfo.Name != nameof(PreferredFirstNameFlag) &&
-                    d.PropertyInfo.Name != nameof(PreferredEmailFlag)
-                );
+            var properties = this.GetType().GetProperties()
+                .Where(prop => prop.IsDefined(typeof(RequiredAttribute), false));
+
+            var nullProperties = properties.Where(p => p.GetValue(this) == null);
+
+            return nullProperties;
         }
+
 
         /// <summary>
         /// Convenience method to generate an employee's full name, which is a
@@ -273,18 +282,26 @@ namespace NewJobSurveyAdmin.Models
             LdapLastName = ldapInfo.LastName;
             LdapEmail = ldapInfo.Email;
             LdapOrganization = ldapInfo.Organization;
+            LdapCity = ldapInfo.City;
 
-            if (LdapFirstName == null && LdapLastName == null && LdapEmail == null)
+            if (LdapEmail == null && (ChipsEmail == null || ChipsEmail.Equals("")))
             {
-                throw new NoLdapInfoException($"No LDAP info for user with ID {GovernmentEmployeeId}.");
+                // Throw an exception only when there's no LDAP email *and* no
+                // CHIPS email.
+                throw new NoInfoException(
+                    $"User with ID {GovernmentEmployeeId} has neither a CHIPS nor an LDAP email."
+                );
             }
-            else if (ldapInfo.Organization.Equals("BC Assessment"))
+            else if (
+                ldapInfo.Organization != null &&
+                ldapInfo.Organization.Equals("BC Assessment"))
             {
                 // If the organization is "BC Assessment", we need to use the
                 // CHIPS values regardless. This is due to an ID clash.
                 FirstName = ChipsFirstName;
                 LastName = ChipsLastName;
                 GovernmentEmail = ldapInfo.EmailOverride ?? ChipsEmail;
+                LocationCity = ChipsCity;
             }
             else
             {
@@ -293,6 +310,7 @@ namespace NewJobSurveyAdmin.Models
                 FirstName = ldapInfo.FirstName ?? ChipsFirstName;
                 LastName = ldapInfo.LastName ?? ChipsLastName;
                 GovernmentEmail = ldapInfo.EmailOverride ?? ldapInfo.Email ?? ChipsEmail;
+                LocationCity = ldapInfo.City ?? ChipsCity;
             }
         }
 

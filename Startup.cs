@@ -75,6 +75,10 @@ namespace NewJobSurveyAdmin
             services.AddScoped<EmployeeBlackoutPeriodService>();
             services.AddScoped<EmployeeReconciliationService>();
 
+            // Email service.
+            services.Configure<EmailServiceOptions>(Configuration.GetSection("Email"));
+            services.AddScoped<EmailService>();
+
             // Logging to TaskLogEntries.
             services.AddScoped<LoggingService>();
 
@@ -102,7 +106,7 @@ namespace NewJobSurveyAdmin
                     Authentication.SetJwtBearerOptions(
                         options,
                         Configuration.GetValue<string>("Authentication:Authority"),
-                        Configuration.GetValue<string>("Authentication:RoleName")
+                        Configuration.GetValue<string>("Authentication:Audience")
                     )
                 );
 

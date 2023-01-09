@@ -10,10 +10,14 @@ export const employeeFilters: Filter[] = [
   new TextFilter('preferredFirstName'),
   new TextFilter('lastName'),
   new TextFilter('preferredEmail'),
-  new TextFilter('staffingReason'),
   new DateFilter('effectiveDate'),
   new DateFilter('importDate'),
-  new EnumFilter('newHireOrInternalStaffing'),
+  new EnumFilter(
+    'newHireOrInternalStaffing',
+    undefined,
+    'Employees/Values/NewHireOrInternalStaffing'
+  ),
   new EnumFilter('currentEmployeeStatusCode'),
+  new EnumFilter('hiringReason', undefined, 'Employees/Values/StaffingReason'),
   new CustomFilter('blankEmail')
 ]

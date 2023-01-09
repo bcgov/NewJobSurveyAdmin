@@ -26,7 +26,10 @@ class HealthStatus extends React.Component<Props, State> {
     const contents =
       this.state.status === undefined ? (
         <p>
-          <em>Loading...</em>
+          <em>
+            Loading health check; if this does not disappear soon, API is
+            probably down.
+          </em>
         </p>
       ) : (
         <p>{this.state.status}</p>

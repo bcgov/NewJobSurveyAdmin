@@ -61,8 +61,8 @@ const DatePreviewDate = ({
             </div>
           </div>
         </div>
-        {plusDaysToNext && (
-          <div className="PlusDaysToNext col-6 offset-1 d-flex align-items-center my-4">
+        {plusDaysToNext !== undefined && (
+          <div className="PlusDaysToNext col-12 offset-1 d-flex align-items-center my-4">
             <div>+</div>
             <div>
               <strong>
@@ -79,6 +79,7 @@ const DatePreviewDate = ({
                       )
                     }}
                     min={0}
+                    max={365}
                     step={1}
                   />
                 ) : (
@@ -86,7 +87,7 @@ const DatePreviewDate = ({
                 )}
               </strong>
             </div>
-            <div>&nbsp;day{plusDaysToNext > 1 && 's'}</div>
+            <div>&nbsp;day{plusDaysToNext !== 1 && 's'}</div>
           </div>
         )}
       </div>
