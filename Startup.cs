@@ -106,7 +106,8 @@ namespace NewJobSurveyAdmin
                     Authentication.SetJwtBearerOptions(
                         options,
                         Configuration.GetValue<string>("Authentication:Authority"),
-                        Configuration.GetValue<string>("Authentication:Audience")
+                        Configuration.GetValue<string>("Authentication:Audience"),
+                        Configuration.GetValue<string>("Authentication:RoleClaimType")
                     )
                 );
 
@@ -115,7 +116,8 @@ namespace NewJobSurveyAdmin
                 .AddAuthorization(options =>
                     Authentication.SetAuthorizationOptions(
                         options,
-                        Configuration.GetValue<string>("Authentication:RoleName")
+                        Configuration.GetValue<string>("Authentication:RoleName"),
+                        Configuration.GetValue<string>("Authentication:RoleClaimType")
                     )
                 );
 
