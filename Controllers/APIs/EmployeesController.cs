@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace NewJobSurveyAdmin.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "UserRole")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
