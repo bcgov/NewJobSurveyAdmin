@@ -28,8 +28,8 @@
     <PackageReference Include="Sieve" Version="2.3.3" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <None Include="appsettings.Production.json" CopyToPublishDirectory="Always" />
-  </ItemGroup>
+  </ItemGroup> -->
 
 </Project>
