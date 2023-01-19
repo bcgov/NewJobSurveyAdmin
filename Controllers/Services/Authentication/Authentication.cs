@@ -37,8 +37,7 @@ namespace NewJobSurveyAdmin.Services
 
         public static void SetAuthorizationOptions(
             AuthorizationOptions options,
-            string roleName,
-            string roleClaimType
+            string roleName
         )
         {
             options.AddPolicy("UserRole", policy =>

@@ -116,8 +116,7 @@ namespace NewJobSurveyAdmin
                 .AddAuthorization(options =>
                     Authentication.SetAuthorizationOptions(
                         options,
-                        Configuration.GetValue<string>("Authentication:RoleName"),
-                        Configuration.GetValue<string>("Authentication:RoleClaimType")
+                        Configuration.GetValue<string>("Authentication:RoleName")
                     )
                 );
 
