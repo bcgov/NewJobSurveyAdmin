@@ -14,32 +14,34 @@ namespace NewJobSurveyAdmin.Services
         }
 
         public static void SetJwtBearerOptions(
-            JwtBearerOptions options, string authority, string audience
+            JwtBearerOptions options,
+            string authority,
+            string audience,
+            string roleClaimType
         )
         {
-            // TODO: Review this section.
             options.Authority = authority;
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                // BC Dev Keycloak
                 ValidAudiences = new string[]
                 {
-                    audience, "account", "realm-management"
+                    audience
                 },
-                RoleClaimType = "role" // Roles in the token for the client.
+                RoleClaimType = roleClaimType
             };
-            options.RequireHttpsMetadata = false; // TODO: Remove?
+            options.RequireHttpsMetadata = true;
             options.SaveToken = true;
 
             options.Validate();
         }
 
         public static void SetAuthorizationOptions(
-            AuthorizationOptions options, string roleName
+            AuthorizationOptions options,
+            string roleName
         )
         {
             options.AddPolicy("UserRole", policy =>
-                policy.RequireClaim("role", $"[{roleName}]")
+                policy.RequireRole(roleName)
             );
         }
     }
