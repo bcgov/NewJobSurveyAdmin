@@ -5,9 +5,10 @@ import { TaskLogEntry } from '../../types/TaskLogEntry'
 import FormattedDate from '../DisplayHelpers/FormattedDate'
 import TaskComment from './TaskComment'
 import TaskOutcome from './TaskOutcome'
+import { FixTypeLater } from '../../types/FixTypeLater'
 
 type TaskLogEntryCellProps = React.PropsWithChildren<
-  CellProps<TaskLogEntry, string | undefined>
+  CellProps<TaskLogEntry, FixTypeLater>
 >
 
 export const taskLogEntryTableColumns = (): Column<TaskLogEntry>[] => [
