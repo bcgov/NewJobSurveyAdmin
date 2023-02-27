@@ -66,35 +66,40 @@ export class Employee {
   public unionCode?: string
 
   // Dates
-  @Transform((date: string) => dateOrUndefined(date))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value))
   public birthDate?: Date
-  @Transform((date: string) => dateOrUndefined(date))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value))
   public effectiveDate?: Date
-  @Transform((date: string) => dateOrUndefined(date))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value))
   public priorEffectiveDate?: Date
-  @Transform((date: string) => dateOrUndefined(date))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value))
   public inviteDate?: Date
-  @Transform((date: string) => dateOrUndefined(date))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value))
   public reminder1Date?: Date
-  @Transform((date: string) => dateOrUndefined(date))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value))
   public reminder2Date?: Date
-  @Transform((date: string) => dateOrUndefined(date))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value))
   public deadlineDate?: Date
 
   // UTC Datetimes
-  @Transform((date: string) => dateOrUndefined(date, true))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value, true))
   public createdTs?: Date
-  @Transform((date: string) => dateOrUndefined(date, true))
+  @Transform(({ value }: { value: string }) => dateOrUndefined(value, true))
   public modifiedTs?: Date
 
   // Fields requiring custom transformation annotations
-
-  @Transform((k: AppointmentStatusEnum) => AppointmentStatus.fromKey(k))
+  @Transform(({ value }: { value: AppointmentStatusEnum }) =>
+    AppointmentStatus.fromKey(value)
+  )
   public appointmentStatus?: AppointmentStatus
-  @Transform((k: AppointmentStatusEnum) => AppointmentStatus.fromKey(k))
+  @Transform(({ value }: { value: AppointmentStatusEnum }) =>
+    AppointmentStatus.fromKey(value)
+  )
   public priorAppointmentStatus?: AppointmentStatus
 
-  @Transform((k: EmployeeStatusEnum) => EmployeeStatus.fromKey(k))
+  @Transform(({ value }: { value: EmployeeStatusEnum }) =>
+    EmployeeStatus.fromKey(value)
+  )
   public currentEmployeeStatusCode?: EmployeeStatus
 
   @Type(() => EmployeeTimelineEntry)

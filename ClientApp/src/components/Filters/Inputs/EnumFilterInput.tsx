@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 
 import { FilterDispatch } from '../FilterForm'
 import { FixTypeLater } from '../../../types/FixTypeLater'
@@ -25,7 +25,7 @@ const EnumFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
     dispatch({ type: 'setFilter', filter: clone })
   }, [filter, selectValues, dispatch])
 
-  const handleChange = React.useCallback((changeObj): void => {
+  const handleChange = React.useCallback((changeObj: FixTypeLater): void => {
     changeObj == null ? setSelectValues([]) : setSelectValues(changeObj)
   }, [])
 
