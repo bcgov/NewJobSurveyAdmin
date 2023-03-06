@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react'
 
-import { signinRedirectOptions } from '../../helpers/envHelper'
-import userManager from '../../store/utils/userManager'
+import { windowLocation } from '../../helpers/envHelper'
+import KeycloakService from './KeycloakService'
+import LoginButton from './LoginButton'
 
 const Unauthorized = (): JSX.Element => {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      userManager.signinRedirect(signinRedirectOptions)
-    }, 100)
-    return (): void => clearTimeout(timer)
+    windowLocation.save()
+    KeycloakService.doLogin()
   }, [])
 
   return (
@@ -17,14 +16,7 @@ const Unauthorized = (): JSX.Element => {
         <h1 className="text-primary display-4 my-5">New Job Survey Admin</h1>
         <h1>You must log in to view this page.</h1>
         <p>You will be redirected shortly. If not, click the button below.</p>
-        <button
-          className="btn btn-lg btn-outline-primary mt-3"
-          onClick={(): Promise<void> =>
-            userManager.signinRedirect(signinRedirectOptions)
-          }
-        >
-          Click here to log in &rarr;
-        </button>
+        <LoginButton />
       </div>
     </div>
   )

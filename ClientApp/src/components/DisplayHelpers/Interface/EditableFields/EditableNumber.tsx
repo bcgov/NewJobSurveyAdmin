@@ -2,10 +2,10 @@ import React from 'react'
 
 import { FixTypeLater } from '../../../../types/FixTypeLater'
 import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
-import { userNameFromState } from '../../../../helpers/userHelper'
 import SuccessMessage from '../../../Employees/SuccessMessage'
 
 import './EditableField.scss'
+import KeycloakService from '../../../Login/KeycloakService'
 
 export interface SelectOption {
   name: string
@@ -52,7 +52,7 @@ const EditableNumber = ({
       'patch',
       {
         [fieldName]: newValue,
-        AdminUserName: userNameFromState(),
+        AdminUserName: KeycloakService.getUsername(),
       },
       'CANNOT_EDIT_EMPLOYEE',
       (response): void => {

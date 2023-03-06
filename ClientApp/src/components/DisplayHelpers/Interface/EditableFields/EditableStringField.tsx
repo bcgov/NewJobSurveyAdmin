@@ -2,10 +2,10 @@ import React from 'react'
 
 import { AnyJson } from '../../../../types/JsonType'
 import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
-import { userNameFromState } from '../../../../helpers/userHelper'
+import SuccessMessage from '../../../Employees/SuccessMessage'
 
 import './EditableField.scss'
-import SuccessMessage from '../../../Employees/SuccessMessage'
+import KeycloakService from '../../../Login/KeycloakService'
 
 interface Props {
   modelDatabaseId: string
@@ -25,7 +25,7 @@ const EditableStringField = (props: Props): JSX.Element => {
     modelPath,
     refreshDataCallback,
     validator,
-    ignoreAdminUserName
+    ignoreAdminUserName,
   } = props
 
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -60,7 +60,7 @@ const EditableStringField = (props: Props): JSX.Element => {
     (event: React.FormEvent<HTMLFormElement>): void => {
       const patchBody = { [fieldName]: newValue }
       if (!ignoreAdminUserName) {
-        patchBody['AdminUserName'] = userNameFromState()!
+        patchBody['AdminUserName'] = KeycloakService.getUsername()
       }
       event.preventDefault()
       requestJSONWithErrorHandler(
@@ -83,7 +83,7 @@ const EditableStringField = (props: Props): JSX.Element => {
       refreshDataCallback,
       toggleEditable,
       modelPath,
-      ignoreAdminUserName
+      ignoreAdminUserName,
     ]
   )
 
