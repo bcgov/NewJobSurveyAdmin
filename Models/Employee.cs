@@ -23,7 +23,6 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public virtual string Telkey { get; set; }
 
-
         // Personal info (ID, names, etc.)
 
         [Sieve(CanFilter = true)]
@@ -51,7 +50,6 @@ namespace NewJobSurveyAdmin.Models
 
         public string Age { get; set; }
 
-
         // Chips information (from the PSA extract)
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsEmail { get; set; }
@@ -64,7 +62,6 @@ namespace NewJobSurveyAdmin.Models
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string ChipsCity { get; set; }
-
 
         // Ldap information (from the LDAP lookup)
         [Sieve(CanFilter = true, CanSort = true)]
@@ -82,7 +79,6 @@ namespace NewJobSurveyAdmin.Models
         [Sieve(CanFilter = true, CanSort = true)]
         public string LdapOrganization { get; set; }
 
-
         // Contact info
 
         [Sieve(CanFilter = true, CanSort = true)]
@@ -92,7 +88,6 @@ namespace NewJobSurveyAdmin.Models
         public string PreferredEmail { get; set; }
 
         public Boolean PreferredEmailFlag { get; set; }
-
 
         // Employee job info
 
@@ -139,7 +134,6 @@ namespace NewJobSurveyAdmin.Models
 
         public string UnionCode { get; set; }
 
-
         // Hiring info
 
         [Sieve(CanFilter = true, CanSort = true)]
@@ -175,7 +169,6 @@ namespace NewJobSurveyAdmin.Models
 
         public string TaToPermanent { get; set; }
 
-
         // Prior job info
 
         public string PriorAppointmentStatus { get; set; }
@@ -206,7 +199,6 @@ namespace NewJobSurveyAdmin.Models
 
         public string PriorUnionCode { get; set; }
 
-
         // Calculated date fields
 
         [Sieve(CanFilter = true, CanSort = true)]
@@ -229,7 +221,6 @@ namespace NewJobSurveyAdmin.Models
         [Required]
         public DateTime DeadlineDate { get; set; }
 
-
         // Additional generated fields
 
         [Sieve(CanFilter = true, CanSort = true)]
@@ -245,14 +236,14 @@ namespace NewJobSurveyAdmin.Models
 
         public System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> NullRequiredProperties()
         {
-            var properties = this.GetType().GetProperties()
+            var properties = this.GetType()
+                .GetProperties()
                 .Where(prop => prop.IsDefined(typeof(RequiredAttribute), false));
 
             var nullProperties = properties.Where(p => p.GetValue(this) == null);
 
             return nullProperties;
         }
-
 
         /// <summary>
         /// Convenience method to generate an employee's full name, which is a
@@ -266,15 +257,13 @@ namespace NewJobSurveyAdmin.Models
         /// <summary>
         /// Retrieve an employee's first name, last name, and email from LDAP,
         /// as they may have been updated since the PSA data extract.
-        /// 
+        ///
         /// If the LDAP lookup finds a person with the employee's employee ID
         /// who works at BC Assessment, we must ignore the LDAP values. This is
         /// because there is a clash between employee IDs — they are not unique.
         /// </summary>
         /// <param name="infoLookupService">The <see cref="NewJobSurveyAdmin.Services.EmployeeInfoLookupService" /> to be used to look up the info.</param>
-        public void UpdateInfoFromLdap(
-            EmployeeInfoLookupService infoLookupService
-        )
+        public void UpdateInfoFromLdap(EmployeeInfoLookupService infoLookupService)
         {
             var ldapInfo = infoLookupService.GetEmployeeInfoFromLdap(GovernmentEmployeeId);
 
@@ -292,9 +281,7 @@ namespace NewJobSurveyAdmin.Models
                     $"User with ID {GovernmentEmployeeId} has neither a CHIPS nor an LDAP email."
                 );
             }
-            else if (
-                ldapInfo.Organization != null &&
-                ldapInfo.Organization.Equals("BC Assessment"))
+            else if (ldapInfo.Organization != null && ldapInfo.Organization.Equals("BC Assessment"))
             {
                 // If the organization is "BC Assessment", we need to use the
                 // CHIPS values regardless. This is due to an ID clash.
@@ -363,9 +350,7 @@ namespace NewJobSurveyAdmin.Models
         /// </returns>
         public string TaU7Flag()
         {
-            return StaffingReason.Equals("Temporary Appointment <7 Mnths")
-                ? "1"
-                : "";
+            return StaffingReason.Equals("Temporary Appointment <7 Mnths") ? "1" : "";
         }
 
         /// <summary>
@@ -403,6 +388,11 @@ namespace NewJobSurveyAdmin.Models
         public Boolean IsActive()
         {
             return EmployeeStatusEnum.IsActiveStatus(CurrentEmployeeStatusCode);
+        }
+
+        public override string ToString()
+        {
+            return $"{FullName} ({GovernmentEmployeeId})";
         }
     }
 }

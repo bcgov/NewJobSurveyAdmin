@@ -40,8 +40,8 @@ namespace NewJobSurveyAdmin.Services.CallWeb
             // If the service token is null, or if it's soon to expire, get a
             // new service token.
             if (
-                ServiceToken == null ||
-                DateTimeOffset.Now.ToUnixTimeSeconds() >= ServiceToken.ExpiresAtUnix
+                ServiceToken == null
+                || DateTimeOffset.Now.ToUnixTimeSeconds() >= ServiceToken.ExpiresAtUnix
             )
             {
                 var client = GetClient();
@@ -51,10 +51,8 @@ namespace NewJobSurveyAdmin.Services.CallWeb
                 tokenRequestBodyDict.Add("client_id", ClientId);
                 tokenRequestBodyDict.Add("client_secret", ClientSecret);
 
-                var res = await GetClient().PostAsync(
-                    TokenRequestUrl,
-                    new FormUrlEncodedContent(tokenRequestBodyDict)
-                );
+                var res = await GetClient()
+                    .PostAsync(TokenRequestUrl, new FormUrlEncodedContent(tokenRequestBodyDict));
 
                 var responseAsString = await res.Content.ReadAsStringAsync();
 
@@ -63,8 +61,7 @@ namespace NewJobSurveyAdmin.Services.CallWeb
                 // Set the expiry time based on the current time plus the
                 // length of time the token expires in, minus 60 seconds.
                 token.ExpiresAtUnix =
-                    DateTimeOffset.Now.ToUnixTimeSeconds()
-                    + token.expires_in - 60;
+                    DateTimeOffset.Now.ToUnixTimeSeconds() + token.expires_in - 60;
                 ServiceToken = token;
             }
 
@@ -88,8 +85,10 @@ namespace NewJobSurveyAdmin.Services.CallWeb
 
             var client = GetClient();
 
-            client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", accessToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Bearer",
+                accessToken
+            );
 
             return client;
         }
@@ -98,33 +97,23 @@ namespace NewJobSurveyAdmin.Services.CallWeb
         {
             var serializedObj = JsonConvert.SerializeObject(obj);
 
-            return new StringContent(
-                serializedObj, Encoding.UTF8, "application/json"
-            );
+            return new StringContent(serializedObj, Encoding.UTF8, "application/json");
         }
 
-        private async Task<CallWebRowDto> CallWebRowFromResponse(
-            HttpResponseMessage response
-        )
+        private async Task<CallWebRowDto> CallWebRowFromResponse(HttpResponseMessage response)
         {
             var responseAsString = await response.Content.ReadAsStringAsync();
 
-            var callWebDto = JsonConvert.DeserializeObject<CallWebRowDto>(
-                responseAsString
-            );
+            var callWebDto = JsonConvert.DeserializeObject<CallWebRowDto>(responseAsString);
 
             return callWebDto;
         }
 
-        private async Task<CallWebRowDto[]> CallWebRowsFromResponse(
-            HttpResponseMessage response
-        )
+        private async Task<CallWebRowDto[]> CallWebRowsFromResponse(HttpResponseMessage response)
         {
             var responseAsString = await response.Content.ReadAsStringAsync();
 
-            var callWebDtos = JsonConvert.DeserializeObject<CallWebRowDto[]>(
-                responseAsString
-            );
+            var callWebDtos = JsonConvert.DeserializeObject<CallWebRowDto[]>(responseAsString);
 
             return callWebDtos;
         }
@@ -147,6 +136,22 @@ namespace NewJobSurveyAdmin.Services.CallWeb
             return callWebDto;
         }
 
+        public async Task<CallWebRowDto[]> GetMultiple(string[] telkeys)
+        {
+            if (telkeys.Length == 0)
+            {
+                throw new Exception("GetMultiple: telkeys.Length was 0");
+            }
+
+            var client = await GetClientWithServiceToken();
+            var response = await client.GetAsync(
+                $"{BaseUrl}Multi?telkeys={String.Join(',', telkeys)}"
+            );
+            var callWebDtos = await CallWebRowsFromResponse(response);
+
+            return callWebDtos;
+        }
+
         public async Task<CallWebRowDto> Post(CallWebPostDto postDto)
         {
             var content = ToJsonContent(postDto);
@@ -158,6 +163,17 @@ namespace NewJobSurveyAdmin.Services.CallWeb
             return callWebDto;
         }
 
+        public async Task<CallWebRowDto[]> PostMultiple(List<CallWebPostDto> postDtos)
+        {
+            var content = ToJsonContent(postDtos.ToArray());
+
+            var client = await GetClientWithServiceToken();
+            var response = await client.PostAsync($"{BaseUrl}Multi", content);
+            var callWebDtos = await CallWebRowsFromResponse(response);
+
+            return callWebDtos;
+        }
+
         public async Task<CallWebRowDto> Patch(CallWebPatchDto patchDto)
         {
             var content = ToJsonContent(patchDto);
@@ -167,6 +183,17 @@ namespace NewJobSurveyAdmin.Services.CallWeb
             var callWebDto = await CallWebRowFromResponse(response);
 
             return callWebDto;
+        }
+
+        public async Task<CallWebRowDto[]> PatchMultiple(List<CallWebPatchDto> patchDtos)
+        {
+            var content = ToJsonContent(patchDtos.ToArray());
+
+            var client = await GetClientWithServiceToken();
+            var response = await client.PatchAsync($"{BaseUrl}Multi", content);
+            var callWebDtos = await CallWebRowsFromResponse(response);
+
+            return callWebDtos;
         }
     }
 }

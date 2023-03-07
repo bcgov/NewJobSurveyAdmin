@@ -13,55 +13,67 @@ namespace NewJobSurveyAdmin.Services
         private CallWebService callWeb;
         private NewJobSurveyAdminContext context;
         private LoggingService logger;
-        private EmployeeCreationService insertionService;
+        private EmployeeUpdateService updateService;
 
         public EmployeeBlackoutPeriodService(
             NewJobSurveyAdminContext context,
             CallWebService callWeb,
             LoggingService logger,
-            EmployeeCreationService insertionService
+            EmployeeUpdateService updateService
         )
         {
             this.context = context;
             this.callWeb = callWeb;
             this.logger = logger;
-            this.insertionService = insertionService;
+            this.updateService = updateService;
         }
 
-        public async Task<Employee> UpdateBlackoutPeriod(
-            Employee employee,
+        public async Task<TaskResult<Employee>> UpdateBlackoutPeriod(
+            List<Employee> employees,
             SurveyDates dates
         )
         {
-            // Update employee dates.
-            employee.SetDates(dates);
+            var taskResult = new TaskResult<Employee>();
 
-            // Update in CallWeb.
-            await callWeb.UpdateSurvey(employee);
-
-            // Create a new timeline entry.
-            employee.TimelineEntries.Add(new EmployeeTimelineEntry
+            foreach (var employee in employees)
             {
-                EmployeeActionCode = EmployeeActionEnum.UpdateByTask.Code,
-                EmployeeStatusCode = employee.CurrentEmployeeStatusCode,
-                Comment = $"Blackout dates unset by script. New dates: " +
-                          $"InviteDate → {dates.InviteDate.ToString("yyyy-MM-dd")}, " +
-                          $"Reminder1Date → {dates.Reminder1Date.ToString("yyyy-MM-dd")}, " +
-                          $"Reminder2Date → {dates.Reminder2Date.ToString("yyyy-MM-dd")}, " +
-                          $"DeadlineDate → {dates.DeadlineDate.ToString("yyyy-MM-dd")}."
-            });
-            context.Entry(employee).State = EntityState.Modified;
+                // Update employee dates.
+                employee.SetDates(dates);
+            }
 
-            // Save.
-            await context.SaveChangesAsync();
+            var employeesWithUpdatedSurveys = taskResult.AddIncremental(
+                await callWeb.UpdateSurveys(employees)
+            );
 
-            return employee;
+            foreach (var employee in employeesWithUpdatedSurveys)
+            {
+                // Create a new timeline entry.
+                employee.TimelineEntries.Add(
+                    new EmployeeTimelineEntry
+                    {
+                        EmployeeActionCode = EmployeeActionEnum.UpdateByTask.Code,
+                        EmployeeStatusCode = employee.CurrentEmployeeStatusCode,
+                        Comment =
+                            $"Blackout dates unset by script. New dates: "
+                            + $"InviteDate → {dates.InviteDate.ToString("yyyy-MM-dd")}, "
+                            + $"Reminder1Date → {dates.Reminder1Date.ToString("yyyy-MM-dd")}, "
+                            + $"Reminder2Date → {dates.Reminder2Date.ToString("yyyy-MM-dd")}, "
+                            + $"DeadlineDate → {dates.DeadlineDate.ToString("yyyy-MM-dd")}."
+                    }
+                );
+                context.Entry(employee).State = EntityState.Modified;
+            }
+
+            taskResult.AddFinal(
+                await updateService.SaveExistingEmployees(employeesWithUpdatedSurveys)
+            );
+
+            return taskResult;
         }
 
         public async Task<EmployeeTaskResult> UpdateBlackoutPeriods()
         {
-            var updatedEmployeeList = new List<Employee>();
-            var exceptionList = new List<string>();
+            var employeeTaskResult = new EmployeeTaskResult(TaskEnum.BlackoutPeriodUpdate);
 
             var blackoutPeriodSetting = await context.AdminSettings.FirstOrDefaultAsync(
                 i => i.Key.Equals(AdminSetting.IsBlackoutPeriod)
@@ -79,37 +91,25 @@ namespace NewJobSurveyAdmin.Services
             }
 
             // Otherwise, continue and update the blackout period.
-            var candidateEmployees = context.Employees
+            var employees = context.Employees
                 .Include(e => e.TimelineEntries)
-                .Where(
-                    e => (e.InviteDate.Equals(SurveyDateBuilder.BLACKOUT_DATE))
-                )
+                .Where(e => (e.InviteDate.Equals(SurveyDateBuilder.BLACKOUT_DATE)))
                 .ToList();
 
             var newDates = await SurveyDateBuilder.GetDatesBasedOnAdminSettings(context);
 
-            foreach (Employee e in candidateEmployees)
+            // Do this in a batch, working with 100 employees at a time.
+            var BATCH_SIZE = 100;
+            var NUM_BATCHES = (int)Math.Ceiling((double)employees.Count() / BATCH_SIZE);
+            for (var i = 0; i < NUM_BATCHES; i++)
             {
-                try
-                {
-                    var employee = await UpdateBlackoutPeriod(e, newDates);
-                    updatedEmployeeList.Add(employee);
-                }
-                catch (Exception exception)
-                {
-                    exceptionList.Add(
-                        $"Exception updating blackout period of employee {e.FullName} " +
-                        $"(ID: {e.GovernmentEmployeeId}): {exception.GetType()}: {exception.Message} "
-                    );
-                }
+                var employeesInBatch = employees.Skip(i * BATCH_SIZE).Take(BATCH_SIZE).ToList();
+                employeeTaskResult.AddFinalStep(
+                    await UpdateBlackoutPeriod(employeesInBatch, newDates)
+                );
             }
 
-            return new EmployeeTaskResult(
-                TaskEnum.BlackoutPeriodUpdate,
-                candidateEmployees.Count,
-                updatedEmployeeList,
-                exceptionList
-            );
+            return employeeTaskResult;
         }
     }
 }
