@@ -27,6 +27,7 @@ const fieldLabels: { [key: string]: string } = {
   currentEmployeeStatusCode: 'Current status',
   deadlineDate: 'Deadline date',
   departmentId: 'Department ID',
+  departmentIdDescription: 'Department ID dsecription',
   effectiveDate: 'Hire effective date',
   exitCount: 'Exit count',
   firstName: 'First name',
@@ -51,7 +52,8 @@ const fieldLabels: { [key: string]: string } = {
   locationGroup: 'Location group',
   logDate: 'Log date',
   ministry: 'Ministry',
-  modifiedTs: 'Last modified date',
+  modifiedTs: 'Last modified date (UTC timestamp)',
+  lastModifiedDate: 'Last modified date',
   newHireOrInternalStaffing: 'New hire or internal staffing',
   originalHireDate: 'Original hire date',
   organization: 'Organization',
@@ -69,21 +71,21 @@ const fieldLabels: { [key: string]: string } = {
   taskOutcomeCode: 'Status',
   telkey: 'Telkey',
   timelineEntries: '',
-  triedToUpdateInFinalState: 'Tried to update in final state'
+  triedToUpdateInFinalState: 'Tried to update in final state',
 }
 
 const mapEnumToOptions = (
   enumeration: Record<string, string>
 ): (() => SelectOption[]) => {
   console.log('enumeration', enumeration)
-  Object.values(enumeration).map(v => {
+  Object.values(enumeration).map((v) => {
     console.log('v', v)
   })
 
   return (): SelectOption[] => {
-    return Object.keys(enumeration).map(enumKey => ({
+    return Object.keys(enumeration).map((enumKey) => ({
       name: enumeration[enumKey],
-      value: enumKey
+      value: enumKey,
     }))
   }
 }
@@ -94,7 +96,7 @@ const optionsForEnum: { [key: string]: () => SelectOption[] } = {
   taskCode: mapEnumToOptions(TaskEnum),
   appointmentStatus: AppointmentStatus.toOptions,
   newHireOrInternalStaffing: () => [],
-  hiringReason: () => []
+  hiringReason: () => [],
 }
 
 export const labelFor = (fieldName: string): string => fieldLabels[fieldName]

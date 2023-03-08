@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 import { AdminSetting, AdminSettingKeyEnum } from '../../types/AdminSetting'
 import AdminDataPullDayOfWeek from './AdminDataPullDayOfWeek'
@@ -16,37 +16,37 @@ interface Props {
 
 const DatePreview = ({
   adminSettings,
-  setAdminSettings
+  setAdminSettings,
 }: Props): JSX.Element => {
   const blackoutPeriodSetting = adminSettings.find(
-    as => as.key === AdminSettingKeyEnum.IsBlackoutPeriod
+    (as) => as.key === AdminSettingKeyEnum.IsBlackoutPeriod
   )!
   const isBlackoutPeriodActive = blackoutPeriodSetting.value === 'True'
 
   // NB: We are using ISO DAY OF WEEK, where 1 is Monday and 7 is Sunday
   // So subtract 1 when adding to startOf('isoWeek'), which is a Monday
   const dataPullSetting = adminSettings.find(
-    as => as.key === AdminSettingKeyEnum.DataPullDayOfWeek
+    (as) => as.key === AdminSettingKeyEnum.DataPullDayOfWeek
   )!
   const dataPullDayOfWeek = +dataPullSetting!.value! - 1
 
   const inviteDaysSetting = adminSettings.find(
-    as => as.key === AdminSettingKeyEnum.InviteDays
+    (as) => as.key === AdminSettingKeyEnum.InviteDays
   )
   const inviteDays = +inviteDaysSetting!.value!
 
   const reminder1DaysSetting = adminSettings.find(
-    as => as.key === AdminSettingKeyEnum.Reminder1Days
+    (as) => as.key === AdminSettingKeyEnum.Reminder1Days
   )
   const reminder1Days = +reminder1DaysSetting!.value!
 
   const reminder2DaysSetting = adminSettings.find(
-    as => as.key === AdminSettingKeyEnum.Reminder2Days
+    (as) => as.key === AdminSettingKeyEnum.Reminder2Days
   )
   const reminder2Days = +reminder2DaysSetting!.value!
 
   const apparentCloseDaysSetting = adminSettings.find(
-    as => as.key === AdminSettingKeyEnum.CloseDays
+    (as) => as.key === AdminSettingKeyEnum.CloseDays
   )
   const apparentCloseDays = +apparentCloseDaysSetting!.value!
 
@@ -57,12 +57,7 @@ const DatePreview = ({
     .add(dataPullDayOfWeek, 'days')
   const now = moment()
 
-  if (
-    now.unix() >
-    moment(basePullDate)
-      .add(1, 'days')
-      .unix()
-  ) {
+  if (now.unix() > moment(basePullDate).add(1, 'days').unix()) {
     basePullDate.add(1, 'week')
   }
 
@@ -70,7 +65,7 @@ const DatePreview = ({
     (newSetting: AdminSetting) => {
       // Remove the old pull day setting
       const updatedAdminSettings = adminSettings.filter(
-        a => a.key !== newSetting.key
+        (a) => a.key !== newSetting.key
       )
       updatedAdminSettings.push(newSetting)
       setAdminSettings(updatedAdminSettings)

@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import React from 'react'
 
 import { AdminSetting } from '../../types/AdminSetting'
@@ -25,10 +25,8 @@ const mapIsoWeekdayToOption = (i: number | string): NameValuePair => {
     throw new RangeError('isoWeekDay must be between 1 and 7, inclusive')
   }
   return {
-    name: moment()
-      .isoWeekday(+i)
-      .format('dddd'),
-    value: `${i}`
+    name: moment().isoWeekday(+i).format('dddd'),
+    value: `${i}`,
   }
 }
 
@@ -38,7 +36,7 @@ const ISO_DAYS_OF_WEEK_SELECT_ITEMS = [1, 2, 3, 4, 5, 6, 7].map(
 
 const AdminDataPullDayOfWeek = ({
   dataPullSetting,
-  updateAdminSetting
+  updateAdminSetting,
 }: Props): JSX.Element => {
   if (!dataPullSetting) return <></>
 

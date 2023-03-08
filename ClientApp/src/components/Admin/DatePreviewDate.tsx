@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import React from 'react'
 
 import { AdminSetting } from '../../types/AdminSetting'
@@ -30,7 +30,7 @@ const DatePreviewDate = ({
   icon,
   isBlackoutPeriodActive,
   plusDaysToNext,
-  updateAdminSetting
+  updateAdminSetting,
 }: Props): JSX.Element => {
   const date = basePullDate?.clone().add(dayNum, 'days')
 

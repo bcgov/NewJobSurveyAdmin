@@ -31,7 +31,7 @@ const Home = (): JSX.Element => {
       (responseJSON: FixTypeLater[]): void => {
         if (responseJSON) {
           setTaskLogEntryData(
-            responseJSON.map(t => plainToClass(TaskLogEntry, t))
+            responseJSON.map((t) => plainToClass(TaskLogEntry, t))
           )
         }
       }
@@ -48,7 +48,7 @@ const Home = (): JSX.Element => {
         <Link
           to={{
             pathname: '/employees',
-            search: `&filters=${getActiveEmployeesFilter().encode()}`
+            search: `&filters=${getActiveEmployeesFilter().encode()}`,
           }}
         >
           <IconButton
@@ -62,7 +62,7 @@ const Home = (): JSX.Element => {
         <Link
           to={{
             pathname: '/employees',
-            search: `&filters=${getPreviousMonthFilter().encode()}`
+            search: `&filters=${getPreviousMonthFilter().encode()}`,
           }}
         >
           <IconButton
@@ -76,7 +76,7 @@ const Home = (): JSX.Element => {
         <Link
           to={{
             pathname: '/employees',
-            search: `&filters=${getPreviousFiscalYearFilter().encode()}`
+            search: `&filters=${getPreviousFiscalYearFilter().encode()}`,
           }}
         >
           <IconButton
@@ -90,16 +90,19 @@ const Home = (): JSX.Element => {
         <h2 className="mt-5">Most recent task statuses</h2>
         {taskLogEntryData.length > 0 && (
           <div>
-            {taskLogEntryData.map(tle => (
+            {taskLogEntryData.map((tle) => (
               <div key={tle.id} className="d-flex align-items-center mb-2">
                 <div>
                   <TaskOutcome taskOutcomeCode={tle.taskOutcomeCode!} />
+                </div>
+                <div className="ml-3 w-25">
+                  <strong>{tle.taskCode}</strong>
                 </div>
                 <div className="ml-3">
                   <FormattedDate
                     date={tle.createdTs}
                     showLocalTimezone
-                    customFormat={'ddd, MMMM D, YYYY • HH:mm:ss z'}
+                    customFormat={'ddd, MMMM D, YYYY • hh:mm:ss z'}
                   />
                 </div>
               </div>
