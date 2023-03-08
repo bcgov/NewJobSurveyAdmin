@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from 'moment-timezone'
 import React, { useContext } from 'react'
 
 import { FilterDispatch } from '../../FilterForm'
@@ -8,21 +8,13 @@ import IconButton from '../../../DisplayHelpers/Interface/Buttons/IconButton'
 
 export const getPreviousFiscalYearFilter = (): DateFilter => {
   let startDate = moment()
-  const currentYearApril = moment()
-    .month('April')
-    .startOf('month')
+  const currentYearApril = moment().month('April').startOf('month')
 
   if (startDate.isBefore(currentYearApril)) {
     startDate = startDate.subtract(1, 'year')
   }
-  startDate = startDate
-    .subtract(1, 'year')
-    .month('April')
-    .startOf('month')
-  const endDate = moment(startDate)
-    .add(1, 'year')
-    .month('March')
-    .endOf('month')
+  startDate = startDate.subtract(1, 'year').month('April').startOf('month')
+  const endDate = moment(startDate).add(1, 'year').month('March').endOf('month')
 
   return new DateFilter('effectiveDate', startDate.toDate(), endDate.toDate())
 }
@@ -34,14 +26,14 @@ interface Props {
 
 const SetPreviousFiscalYear = ({
   submitId,
-  setSubmitId
+  setSubmitId,
 }: Props): JSX.Element => {
   const dispatch = useContext(FilterDispatch) as FixTypeLater
 
   const setPreviousFiscalYear = React.useCallback((): void => {
     dispatch({
       type: 'setFilter',
-      filter: getPreviousFiscalYearFilter()
+      filter: getPreviousFiscalYearFilter(),
     })
     setSubmitId(submitId + 1)
   }, [dispatch, submitId, setSubmitId])

@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import React from 'react'
 
 import { AdminSetting } from '../../types/AdminSetting'
@@ -14,12 +14,12 @@ interface Props {
 
 const OPTIONS = [
   { name: 'Yes', value: 'True' },
-  { name: 'No', value: 'False' }
+  { name: 'No', value: 'False' },
 ]
 
 const AdminSetBlackoutPeriod = ({
   blackoutPeriodSetting,
-  updateAdminSetting
+  updateAdminSetting,
 }: Props): JSX.Element => {
   if (!blackoutPeriodSetting) return <></>
 
@@ -35,7 +35,7 @@ const AdminSetBlackoutPeriod = ({
           options={OPTIONS}
           modelPath={'adminSettings'}
           valueToDisplayAccessor={(value: string): string => {
-            return OPTIONS.find(o => o.value === value)!.name
+            return OPTIONS.find((o) => o.value === value)!.name
           }}
           refreshDataCallback={(responseJson: AnyJson): void => {
             updateAdminSetting(plainToClass(AdminSetting, responseJson))

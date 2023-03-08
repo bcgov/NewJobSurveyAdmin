@@ -44,7 +44,7 @@ const FilterForm = ({
   addFilters,
   resetFilters,
   filterableFields,
-  presetComponent
+  presetComponent,
 }: Props): JSX.Element => {
   const [filterMap, dispatch] = React.useReducer(reducer, {})
   const [resetTimestamp, setResetTimestamp] = React.useState<number>(0)
@@ -78,42 +78,38 @@ const FilterForm = ({
   const inputs = useMemo(() => {
     // Ignore Custom fields
     return filterableFields
-      .filter(f => f.type !== FilterType.Custom)
-      .map(
-        (filter): JSX.Element => {
-          let filterComponent
-          let colWidth = 2
-          switch (filter.type) {
-            case FilterType.Date:
-              filterComponent = (
-                <DateFilterInput
-                  filter={filter as DateFilter}
-                  resetTimestamp={resetTimestamp}
-                />
-              )
-              colWidth = 3
-              break
-            case FilterType.Enum:
-              filterComponent = (
-                <EnumFilterInput
-                  filter={filter as EnumFilter}
-                  resetTimestamp={resetTimestamp}
-                />
-              )
-              break
-            case FilterType.String:
-            default:
-              filterComponent = (
-                <TextFilterInput filter={filter as TextFilter} />
-              )
-          }
-          return (
-            <div key={filter.fieldName} className={`col-${colWidth}`}>
-              {filterComponent}
-            </div>
-          )
+      .filter((f) => f.type !== FilterType.Custom)
+      .map((filter): JSX.Element => {
+        let filterComponent
+        let colWidth = 2
+        switch (filter.type) {
+          case FilterType.Date:
+            filterComponent = (
+              <DateFilterInput
+                filter={filter as DateFilter}
+                resetTimestamp={resetTimestamp}
+              />
+            )
+            colWidth = 2
+            break
+          case FilterType.Enum:
+            filterComponent = (
+              <EnumFilterInput
+                filter={filter as EnumFilter}
+                resetTimestamp={resetTimestamp}
+              />
+            )
+            break
+          case FilterType.String:
+          default:
+            filterComponent = <TextFilterInput filter={filter as TextFilter} />
         }
-      )
+        return (
+          <div key={filter.fieldName} className={`col-${colWidth}`}>
+            {filterComponent}
+          </div>
+        )
+      })
   }, [resetTimestamp, filterableFields])
 
   const PresetComponent = presetComponent
