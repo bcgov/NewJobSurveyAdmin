@@ -1,5 +1,3 @@
-/* globals Map */
-
 import { SelectOption } from '../components/DisplayHelpers/Interface/EditableFields/EditableSelect'
 
 export enum EmployeeStatusEnum {
@@ -7,12 +5,12 @@ export enum EmployeeStatusEnum {
   SurveyComplete = 'SurveyComplete',
   OutOfScope = 'OutOfScope',
   Declined = 'Declined',
-  Expired = 'Expired'
+  Expired = 'Expired',
 }
 
 export enum EmployeeStatusStateEnum {
   Active = 'Active',
-  Final = 'Final'
+  Final = 'Final',
 }
 
 export class EmployeeStatus {
@@ -69,11 +67,11 @@ export class EmployeeStatus {
     EmployeeStatus.SURVEY_COMPLETE,
     EmployeeStatus.INELIGIBLE_OTHER,
     EmployeeStatus.DECLINED,
-    EmployeeStatus.EXPIRED
+    EmployeeStatus.EXPIRED,
   ]
 
   static map = (): Map<EmployeeStatusEnum, EmployeeStatus> => {
-    return new Map(EmployeeStatus.array().map(s => [s.code, s]))
+    return new Map(EmployeeStatus.array().map((s) => [s.code, s]))
   }
 
   static fromKey = (key: EmployeeStatusEnum): EmployeeStatus => {
@@ -83,9 +81,9 @@ export class EmployeeStatus {
 
   static toOptions = (): SelectOption[] => {
     return EmployeeStatus.array()
-      .map(status => ({
+      .map((status) => ({
         name: status.displayName,
-        value: status.code
+        value: status.code,
       }))
       .sort((a, b) => a.name.localeCompare(b.name))
   }
