@@ -11,8 +11,8 @@ export const employeeFilters: Filter[] = [
   new TextFilter('lastName'),
   new TextFilter('preferredEmail'),
   new DateFilter('effectiveDate'),
-  new DateFilter('lastModifiedDate'),
   new DateFilter('importDate'),
+  new DateFilter('lastModifiedDate'),
   new EnumFilter(
     'newHireOrInternalStaffing',
     undefined,
