@@ -41,6 +41,12 @@ const EmployeeCurrentJobInfo = ({ employee: e }: Props): JSX.Element => {
         <CLText columnClass="col-12" label={labelFor('departmentId')}>
           {e.departmentId}
         </CLText>
+        <CLText
+          columnClass="col-12"
+          label={labelFor('departmentIdDescription')}
+        >
+          {e.departmentIdDescription}
+        </CLText>
         <CLText columnClass="col-12" label={labelFor('classification')}>
           {e.classification}
         </CLText>
