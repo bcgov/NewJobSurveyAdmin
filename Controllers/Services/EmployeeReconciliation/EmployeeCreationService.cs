@@ -28,152 +28,174 @@ namespace NewJobSurveyAdmin.Services
             this.logger = logger;
         }
 
-
-        // NB. Existence is determined by employee ID and Effective Date.
-        private Employee UniqueEmployeeExists(Employee candidate)
+        public List<Employee> ExistingEmployees(string[] candidateGovernmentEmployeeIds)
         {
-            var query = context.Employees
+            return context.Employees
+                .Where(e => candidateGovernmentEmployeeIds.Contains(e.GovernmentEmployeeId))
                 .Include(e => e.CurrentEmployeeStatus)
-                .Where(e =>
-                    e.GovernmentEmployeeId == candidate.GovernmentEmployeeId
-                    && e.EffectiveDate == candidate.EffectiveDate
-                );
-
-
-            if (query.Count() > 0)
-            {
-                return query.First();
-            }
-            else
-            {
-                return null;
-            }
+                .ToList();
         }
 
-        public async Task<EmployeeTaskResult> InsertEmployees(
-            List<Employee> employees
-        )
+        // NB. For reconciliation purposes, existence is determined by the
+        // combination of EmployeeId, ExitCount, and record count.
+        public Employee FindExisting(Employee candidate, List<Employee> employeesToSearch)
         {
-            var reconciledEmployeeList = new List<Employee>();
-            var exceptionList = new List<string>();
+            var employee = employeesToSearch.Find(
+                e =>
+                    e.GovernmentEmployeeId == candidate.GovernmentEmployeeId
+                    && e.EffectiveDate == candidate.EffectiveDate
+            );
+
+            return employee;
+        }
+
+        public async Task<EmployeeTaskResult> InsertEmployees(List<Employee> employees)
+        {
+            var employeeTaskResult = new EmployeeTaskResult(TaskEnum.ReconcileEmployees);
 
             var dates = await SurveyDateBuilder.GetDatesBasedOnAdminSettings(context);
 
-            // Step 1. Insert and update employees.
-            foreach (Employee e in employees)
+            var existingEmployees = ExistingEmployees(
+                employees.Select(e => e.GovernmentEmployeeId).ToArray()
+            );
+
+            // Do this in a batch, working with 50 employees at a time.
+            var BATCH_SIZE = 50;
+            var NUM_BATCHES = (int)Math.Ceiling((double)employees.Count() / BATCH_SIZE);
+            for (var i = 0; i < NUM_BATCHES; i++)
             {
-                try
-                {
-                    var employee = await InsertEmployee(e, dates);
-                    reconciledEmployeeList.Add(employee);
-                }
-                catch (Exception exception)
-                {
-                    exceptionList.Add(
-                        $"Exception with candidate employee {e.FullName} " +
-                        $"(ID: {e.GovernmentEmployeeId}): {exception.GetType()}: {exception.Message} "
-                    );
-                }
+                var employeesInBatch = employees.Skip(i * BATCH_SIZE).Take(BATCH_SIZE).ToList();
+
+                // Step 1. Prepare employees.
+                var employeesToCreate = employeeTaskResult.AddIncrementalStep(
+                    PrepareEmployees(employeesInBatch, existingEmployees, dates)
+                );
+
+                // Step 2. Get telkeys.
+                var employeesToSave = employeeTaskResult.AddIncrementalStep(
+                    await callWeb.CreateSurveys(employeesToCreate)
+                );
+
+                // Step 3. Save context.
+                var result = await SaveNewEmployees(employeesToSave);
+                employeeTaskResult.AddFinalStep(result);
             }
 
-            return new EmployeeTaskResult(
-                TaskEnum.ReconcileEmployees,
-                employees.Count,
-                reconciledEmployeeList,
-                exceptionList
-            );
+            return employeeTaskResult;
         }
 
-        private async Task<Employee> InsertEmployee(
-            Employee employee,
+        private TaskResult<Employee> PrepareEmployees(
+            List<Employee> employees,
+            List<Employee> existingEmployees,
             SurveyDates dates
         )
         {
-            // Check to see if an employee already exists.
-            var existingEmployee = UniqueEmployeeExists(employee);
+            var taskResult = new TaskResult<Employee>();
 
-            if (existingEmployee == null)
+            foreach (var employee in employees)
             {
-                // Case A. The employee does not exist in the database.
-
-                // Set the status code for a new employee.
-                var newStatusCode = EmployeeStatusEnum.Active.Code;
-                employee.CurrentEmployeeStatusCode = newStatusCode;
-
-                // Set info from LDAP. If no info is found, an exception will
-                // be thrown.
-                employee.UpdateInfoFromLdap(infoLookupService);
-
-                // Set other preferred and calculated fields. This only runs the
-                // first time the employee is created.
-                employee.InstantiateFields(dates);
-
-                // Ensure that the employee is valid.
-                var nullRequiredProperties = employee.NullRequiredProperties();
-
-                if (nullRequiredProperties.Count() > 0)
-                {
-                    throw new InvalidOperationException(
-                        "Employee has null properties that are required: " +
-                        String.Join(",", nullRequiredProperties.Select(p => p.Name))
-                    );
-                }
-
-                // Try to insert a row into CallWeb, and set the telkey.
-                try
-                {
-                    employee.Telkey = await callWeb.CreateSurvey(employee);
-                }
-                catch (Exception e)
-                {
-                    throw new InvalidOperationException(
-                        "Inserting a row into CallWeb failed.", e
-                    );
-                }
-
-                // Insert the employee into the database, along with an
-                // appropriate timeline entry. Note that Ids are auto-generated.
-                employee.TimelineEntries = new List<EmployeeTimelineEntry>();
-                employee.TimelineEntries.Add(new EmployeeTimelineEntry
-                {
-                    EmployeeActionCode = EmployeeActionEnum.CreateFromCSV.Code,
-                    EmployeeStatusCode = newStatusCode,
-                    Comment = "Created automatically by script."
-                });
+                // Check to see if an employee already exists.
+                var existingEmployee = FindExisting(employee, existingEmployees);
 
                 try
                 {
-                    context.Employees.Add(employee);
+                    if (existingEmployee != null)
+                    {
+                        // The unique user exists in the database. In this case,
+                        // for NJSA, we throw an exception; we don't try to
+                        // update user data.
+                        throw new DuplicateEmployeeException(
+                            $"Employee with ID {employee.GovernmentEmployeeId} and "
+                                + $"hire date {employee.EffectiveDate.ToString("yyyy-MM-dd")} "
+                                + "already exists."
+                        );
+                    }
 
-                    await context.SaveChangesAsync();
+                    // Otherwise, the employee does not exist in the database.
 
-                    // End Case A. Return the employee.
-                    return employee;
+                    // Set the status code for a new employee.
+                    var newStatusCode = EmployeeStatusEnum.Active.Code;
+                    employee.CurrentEmployeeStatusCode = newStatusCode;
+
+                    // Set info from LDAP. If no info is found, an exception will
+                    // be thrown.
+                    employee.UpdateInfoFromLdap(infoLookupService);
+
+                    // Set other preferred fields; runs on creation only.
+                    employee.InstantiateFields(dates);
+
+                    // Ensure that the employee is valid.
+                    var nullRequiredProperties = employee.NullRequiredProperties();
+
+                    if (nullRequiredProperties.Count() > 0)
+                    {
+                        throw new InvalidOperationException(
+                            "Employee has null properties that are required: "
+                                + String.Join(",", nullRequiredProperties.Select(p => p.Name))
+                        );
+                    }
+
+                    // Set timeline entries.
+                    employee.TimelineEntries = new List<EmployeeTimelineEntry>();
+                    employee.TimelineEntries.Add(
+                        new EmployeeTimelineEntry
+                        {
+                            EmployeeActionCode = EmployeeActionEnum.CreateFromCSV.Code,
+                            EmployeeStatusCode = newStatusCode,
+                            Comment = "Created automatically by script."
+                        }
+                    );
+
+                    taskResult.AddSucceeded(employee);
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    // Remove the employee and the timeline entry from the
-                    // context, or else we will also get errors next time we
-                    // next try to save changes to the context.
+                    taskResult.AddFailedWithException(
+                        employee,
+                        new FailedToPrepareEmployeeException(
+                            $"Could not prepare employee {employee}: {exception.Message}"
+                        )
+                    );
+                }
+            }
+
+            return taskResult;
+        }
+
+        private async Task<TaskResult<Employee>> SaveNewEmployees(List<Employee> employees)
+        {
+            var taskResult = new TaskResult<Employee>();
+
+            try
+            {
+                foreach (var e in employees)
+                {
+                    context.Employees.Add(e);
+                }
+                await context.SaveChangesAsync();
+                taskResult.AddSucceeded(employees);
+            }
+            catch (Exception exception)
+            {
+                // Remove the employee and the timeline entry from the
+                // context, or else we will also get errors next time we
+                // next try to save changes to the context.
+                foreach (var employee in employees)
+                {
                     context.RemoveRange(employee.TimelineEntries);
                     context.Remove(employee);
-
-                    throw new InvalidOperationException(
-                        $"Saving to the database failed. Message: {e.Message}" +
-                        $" Inner message: {e.InnerException.Message}"
-                    );
                 }
+
+                // Assume that saving all employees failed.
+                taskResult.AddFailed(employees);
+                taskResult.AddException(
+                    new FailedToSaveContextException(
+                        $"Saving employees failed for a range of employees: {String.Join(", ", employees)}. Error: {exception.Message}"
+                    )
+                );
             }
-            else
-            {
-                // Case B. The unique user DOES exist in the database.
-                // In this case, for NJSA, we actually do nothing, but we do
-                // throw an exception.
-                throw new DuplicateEmployeeException(
-                    $"Employee with ID {employee.GovernmentEmployeeId} and " +
-                    $"hire date {employee.EffectiveDate.ToString("yyyy-MM-dd")} " +
-                    "already exists.");
-            }
+
+            return taskResult;
         }
     }
 }
