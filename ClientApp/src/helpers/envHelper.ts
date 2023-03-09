@@ -11,6 +11,10 @@ export const frontendUrl = (): string => {
   return `${env('APP_DOMAIN')}${env('APP_PATH')}`
 }
 
+export const authRole = (): string => {
+  return env('AUTH_ROLE')
+}
+
 export const LOCATION_HREF_KEY = `njsa-originating-href`
 
 export const windowLocation = {
