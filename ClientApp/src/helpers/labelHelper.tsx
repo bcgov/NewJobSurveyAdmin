@@ -27,7 +27,7 @@ const fieldLabels: { [key: string]: string } = {
   currentEmployeeStatusCode: 'Current status',
   deadlineDate: 'Deadline date',
   departmentId: 'Department ID',
-  departmentIdDescription: 'Department ID dsecription',
+  departmentIdDescription: 'Department ID description',
   effectiveDate: 'Hire effective date',
   exitCount: 'Exit count',
   firstName: 'First name',
