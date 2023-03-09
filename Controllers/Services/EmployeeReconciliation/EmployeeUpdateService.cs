@@ -173,12 +173,7 @@ namespace NewJobSurveyAdmin.Services
             return context.Employees
                 .Include(e => e.TimelineEntries)
                 .Include(e => e.CurrentEmployeeStatus)
-                .Where(
-                    e => (e.CurrentEmployeeStatus.State != EmployeeStatusEnum.StateFinal)
-                // TODO: We are still investigating if this should be removed.
-                // See https://github.com/bcgov/ExitSurveyAdmin/issues/208
-                // || (e.CurrentEmployeeStatusCode == EmployeeStatusEnum.Expired.Code)
-                )
+                .Where(e => (e.CurrentEmployeeStatus.State != EmployeeStatusEnum.StateFinal))
                 .ToList();
         }
     }
