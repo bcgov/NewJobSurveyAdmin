@@ -95,6 +95,9 @@ namespace NewJobSurveyAdmin.Services
                     employeesToSave.Add(Tuple.Create(employee, EmployeeStatusEnum.Expired));
                     continue;
                 }
+
+                // Otherwise, we don't need to do anything.
+                taskResult.AddIgnored(employee);
             }
 
             taskResult.AddFinal(await SaveStatusesAndAddTimelineEntries(employeesToSave));

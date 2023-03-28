@@ -22,9 +22,7 @@ namespace NewJobSurveyAdmin.Services.CsvService
         // obtained, for instance, from the GetCsv method), transform it into an
         // array of nicely-formatted Employee JSON objects. Note that these
         // Employees are NOT saved or otherwise processed by default.
-        public EmployeeTaskResult EmployeesFromCsv(
-            Stream csvTextStream, Encoding csvEncoding
-        )
+        public EmployeeTaskResult EmployeesFromCsv(Stream csvTextStream, Encoding csvEncoding)
         {
             // By default the content will not be read if it is not form or JSON
             // type so we need to use a stream reader to read the request body.
@@ -39,8 +37,7 @@ namespace NewJobSurveyAdmin.Services.CsvService
                 // this issue is fixed in a future release, we have had to add a
                 // TrimAllStrings() extension, which is called below.
                 // https://github.com/JoshClose/CsvHelper/issues/1400
-                csv.Configuration.TrimOptions = CsvHelper.Configuration
-                    .TrimOptions.InsideQuotes;
+                csv.Configuration.TrimOptions = CsvHelper.Configuration.TrimOptions.InsideQuotes;
                 // csv.Configuration.TypeConverterCache
                 //     .RemoveConverter<DateTime>();
                 // csv.Configuration.TypeConverterCache
@@ -86,6 +83,7 @@ namespace NewJobSurveyAdmin.Services.CsvService
                 return new EmployeeTaskResult(
                     TaskEnum.ReadCsv,
                     goodRecords.Count + badRecords.Count,
+                    0,
                     goodRecords,
                     badRecords
                 );
@@ -101,20 +99,19 @@ namespace NewJobSurveyAdmin.Services.CsvService
             var newLine = System.Environment.NewLine;
 
             var message =
-                $"From a CSV with {readResult.TotalRecordCount} rows, " +
-                $"successfully read {readResult.GoodRecordCount} rows. ";
+                $"From a CSV with {readResult.CandidateCount} rows, "
+                + $"successfully read {readResult.SucceededCount} rows. ";
 
             if (!readResult.HasExceptions)
             {
                 // No exceptions. Log a success.
                 await logger.LogSuccess(TaskEnum.ReadCsv, message);
-
             }
             else
             {
                 message +=
-                    $"There were {readResult.ExceptionCount} bad rows: " +
-                    $"Exceptions: {string.Join(newLine, readResult.Exceptions)} ";
+                    $"There were {readResult.ExceptionCount} bad rows: "
+                    + $"Exceptions: {string.Join(newLine, readResult.Exceptions)} ";
                 await logger.LogWarning(TaskEnum.ReadCsv, message);
             }
 
