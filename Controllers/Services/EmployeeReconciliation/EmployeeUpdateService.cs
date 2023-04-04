@@ -82,6 +82,7 @@ namespace NewJobSurveyAdmin.Services
                 if (callWebStatusCode.Equals(EmployeeStatusEnum.SurveyComplete.Code))
                 {
                     employeesToSave.Add(Tuple.Create(employee, EmployeeStatusEnum.SurveyComplete));
+                    continue;
                 }
 
                 // An employee only has a set amount of time to complete a survey.
@@ -92,7 +93,11 @@ namespace NewJobSurveyAdmin.Services
                 )
                 {
                     employeesToSave.Add(Tuple.Create(employee, EmployeeStatusEnum.Expired));
+                    continue;
                 }
+
+                // Otherwise, we don't need to do anything.
+                taskResult.AddIgnored(employee);
             }
 
             taskResult.AddFinal(await SaveStatusesAndAddTimelineEntries(employeesToSave));

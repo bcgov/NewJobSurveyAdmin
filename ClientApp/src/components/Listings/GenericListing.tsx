@@ -56,7 +56,7 @@ const GenericListing = <T extends object>({
   pageSize: propPageSize,
   presetComponent,
   modelName,
-  sortProp
+  sortProp,
 }: Props<T>): JSX.Element => {
   const [data, setData] = React.useState<T[]>([])
   const [loading, setLoading] = React.useState<boolean>(false)
@@ -83,7 +83,7 @@ const GenericListing = <T extends object>({
 
   // Called when the table needs new data
   const fetchData = React.useCallback(
-    ({ pageIndex, sortBy }: { pageIndex: number, sortBy: FixTypeLater }) => {
+    ({ pageIndex, sortBy }: { pageIndex: number; sortBy: FixTypeLater }) => {
       // Give this fetch an ID and set the loading state
       const fetchId = ++fetchIdRef.current
       setLoading(true)
@@ -98,8 +98,9 @@ const GenericListing = <T extends object>({
         newPageIndex = 0
       }
 
-      const path = `${listingPath}?pageSize=${pageSize}&page=${newPageIndex +
-        1}${sortByQuery}${filterQuery}`
+      const path = `${listingPath}?pageSize=${pageSize}&page=${
+        newPageIndex + 1
+      }${sortByQuery}${filterQuery}`
 
       requestJSONWithErrorHandler(
         `api/${path}`,
@@ -120,7 +121,9 @@ const GenericListing = <T extends object>({
         }
       )
     },
-    [filterQuery, listingPath, pageSize, dataMapper]
+    // Intentionally only look at filterQuery
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [filterQuery]
   )
 
   return (

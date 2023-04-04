@@ -174,11 +174,11 @@ namespace NewJobSurveyAdmin.Controllers
                 if (startIndex > -1 && count > 0)
                 {
                     // TODO: Validate.
-                    employeesToLoad = currentEmployees.GoodEmployees.GetRange(startIndex, count);
+                    employeesToLoad = currentEmployees.Succeeded.GetRange(startIndex, count);
                 }
                 else
                 {
-                    employeesToLoad = currentEmployees.GoodEmployees;
+                    employeesToLoad = currentEmployees.Succeeded;
                 }
 
                 // Reconcile the employees with the database.
@@ -189,7 +189,7 @@ namespace NewJobSurveyAdmin.Controllers
 
                 emailService.SendTaskResultEmail(taskResult);
 
-                return Ok(taskResult.GoodEmployees);
+                return Ok(taskResult.Succeeded);
             }
             catch (Exception exception)
             {
@@ -217,7 +217,7 @@ namespace NewJobSurveyAdmin.Controllers
                     TaskEnum.LoadFromJson,
                     employees
                 );
-                return Ok(taskResult.GoodEmployees);
+                return Ok(taskResult.Succeeded);
             }
             catch (Exception e)
             {
@@ -246,9 +246,9 @@ namespace NewJobSurveyAdmin.Controllers
                 // Reconcile the employees with the database.
                 var taskResult = await employeeReconciler.InsertEmployeesAndLog(
                     TaskEnum.LoadFromCsv,
-                    readResult.GoodEmployees
+                    readResult.Succeeded
                 );
-                return Ok(taskResult.GoodEmployees);
+                return Ok(taskResult.Succeeded);
             }
             catch (Exception e)
             {
