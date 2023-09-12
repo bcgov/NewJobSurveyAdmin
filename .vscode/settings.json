@@ -2,8 +2,8 @@
   "eslint.validate": [
     "javascript",
     "javascriptreact",
-      "typescript",
-      "typescriptreact",
+    "typescript",
+    "typescriptreact"
   ],
   "[csharp]": {
     "editor.formatOnSave": true,
@@ -11,6 +11,18 @@
     "editor.detectIndentation": false
   },
   "[json]": {
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "[scss]": {
     "editor.formatOnSave": true
   },
   "files.exclude": {

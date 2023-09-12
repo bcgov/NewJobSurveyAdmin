@@ -6,12 +6,11 @@ import React from 'react'
 import { Employee } from '../../../types/Employee'
 import {
   EmployeeStatus,
-  EmployeeStatusEnum
+  EmployeeStatusEnum,
 } from '../../../types/EmployeeStatus'
 import { requestJSONWithErrorHandler } from '../../../helpers/requestHelpers'
 import AddComment from '../AddComment'
 import ColumnarLabelledText from '../../DisplayHelpers/Interface/LabelledItems/ColumnarLabelledText'
-import ContentWrapper from '../../Wrappers/ContentWrapper'
 import EditableDropdown from '../../DisplayHelpers/Interface/EditableFields/EditableSelect'
 import EmployeeContact from './_EmployeeContact'
 import EmployeeCurrentJobInfo from './_EmployeeCurrentJobInfo'
@@ -52,7 +51,7 @@ class EmployeeDetail extends React.Component<Props, State> {
     return (
       <div>
         <div className="mb-3">
-          <Link to="/employees">&larr; Back to exiting employees list</Link>
+          <Link to="/employees">&larr; Back to employees list</Link>
         </div>
         <div className="row">
           <div className="col-lg-6 col-xl-2">
@@ -137,7 +136,7 @@ class EmployeeDetail extends React.Component<Props, State> {
         this.renderEmployee(this.state.employee)
       )
 
-    return <ContentWrapper>{contents}</ContentWrapper>
+    return <>{contents}</>
   }
 
   async populateData(): Promise<void> {

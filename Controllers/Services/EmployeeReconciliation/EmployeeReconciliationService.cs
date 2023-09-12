@@ -44,7 +44,7 @@ namespace NewJobSurveyAdmin.Services
 
         public async Task<EmployeeTaskResult> UpdateEmployeeStatusesAndLog()
         {
-            var taskResult = await updateService.UpdateEmployeeStatuses();
+            var taskResult = await updateService.RefreshCallWebStatus();
             await logger.LogEmployeeTaskResult(taskResult);
             return taskResult;
         }

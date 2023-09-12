@@ -2,6 +2,8 @@
 
 The New Job Survey Admin tool will assist BC Stats in administering the BCPS New Job Survey.
 
+[![Lifecycle:Stable](https://img.shields.io/badge/Lifecycle-Stable-97ca00)](<Redirect-URL>)
+
 # Development tasks
 
 ## Running a development environment

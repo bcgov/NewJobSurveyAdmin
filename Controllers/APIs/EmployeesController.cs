@@ -69,15 +69,11 @@ namespace NewJobSurveyAdmin.Controllers
             }
 
             // Employee query.
-            var employees = context.Employees
-                .AsNoTracking()
-                .Include(e => e.TimelineEntries);
+            var employees = context.Employees.AsNoTracking().Include(e => e.TimelineEntries);
 
-            var sievedEmployees = await sieveProcessor
-                .GetPagedAsync(employees, sieveModel);
+            var sievedEmployees = await sieveProcessor.GetPagedAsync(employees, sieveModel);
 
-            Response.Headers.Add("X-Pagination", sievedEmployees
-                .SerializeMetadataToJson());
+            Response.Headers.Add("X-Pagination", sievedEmployees.SerializeMetadataToJson());
 
             return Ok(sievedEmployees.Results);
         }
@@ -100,8 +96,7 @@ namespace NewJobSurveyAdmin.Controllers
         [HttpGet("Values/StaffingReason")]
         public async Task<ActionResult<List<string>>> ValuesStaffingReason()
         {
-            var uniqueValues = await context
-                .Employees
+            var uniqueValues = await context.Employees
                 .Select(e => e.StaffingReason)
                 .Distinct()
                 .ToListAsync();
@@ -115,8 +110,7 @@ namespace NewJobSurveyAdmin.Controllers
         [HttpGet("Values/NewHireOrInternalStaffing")]
         public async Task<ActionResult<List<string>>> ValuesNewHireOrInternalStaffing()
         {
-            var uniqueValues = await context
-                .Employees
+            var uniqueValues = await context.Employees
                 .Select(e => e.NewHireOrInternalStaffing)
                 .Distinct()
                 .ToListAsync();
@@ -143,7 +137,7 @@ namespace NewJobSurveyAdmin.Controllers
                 await context.SaveChangesAsync();
 
                 // Patch the row in CallWeb.
-                await callWebService.UpdateSurvey(updatedEmployee);
+                await callWebService.UpdateSurveys(new List<Employee>() { updatedEmployee });
 
                 return Ok(updatedEmployee);
             }
@@ -165,7 +159,8 @@ namespace NewJobSurveyAdmin.Controllers
         // POST: api/Employees/FromPsaApi
         [HttpPost("FromPsaApi")]
         public async Task<ActionResult<List<Employee>>> EmployeesFromPsaApi(
-            int startIndex, int count
+            int startIndex,
+            int count
         )
         {
             try
@@ -179,11 +174,11 @@ namespace NewJobSurveyAdmin.Controllers
                 if (startIndex > -1 && count > 0)
                 {
                     // TODO: Validate.
-                    employeesToLoad = currentEmployees.GoodEmployees.GetRange(startIndex, count);
+                    employeesToLoad = currentEmployees.Succeeded.GetRange(startIndex, count);
                 }
                 else
                 {
-                    employeesToLoad = currentEmployees.GoodEmployees;
+                    employeesToLoad = currentEmployees.Succeeded;
                 }
 
                 // Reconcile the employees with the database.
@@ -194,14 +189,17 @@ namespace NewJobSurveyAdmin.Controllers
 
                 emailService.SendTaskResultEmail(taskResult);
 
-                return Ok(taskResult.GoodEmployees);
+                return Ok(taskResult.Succeeded);
             }
             catch (Exception exception)
             {
                 emailService.SendFailureEmail(TaskEnum.ParsePsa, exception);
 
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                  this, TaskEnum.ParsePsa, exception, logger
+                    this,
+                    TaskEnum.ParsePsa,
+                    exception,
+                    logger
                 );
             }
         }
@@ -219,12 +217,15 @@ namespace NewJobSurveyAdmin.Controllers
                     TaskEnum.LoadFromJson,
                     employees
                 );
-                return Ok(taskResult.GoodEmployees);
+                return Ok(taskResult.Succeeded);
             }
             catch (Exception e)
             {
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                  this, TaskEnum.LoadFromJson, e, logger
+                    this,
+                    TaskEnum.LoadFromJson,
+                    e,
+                    logger
                 );
             }
         }
@@ -245,14 +246,17 @@ namespace NewJobSurveyAdmin.Controllers
                 // Reconcile the employees with the database.
                 var taskResult = await employeeReconciler.InsertEmployeesAndLog(
                     TaskEnum.LoadFromCsv,
-                    readResult.GoodEmployees
+                    readResult.Succeeded
                 );
-                return Ok(taskResult.GoodEmployees);
+                return Ok(taskResult.Succeeded);
             }
             catch (Exception e)
             {
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                    this, TaskEnum.LoadFromCsv, e, logger
+                    this,
+                    TaskEnum.LoadFromCsv,
+                    e,
+                    logger
                 );
             }
         }
@@ -270,16 +274,17 @@ namespace NewJobSurveyAdmin.Controllers
             catch (Exception e)
             {
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                    this, TaskEnum.RefreshStatuses, e, logger
+                    this,
+                    TaskEnum.RefreshStatuses,
+                    e,
+                    logger
                 );
             }
         }
 
         [AllowAnonymous]
         [HttpPost("ScheduledLoadAndUpdate")]
-        public async Task<ActionResult> ScheduledLoadAndUpdate(
-            int startIndex, int count
-        )
+        public async Task<ActionResult> ScheduledLoadAndUpdate(int startIndex, int count)
         {
             try
             {
@@ -304,14 +309,18 @@ namespace NewJobSurveyAdmin.Controllers
 
                 await logger.LogSuccess(
                     TaskEnum.ScheduledTask,
-                    "Scheduled load and update ran successfully.");
+                    "Scheduled load and update ran successfully."
+                );
 
                 return Ok();
             }
             catch (Exception e)
             {
                 return await ApiResponseHelper.LogFailureAndSendStacktrace(
-                    this, TaskEnum.ScheduledTask, e, logger
+                    this,
+                    TaskEnum.ScheduledTask,
+                    e,
+                    logger
                 );
             }
         }

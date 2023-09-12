@@ -2,10 +2,10 @@ import React from 'react'
 
 import { FixTypeLater } from '../../../../types/FixTypeLater'
 import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
-import { userNameFromState } from '../../../../helpers/userHelper'
 import SuccessMessage from '../../../Employees/SuccessMessage'
 
 import './EditableField.scss'
+import KeycloakService from '../../../Login/KeycloakService'
 
 export interface SelectOption {
   name: string
@@ -35,7 +35,7 @@ const EditableNumber = ({
   modelPath,
   refreshDataCallback,
   step,
-  valueToDisplayAccessor
+  valueToDisplayAccessor,
 }: Props): JSX.Element => {
   const [newValue, setNewValue] = React.useState(fieldValue || '')
   const [isEditable, setIsEditable] = React.useState(false)
@@ -52,7 +52,7 @@ const EditableNumber = ({
       'patch',
       {
         [fieldName]: newValue,
-        AdminUserName: userNameFromState()
+        AdminUserName: KeycloakService.getUsername(),
       },
       'CANNOT_EDIT_EMPLOYEE',
       (response): void => {
@@ -66,7 +66,7 @@ const EditableNumber = ({
   }
 
   const onNumberChange = React.useCallback(
-    (e): void => {
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
       const newValue = +e.target.value
 
       if (isNaN(newValue)) setNewValue(`${min || 0}`)
@@ -93,8 +93,9 @@ const EditableNumber = ({
           <input
             type="button"
             value="Cancel"
-            className={`btn btn-sm btn-outline-danger ${!inline &&
-              'mt-2'} ${inline && 'ml-2'} mr-2`}
+            className={`btn btn-sm btn-outline-danger ${!inline && 'mt-2'} ${
+              inline && 'ml-2'
+            } mr-2`}
             onClick={toggleEditable}
           />
           <input

@@ -66,6 +66,12 @@ const EmployeePriorJobInfo = ({ employee: e }: Props): JSX.Element => {
             </CLText>
             <CLText
               columnClass={BASE_COL_CLASS}
+              label={labelFor('departmentIdDescription')}
+            >
+              {e.priorDepartmentIdDescription}
+            </CLText>
+            <CLText
+              columnClass={BASE_COL_CLASS}
               label={labelFor('classification')}
             >
               {e.priorClassification}

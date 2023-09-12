@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import React from 'react'
 
+import LoggedInInfo from './Login/LoggedInInfo'
+
 import './NavMenu.scss'
 
 class NavMenu extends React.Component {
@@ -8,7 +10,7 @@ class NavMenu extends React.Component {
 
   render(): JSX.Element {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-warning border-bottom mb-4">
+      <nav className="navbar navbar-expand-xl navbar-light bg-warning border-bottom mb-4">
         <Link to="/" className="navbar-brand text-primary">
           <i className="fas fa-envelope-open-text mr-3"></i>
           New Job Survey Admin
@@ -24,12 +26,11 @@ class NavMenu extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              {/* <small>Logged in as {name}</small> */}
-            </li>
-          </ul>
+        <div
+          className="collapse navbar-collapse bg-warning"
+          id="navbarSupportedContent"
+        >
+          <LoggedInInfo />
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
               <Link to="/status" className="nav-link text-primary">

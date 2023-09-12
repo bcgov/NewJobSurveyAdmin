@@ -1,5 +1,5 @@
 kind: Template
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 objects:
   - apiVersion: v1
     kind: Service
@@ -135,7 +135,7 @@ objects:
 parameters:
 - name: IMAGE_NAMESPACE
   required: true
-  description: The namespace holding the image to deploy from  
+  description: The namespace holding the image to deploy from
 - name: IMAGE_TAG
   required: true
   description: The output image stream tag

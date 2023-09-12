@@ -1,8 +1,8 @@
 import { setError } from './errorHandlingHelper'
-import store from '../store/store'
 import { FixTypeLater } from '../types/FixTypeLater'
 import { AnyJson } from '../types/JsonType'
 import { apiUrl } from './envHelper'
+import KeycloakService from '../components/Login/KeycloakService'
 
 export const prefixAPI = (path: string): string => {
   return `${apiUrl()}${path}`
@@ -13,14 +13,12 @@ const requestWithAuthentication = (
   method = 'get',
   body: AnyJson
 ): Promise<Response> => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const token = store.getState()?.oidc?.user?.access_token
-  // console.log(token)
+  const token = KeycloakService.getToken()
   const fetchObject: RequestInit = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'same-origin',
     // mode: 'cors'
@@ -42,7 +40,7 @@ const requestWithoutAuthentication = (
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'same-origin'
+    credentials: 'same-origin',
   }
   if (method !== 'get' && body) {
     fetchObject.body = JSON.stringify(body)
@@ -71,16 +69,12 @@ export const requestJSONWithErrorHandler = async (
   const paginationHeader = response.headers.get('X-Pagination')
   const pagination = paginationHeader ? JSON.parse(paginationHeader) : {}
 
-  console.log(response, response.headers, 'paginationHeader', paginationHeader)
-  console.log(response.headers.get('X-Pagination'))
-
   if (response.ok) {
     if (successCallback) {
       successCallback(json, pagination)
     }
     return json
   } else {
-    setError(store.dispatch, errorCode)
     return null
   }
 }
@@ -114,7 +108,8 @@ export const requestJSONWithoutAuth = async (
     }
     return json
   } else {
-    setError(store.dispatch, errorCode)
+    const store = {}
+    setError((store as FixTypeLater).dispatch, errorCode)
     return null
   }
 }

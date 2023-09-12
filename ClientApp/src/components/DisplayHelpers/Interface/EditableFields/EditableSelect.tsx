@@ -2,10 +2,10 @@ import React from 'react'
 
 import { FixTypeLater } from '../../../../types/FixTypeLater'
 import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
-import { userNameFromState } from '../../../../helpers/userHelper'
 import SuccessMessage from '../../../Employees/SuccessMessage'
 
 import './EditableField.scss'
+import KeycloakService from '../../../Login/KeycloakService'
 
 export interface SelectOption {
   name: string
@@ -29,7 +29,7 @@ const EditableSelect = ({
   modelPath,
   options,
   refreshDataCallback,
-  valueToDisplayAccessor
+  valueToDisplayAccessor,
 }: Props): JSX.Element => {
   const [newValue, setNewValue] = React.useState(fieldValue || '')
   const [isEditable, setIsEditable] = React.useState(false)
@@ -46,7 +46,7 @@ const EditableSelect = ({
       'patch',
       {
         [fieldName]: newValue,
-        AdminUserName: userNameFromState()
+        AdminUserName: KeycloakService.getUsername(),
       },
       'CANNOT_EDIT_EMPLOYEE',
       (response): void => {
@@ -68,15 +68,13 @@ const EditableSelect = ({
             value={newValue}
             onChange={(e): void => setNewValue(e.target.value)}
           >
-            {options.map(
-              (option): JSX.Element => {
-                return (
-                  <option key={option.value} value={option.value}>
-                    {option.name}
-                  </option>
-                )
-              }
-            )}
+            {options.map((option): JSX.Element => {
+              return (
+                <option key={option.value} value={option.value}>
+                  {option.name}
+                </option>
+              )
+            })}
           </select>
           <input
             type="button"

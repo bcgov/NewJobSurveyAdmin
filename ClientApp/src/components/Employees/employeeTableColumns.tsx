@@ -2,13 +2,13 @@ import { CellProps, Column } from 'react-table'
 import { Link } from 'react-router-dom'
 import React from 'react'
 
-import { AppointmentStatus } from '../../types/AppointmentStatus'
 import { Employee } from '../../types/Employee'
 import { EmployeeStatus } from '../../types/EmployeeStatus'
 import FormattedDate from '../DisplayHelpers/FormattedDate'
+import { FixTypeLater } from '../../types/FixTypeLater'
 
 type EmployeeCellProps = React.PropsWithChildren<
-  CellProps<Employee, string | undefined>
+  CellProps<Employee, FixTypeLater>
 >
 
 export const employeeTableColumns = (): Column<Employee>[] => [

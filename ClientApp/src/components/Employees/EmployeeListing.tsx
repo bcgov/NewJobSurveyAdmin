@@ -1,6 +1,6 @@
 import React from 'react'
 import { plainToClass } from 'class-transformer'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 import { Employee } from '../../types/Employee'
 import { employeeFilters } from '../Filters/Presets/FieldSets/employeeFilters'
@@ -13,13 +13,13 @@ import { defaultDateFormat } from '../../helpers/dateHelper'
 const EmployeeListing = (): JSX.Element => {
   const dataMapperCallback = React.useCallback(
     (responseJSON: FixTypeLater[]): Employee[] =>
-      responseJSON.map(e => plainToClass(Employee, e)),
+      responseJSON.map((e) => plainToClass(Employee, e)),
     []
   )
 
   const exportedDataMapperCallback = React.useCallback(
     (responseJSON: FixTypeLater[]): FixTypeLater[] =>
-      responseJSON.map(e => {
+      responseJSON.map((e) => {
         delete e.timelineEntries
         delete e.currentEmployeeStatus
         e.birthDate = moment(e.birthDate).format(defaultDateFormat)
@@ -38,6 +38,7 @@ const EmployeeListing = (): JSX.Element => {
 
   return (
     <GenericListing
+      sortProp={`&sorts=-modifiedTs`} // By default, sort by last modified
       modelName="employees"
       filterableFields={employeeFilters}
       columns={employeeTableColumns}

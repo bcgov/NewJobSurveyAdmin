@@ -31,7 +31,6 @@ namespace NewJobSurveyAdmin.Services.PsaApi
             ClientFactory = clientFactory;
         }
 
-
         private HttpClient GetClient()
         {
             // The HttpClientName is specified as a constant in Startup.cs.
@@ -42,7 +41,6 @@ namespace NewJobSurveyAdmin.Services.PsaApi
         // access token.
         private HttpClient GetClientWithBasicAuth()
         {
-
             var client = GetClient();
 
             var unencodedUsernamePassword = $"{ClientUsername}:{ClientPassword}";
@@ -50,15 +48,15 @@ namespace NewJobSurveyAdmin.Services.PsaApi
                 System.Text.ASCIIEncoding.UTF8.GetBytes(unencodedUsernamePassword)
             );
 
-            client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Basic", encodedUsernamePassword);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Basic",
+                encodedUsernamePassword
+            );
 
             return client;
         }
 
-        private EmployeeTaskResult EmployeesFromResponseString(
-            string responseAsString
-        )
+        private EmployeeTaskResult EmployeesFromResponseString(string responseAsString)
         {
             try
             {
@@ -68,7 +66,7 @@ namespace NewJobSurveyAdmin.Services.PsaApi
                 var settings = new JsonSerializerSettings();
                 settings.DateFormatString = "YYYY-MM-DD";
                 settings.ContractResolver = new PsaApiContractResolver();
-                settings.Error = delegate (object sender, ErrorEventArgs args)
+                settings.Error = delegate(object sender, ErrorEventArgs args)
                 {
                     errors.Add(args.ErrorContext.Error.Message);
 
@@ -109,6 +107,7 @@ namespace NewJobSurveyAdmin.Services.PsaApi
                 return new EmployeeTaskResult(
                     TaskEnum.ParsePsa,
                     jsonObject.Employees.Count,
+                    0,
                     goodEmployees,
                     errors
                 );
@@ -116,27 +115,23 @@ namespace NewJobSurveyAdmin.Services.PsaApi
             catch (Exception e)
             {
                 throw new EmployeesFromResponseStringException(
-                    "Could not deserialize employees from response string. Possibly the server is unavailable, or it did not return the expected response.", e
+                    "Could not deserialize employees from response string. Possibly the server is unavailable, or it did not return the expected response.",
+                    e
                 );
             }
         }
 
-        private async Task<string> ResponseAsString(
-            HttpResponseMessage responseMessage
-        )
+        private async Task<string> ResponseAsString(HttpResponseMessage responseMessage)
         {
             try
             {
-                var responseAsString =
-                    await responseMessage.Content.ReadAsStringAsync();
+                var responseAsString = await responseMessage.Content.ReadAsStringAsync();
 
                 return responseAsString;
             }
             catch (Exception e)
             {
-                throw new ResponseAsStringException(
-                    "Could not read response as string.", e
-                );
+                throw new ResponseAsStringException("Could not read response as string.", e);
             }
         }
 
@@ -147,16 +142,21 @@ namespace NewJobSurveyAdmin.Services.PsaApi
             var responseString = await ResponseAsString(response);
             if (response.IsSuccessStatusCode && responseString.Length > 0)
             {
-                await logger.LogSuccess(TaskEnum.LoadPsa, $"Load successful. JSON: {responseString}");
+                await logger.LogSuccess(
+                    TaskEnum.LoadPsa,
+                    $"Load successful. JSON: {responseString}"
+                );
                 var taskResult = EmployeesFromResponseString(responseString);
                 return taskResult;
             }
             else
             {
-                await logger.LogFailure(TaskEnum.LoadPsa, $"Load unsuccessful. Response code: {response}. Content, if any: {responseString}");
+                await logger.LogFailure(
+                    TaskEnum.LoadPsa,
+                    $"Load unsuccessful. Response code: {response}. Content, if any: {responseString}"
+                );
             }
             return null;
-
         }
     }
 }
