@@ -126,7 +126,7 @@ objects:
             }
           },
           "CallWebApi": {
-            "BaseUrl": "${BASE_GATEWAY_URL/newjobsurveyadmin-callwebapi${DEPLOY_ENV}/api/NjsaCallWeb/"
+            "BaseUrl": "${BASE_GATEWAY_URL}/newjobsurveyadmin-callwebapi${DEPLOY_ENV}/api/NjsaCallWeb/"
           },
           "Sieve": {
             "ThrowExceptions": true
