@@ -171,6 +171,6 @@ parameters:
   required: true
   description: The base Gateway URL
 - name: DEPLOY_ENV
-  required: true
+  required: false
   description: The lifecycle environment
   
