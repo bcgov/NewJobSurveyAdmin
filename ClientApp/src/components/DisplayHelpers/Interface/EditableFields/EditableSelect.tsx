@@ -43,7 +43,7 @@ const EditableSelect = ({
     event.preventDefault()
     requestJSONWithErrorHandler(
       `api/${modelPath || 'employees'}/${modelDatabaseId}`,
-      'patch',
+      'PATCH',
       {
         [fieldName]: newValue,
         AdminUserName: KeycloakService.getUsername(),
