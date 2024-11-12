@@ -1,0 +1,168 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: {{ include "chart.fullname" . }}-backup-postgresql
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    name: backup-postgresql
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: backup-container
+        env: v1
+        name: backup-postgresql
+        role: backup-container
+      name: backup-postgresql
+    spec:
+      containers:
+      - env:
+        - name: BACKUP_STRATEGY
+          value: rolling
+        - name: BACKUP_DIR
+          value: /backups/
+        - name: NUM_BACKUPS
+        - name: DAILY_BACKUPS
+        - name: WEEKLY_BACKUPS
+        - name: MONTHLY_BACKUPS
+        - name: BACKUP_PERIOD
+        - name: DATABASE_SERVICE_NAME
+        - name: DATABASE_NAME
+        - name: MONGODB_AUTHENTICATION_DATABASE
+        - name: TABLE_SCHEMA
+          value: public
+        - name: POSTGRESQL_USER
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: postgresql
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: postgresql
+        - name: FTP_URL
+          valueFrom:
+            secretKeyRef:
+              key: ftp-url
+              name: ftp-secret
+        - name: FTP_USER
+          valueFrom:
+            secretKeyRef:
+              key: ftp-user
+              name: ftp-secret
+        - name: FTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: ftp-password
+              name: ftp-secret
+        - name: WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              key: webhook-url
+              name: backup-postgresql
+        - name: ENVIRONMENT_FRIENDLY_NAME
+          value: NJSA DB Backups
+        - name: ENVIRONMENT_NAME
+          value: c476eb-prod
+        image: image-registry.openshift-image-registry.svc:5000/c746eb-tools/backup-postgresql@sha256:7db17b3a78dda726b54824fcba6d6703c77ddd5505ca15f5450ab2eeebacb040
+        imagePullPolicy: IfNotPresent
+        name: backup-postgresql
+        resources:
+          limits:
+            cpu: "0"
+            memory: "0"
+          requests:
+            cpu: "0"
+            memory: "0"
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /backups/
+          name: backup-postgresql-pvc
+        - mountPath: /var/lib/pgsql/data
+          name: backup-verification
+        - mountPath: /backup.conf
+          name: backup-postgresql-config-volume
+          subPath: backup.conf
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: backup-postgresql-pvc
+        persistentVolumeClaim:
+          claimName: backup-postgresql-pvc
+      - name: backup-verification
+        persistentVolumeClaim:
+          claimName: backup-verification
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: backup.conf
+            path: backup.conf
+          name: backup-conf
+        name: backup-postgresql-config-volume
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - backup-postgresql
+      from:
+        kind: ImageStreamTag
+        name: backup-postgresql:v1
+        namespace: c746eb-tools
+      lastTriggeredImage: image-registry.openshift-image-registry.svc:5000/c746eb-tools/backup-postgresql@sha256:7db17b3a78dda726b54824fcba6d6703c77ddd5505ca15f5450ab2eeebacb040
+    type: ImageChange
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "chart.fullname" . }}-backup-postgresql
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          environment: v1
+          name: devex-von-image
+      podSelector:
+        matchLabels:
+          app: backup-container
+          env: v1
+          name: backup-postgresql
+          role: backup-container
+  podSelector:
+    matchLabels:
+      backup: "true"
+      env: v1
+  policyTypes:
+  - Ingress
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "chart.fullname" . }}-backup-postgresql
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+data:
+  webhook-url: {{ required "backupPostgresql.webhookUrl is required" .Values.backupPostgresql.webhookUrl
+    | b64enc | quote }}
+  webhook-url-host: {{ required "backupPostgresql.webhookUrlHost is required" .Values.backupPostgresql.webhookUrlHost
+    | b64enc | quote }}
+type: Opaque

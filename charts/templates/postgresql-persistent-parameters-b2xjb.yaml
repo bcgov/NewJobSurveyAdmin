@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "chart.fullname" . }}-postgresql-persistent-parameters-b2xjb
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+data:
+  DATABASE_SERVICE_NAME: {{ required "postgresqlPersistentParametersB2Xjb.databaseServiceName is required" .Values.postgresqlPersistentParametersB2Xjb.databaseServiceName |
+    b64enc | quote }}
+  MEMORY_LIMIT: {{ required "postgresqlPersistentParametersB2Xjb.memoryLimit is required"
+    .Values.postgresqlPersistentParametersB2Xjb.memoryLimit | b64enc | quote }}
+  NAMESPACE: {{ required "postgresqlPersistentParametersB2Xjb.namespace is required"
+    .Values.postgresqlPersistentParametersB2Xjb.namespace | b64enc | quote }}
+  POSTGRESQL_DATABASE: {{ required "postgresqlPersistentParametersB2Xjb.postgresqlDatabase is required" .Values.postgresqlPersistentParametersB2Xjb.postgresqlDatabase |
+    b64enc | quote }}
+  POSTGRESQL_VERSION: {{ required "postgresqlPersistentParametersB2Xjb.postgresqlVersion is required" .Values.postgresqlPersistentParametersB2Xjb.postgresqlVersion | b64enc
+    | quote }}
+  VOLUME_CAPACITY: {{ required "postgresqlPersistentParametersB2Xjb.volumeCapacity is required" .Values.postgresqlPersistentParametersB2Xjb.volumeCapacity | b64enc
+    | quote }}
+type: Opaque

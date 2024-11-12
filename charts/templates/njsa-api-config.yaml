@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "chart.fullname" . }}-njsa-api-config
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+data:
+  appsettings.json: {{ .Values.njsaApiConfig.appsettingsJson | toYaml | indent 1
+    }}
