@@ -1,11 +1,10 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ include "chart.fullname" . }}-njsa-api
+  name: {{ include "chart.fullname" . }}-njsa
   labels:
   {{- include "chart.labels" . | nindent 4 }}
 spec:
-  host: njsa-api-c746eb-prod.apps.silver.devops.gov.bc.ca
   port:
     targetPort: 8080-tcp
   tls:
@@ -13,20 +12,20 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: njsa-api
+    name: njsa
     weight: 100
   wildcardPolicy: None
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "chart.fullname" . }}-njsa-api
+  name: {{ include "chart.fullname" . }}-njsa
   labels:
   {{- include "chart.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.njsaApi.type }}
+  type: {{ .Values.njsa.type }}
   selector:
-    deployment: njsa-api
+    deployment: njsa
   {{- include "chart.selectorLabels" . | nindent 4 }}
   ports:
-	{{- .Values.njsaApi.ports | toYaml | nindent 2 }}
+	{{- .Values.njsa.ports | toYaml | nindent 2 }}
