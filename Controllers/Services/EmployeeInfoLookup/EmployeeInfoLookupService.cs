@@ -35,6 +35,9 @@ namespace NewJobSurveyAdmin.Services
                 // user's attributes, setting as necessary.
                 using (var ldapConnection = new LdapConnection())
                 {
+                    ldapConnection.SecureSocketLayer = true;
+                    ldapConnection.UserDefinedServerCertValidationDelegate += (sender, cert, chain, sslPolicyErrors) => true;
+
                     ldapConnection.Connect(Host, Port);
                     ldapConnection.Bind(Username, Password);
 
