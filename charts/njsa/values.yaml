@@ -2,11 +2,11 @@ njsa:
   njsa:
     image:
       repository: artifacts.developer.gov.bc.ca/nc74-gen-docker-local
+      tag: latest
     imagePullPolicy: IfNotPresent
     # imagePullSecrets specifies docker-registry secret names as an array
     imagePullSecrets:
       - name: artifactory-pull
-    tag: latest
     resources:
       limits:
         cpu: 150m
