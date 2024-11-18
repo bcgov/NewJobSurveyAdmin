@@ -58,6 +58,7 @@ njsaApi:
   replicas: 1
   revisionHistoryLimit: 10
   type: ClusterIP
+  host: ""
 njsaApiConfig:
   appsettingsJson: ""
 njsaApiSecret:

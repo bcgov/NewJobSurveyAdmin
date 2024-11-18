@@ -26,5 +26,6 @@ njsa:
   replicas: 1
   revisionHistoryLimit: 10
   type: ClusterIP
+  host: ""
 njsaConfig:
   ENVJs: ""
