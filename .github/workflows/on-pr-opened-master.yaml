@@ -3,7 +3,6 @@ name: Pull Request Opened - Master
 env:
   APP_NAME: njsa
   API_NAME: njsa-api
-  ACRONYM: njsa
 
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
@@ -61,7 +60,7 @@ jobs:
         uses: ./.github/actions/deploy-to-environment
         with:
           app_name: ${{ env.APP_NAME }}
-          acronym: ${{ env.ACRONYM }}
+          api_name: ${{ env.API_NAME }}
           environment: dev
           job_name: dev
           namespace_prefix: ${{ secrets.NAMESPACE_PREFIX }}
@@ -85,7 +84,7 @@ jobs:
         uses: ./.github/actions/deploy-to-environment
         with:
           app_name: ${{ env.APP_NAME }}
-          acronym: ${{ env.ACRONYM }}
+          api_name: ${{ env.API_NAME }}
           environment: test
           job_name: test
           namespace_prefix: ${{ secrets.NAMESPACE_PREFIX }}
@@ -110,7 +109,7 @@ jobs:
         uses: ./.github/actions/deploy-to-environment
         with:
           app_name: ${{ env.APP_NAME }}
-          acronym: ${{ env.ACRONYM }}
+          api_name: ${{ env.API_NAME }}
           environment: prod
           job_name: prod
           namespace_prefix: ${{ secrets.NAMESPACE_PREFIX }}

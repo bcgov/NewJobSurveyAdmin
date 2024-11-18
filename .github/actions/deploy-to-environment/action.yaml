@@ -4,8 +4,8 @@ inputs:
   app_name:
     description: Application general Name
     required: true
-  acronym:
-    description: Application acronym
+  api_name:
+    description: Application API Name
     required: true
   environment:
     description: Logical Github Environment
@@ -43,18 +43,38 @@ runs:
       shell: bash
       run: echo "short_sha=sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-    - name: Helm Deploy
+    - name: Helm Deploy Frontend
       shell: bash
       run: >-
         helm upgrade --install --atomic ${{ inputs.job_name }} ./charts/${{ inputs.app_name }}
         --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }}
-        --set route.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
-        --set image.tag=${{ steps.shavar.outputs.short_sha }}
-        --values ./charts/wfp/values.${{ inputs.environment }}.yaml
-        --timeout 10m
+        --set njsa.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
+        --set njsa.njsa.image.tag=${{ steps.shavar.outputs.short_sha }}
+        --set njsaConfig.ENVJs=${{ secrets.NJSA_CONFIG }}
+        --values ./charts/${{ inputs.app_name }}/values.${{ inputs.environment }}.yaml
+        --timeout 5m
         --wait
 
-    - name: Wait on Deployment
+    - name: Helm Deploy Backend
+      shell: bash
+      run: >-
+        helm upgrade --install --atomic ${{ inputs.job_name }} ./charts/${{ inputs.api_name }}
+        --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }}
+        --set njsaApi.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
+        --set njsaApi.njsaApi.image.tag=${{ steps.shavar.outputs.short_sha }}
+        --set njsaApiConfig.appsettingsJson=${{ secrets.NJSA_API_CONFIG }}
+        --set njsaApiSecret.appsettingsJson=${{ secrets.NJSA_API_SECRET }}
+        --set scheduledPull.cronjobProd.args=${{ secrets.CRONJOB_ARGS }}
+        --values ./charts/${{ inputs.api_name }}/values.${{ inputs.environment }}.yaml
+        --timeout 5m
+        --wait
+
+    - name: Wait on Frontend Deployment
       shell: bash
       run: |
         oc rollout --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }} status deployment/${{ inputs.app_name }} --watch=true
+
+    - name: Wait on Backend Deployment
+      shell: bash
+      run: |
+        oc rollout --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }} status deployment/${{ inputs.api_name }} --watch=true
