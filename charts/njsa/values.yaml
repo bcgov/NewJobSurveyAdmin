@@ -1,4 +1,19 @@
 njsa:
+  njsa:
+    image:
+      repository: artifacts.developer.gov.bc.ca/nc74-gen-docker-local
+    imagePullPolicy: IfNotPresent
+    # imagePullSecrets specifies docker-registry secret names as an array
+    imagePullSecrets:
+      - name: artifactory-pull
+    tag: latest
+    resources:
+      limits:
+        cpu: 150m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
   ports:
   - name: 8080-tcp
     port: 8080
@@ -8,17 +23,8 @@ njsa:
     port: 8443
     protocol: TCP
     targetPort: 8443
+  replicas: 1
+  revisionHistoryLimit: 10
   type: ClusterIP
 njsaConfig:
-  ENVJs: |-
-    window.__ENV = {
-      NODE_ENV: 'production',
-      REACT_APP_APP_DOMAIN: 'https://erap.apps.gov.bc.ca/newjobsurveyadmin/',
-      REACT_APP_API_DOMAIN: 'https://erap.apps.gov.bc.ca/newjobsurveyadmin-api',
-      REACT_APP_APP_PATH: '/',
-      REACT_APP_AUTH_SCOPE: 'profile',
-      REACT_APP_AUTH_URL: 'https://loginproxy.gov.bc.ca/auth',
-      REACT_APP_AUTH_REALM: 'standard',
-      REACT_APP_AUTH_ROLE: 'newjobsurveyadmin',
-      REACT_APP_AUTH_CLIENT_ID: 'new-job-survey-admin-4360',
-    }
+  ENVJs: ""

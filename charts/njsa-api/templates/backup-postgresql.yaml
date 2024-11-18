@@ -1,46 +1,54 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: {{ include "chart.fullname" . }}-backup-postgresql
+  name: backup-postgresql
   labels:
   {{- include "chart.labels" . | nindent 4 }}
 spec:
-  replicas: 1
-  revisionHistoryLimit: 10
+  replicas: {{ .Values.backupPostgresql.replicas }}
+  revisionHistoryLimit: {{ .Values.backupPostgresql.revisionHistoryLimit }}
   selector:
-    name: backup-postgresql
-  strategy:
-    activeDeadlineSeconds: 21600
-    recreateParams:
-      timeoutSeconds: 600
-    resources: {}
-    type: Recreate
+    matchLabels:
+      app: backup-container
+      name: backup-postgresql
+    {{- include "chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: backup-container
         env: v1
         name: backup-postgresql
         role: backup-container
-      name: backup-postgresql
+      {{- include "chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:
         - name: BACKUP_STRATEGY
-          value: rolling
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupStrategy
+            }}
         - name: BACKUP_DIR
-          value: /backups/
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupDir }}
         - name: NUM_BACKUPS
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.numBackups }}
         - name: DAILY_BACKUPS
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.dailyBackups }}
         - name: WEEKLY_BACKUPS
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.weeklyBackups }}
         - name: MONTHLY_BACKUPS
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.monthlyBackups
+            }}
         - name: BACKUP_PERIOD
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupPeriod }}
         - name: DATABASE_SERVICE_NAME
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.databaseServiceName
+            }}
         - name: DATABASE_NAME
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.databaseName }}
         - name: MONGODB_AUTHENTICATION_DATABASE
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.mongodbAuthenticationDatabase
+            }}
         - name: TABLE_SCHEMA
-          value: public
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.tableSchema }}
         - name: POSTGRESQL_USER
           valueFrom:
             secretKeyRef:
@@ -72,19 +80,17 @@ spec:
               key: webhook-url
               name: backup-postgresql
         - name: ENVIRONMENT_FRIENDLY_NAME
-          value: NJSA DB Backups
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.environmentFriendlyName
+            }}
         - name: ENVIRONMENT_NAME
-          value: c476eb-prod
-        image: image-registry.openshift-image-registry.svc:5000/c746eb-tools/backup-postgresql@sha256:7db17b3a78dda726b54824fcba6d6703c77ddd5505ca15f5450ab2eeebacb040
-        imagePullPolicy: IfNotPresent
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.environmentName
+            }}
+        image: {{ .Values.backupPostgresql.backupPostgresql.image.repository }}:{{ .Values.backupPostgresql.backupPostgresql.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.backupPostgresql.backupPostgresql.imagePullPolicy }}
         name: backup-postgresql
-        resources:
-          limits:
-            cpu: "0"
-            memory: "0"
-          requests:
-            cpu: "0"
-            memory: "0"
+        resources: {{- toYaml .Values.backupPostgresql.backupPostgresql.resources | nindent
+          10 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
@@ -114,55 +120,3 @@ spec:
             path: backup.conf
           name: backup-conf
         name: backup-postgresql-config-volume
-  test: false
-  triggers:
-  - type: ConfigChange
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - backup-postgresql
-      from:
-        kind: ImageStreamTag
-        name: backup-postgresql:v1
-        namespace: c746eb-tools
-      lastTriggeredImage: image-registry.openshift-image-registry.svc:5000/c746eb-tools/backup-postgresql@sha256:7db17b3a78dda726b54824fcba6d6703c77ddd5505ca15f5450ab2eeebacb040
-    type: ImageChange
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: {{ include "chart.fullname" . }}-backup-postgresql
-  labels:
-  {{- include "chart.labels" . | nindent 4 }}
-spec:
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          environment: v1
-          name: devex-von-image
-      podSelector:
-        matchLabels:
-          app: backup-container
-          env: v1
-          name: backup-postgresql
-          role: backup-container
-  podSelector:
-    matchLabels:
-      backup: "true"
-      env: v1
-  policyTypes:
-  - Ingress
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ include "chart.fullname" . }}-backup-postgresql
-  labels:
-  {{- include "chart.labels" . | nindent 4 }}
-data:
-  webhook-url: {{ required "backupPostgresql.webhookUrl is required" .Values.backupPostgresql.webhookUrl
-    | b64enc | quote }}
-  webhook-url-host: {{ required "backupPostgresql.webhookUrlHost is required" .Values.backupPostgresql.webhookUrlHost
-    | b64enc | quote }}
-type: Opaque

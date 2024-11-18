@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "chart.fullname" . }}-scheduled-pull
+  name: scheduled-pull
   labels:
   {{- include "chart.labels" . | nindent 4 }}
 spec:
@@ -17,9 +17,6 @@ spec:
         spec:
           containers:
           - args: {{- toYaml .Values.scheduledPull.cronjobProd.args | nindent 8 }}
-            env:
-            - name: KUBERNETES_CLUSTER_DOMAIN
-              value: {{ quote .Values.kubernetesClusterDomain }}
             image: {{ .Values.scheduledPull.cronjobProd.image.repository }}:{{ .Values.scheduledPull.cronjobProd.image.tag
               | default .Chart.AppVersion }}
             imagePullPolicy: {{ .Values.scheduledPull.cronjobProd.imagePullPolicy
@@ -30,7 +27,7 @@ spec:
             terminationMessagePolicy: File
           dnsPolicy: ClusterFirst
           imagePullSecrets:
-          - name: {{ include "chart.fullname" . }}-cronjob-artifactory-secret
+          - name: cronjob-artifactory-secret
           restartPolicy: OnFailure
           schedulerName: default-scheduler
           securityContext: {}
