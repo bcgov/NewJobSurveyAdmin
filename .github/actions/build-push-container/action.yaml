@@ -21,6 +21,30 @@ inputs:
   image_registry_password:
     description: Image Registry User Password
     required: true
+  react_app_app_domain:
+    description: Domain for the Frontend
+    required: false
+  react_app_api_domain:
+    description: Domain for the Backend
+    required: false
+  react_app_app_path:
+    description: URL Path
+    required: false
+  react_app_auth_scope:
+    description: Authorization Scope
+    required: false
+  react_app_auth_url:
+    description: Authorization URL
+    required: false
+  react_app_auth_realm:
+    description: Authorization Realm
+    required: false
+  react_app_auth_role:
+    description: Authorization Role
+    required: false
+  react_app_auth_client_id:
+    description: Authorization Client ID
+    required: false
 
 runs:
   using: composite
@@ -28,15 +52,15 @@ runs:
     - name: Checkout repository
       uses: actions/checkout@v4
       env:
-        NODE_ENV: ${{ secrets.NODE_ENV }}
-        REACT_APP_APP_DOMAIN: ${{ secrets.REACT_APP_APP_DOMAIN }}
-        REACT_APP_API_DOMAIN: ${{ secrets.REACT_APP_API_DOMAIN }}
-        REACT_APP_APP_PATH: ${{ secrets.REACT_APP_APP_PATH }}
-        REACT_APP_AUTH_SCOPE: ${{ secrets.REACT_APP_AUTH_SCOPE }}
-        REACT_APP_AUTH_URL: ${{ secrets.REACT_APP_AUTH_URL }}
-        REACT_APP_AUTH_REALM: ${{ secrets.REACT_APP_AUTH_REALM }}
-        REACT_APP_AUTH_ROLE: ${{ secrets.REACT_APP_AUTH_ROLE }}
-        REACT_APP_AUTH_CLIENT_ID: ${{ secrets.REACT_APP_AUTH_CLIENT_ID }}
+        NODE_ENV: ${{ inputs.NODE_ENV }}
+        REACT_APP_APP_DOMAIN: ${{ inputs.REACT_APP_APP_DOMAIN }}
+        REACT_APP_API_DOMAIN: ${{ inputs.REACT_APP_API_DOMAIN }}
+        REACT_APP_APP_PATH: ${{ inputs.REACT_APP_APP_PATH }}
+        REACT_APP_AUTH_SCOPE: ${{ inputs.REACT_APP_AUTH_SCOPE }}
+        REACT_APP_AUTH_URL: ${{ inputs.REACT_APP_AUTH_URL }}
+        REACT_APP_AUTH_REALM: ${{ inputs.REACT_APP_AUTH_REALM }}
+        REACT_APP_AUTH_ROLE: ${{ inputs.REACT_APP_AUTH_ROLE }}
+        REACT_APP_AUTH_CLIENT_ID: ${{ inputs.REACT_APP_AUTH_CLIENT_ID }}
 
     # - name: Determine image tags
     #   shell: bash
