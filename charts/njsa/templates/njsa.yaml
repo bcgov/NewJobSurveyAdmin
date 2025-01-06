@@ -18,21 +18,20 @@ spec:
       {{- include "chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        image: {{ .Values.njsa.njsa.image.repository }}:{{ .Values.njsa.njsa.image.tag
-          | default .Chart.AppVersion }}
-        imagePullPolicy: {{ .Values.njsa.njsa.imagePullPolicy }}
-        name: njsa
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-        - containerPort: 8443
-          protocol: TCP
-        resources: {{- toYaml .Values.njsa.njsa.resources | nindent 10 }}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /opt/app-root/src/config
-          name: config-volume
+        - name: njsa
+          image: {{ .Values.njsa.njsa.image.repository }}:{{ .Values.njsa.njsa.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.njsa.njsa.imagePullPolicy }}
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          resources: {{- toYaml .Values.njsa.njsa.resources | nindent 10 }}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /opt/app-root/src/config
+            name: config-volume
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
