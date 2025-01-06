@@ -66,6 +66,11 @@ jobs:
           namespace_prefix: ${{ secrets.NAMESPACE_PREFIX }}
           openshift_server: ${{ secrets.OPENSHIFT_SERVER }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          njsa_config: ${{ secrets.NJSA_CONFIG }}
+          njsa_api_config: ${{ secrets.NJSA_API_CONFIG }}
+          njsa_api_secret: ${{ secrets.NJSA_API_SECRET }}
+          cronjob_args: ${{ secrets.CRONJOB_ARGS }}
+          
 
   deploy-test:
     name: Deploy to Test
@@ -90,3 +95,7 @@ jobs:
           namespace_prefix: ${{ secrets.NAMESPACE_PREFIX }}
           openshift_server: ${{ secrets.OPENSHIFT_SERVER }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          njsa_config: ${{ secrets.NJSA_CONFIG }}
+          njsa_api_config: ${{ secrets.NJSA_API_CONFIG }}
+          njsa_api_secret: ${{ secrets.NJSA_API_SECRET }}
+          cronjob_args: ${{ secrets.CRONJOB_ARGS }}

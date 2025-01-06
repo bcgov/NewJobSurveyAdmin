@@ -22,6 +22,18 @@ inputs:
   openshift_token:
     description: Openshift Service Account Token
     required: true
+  njsa_config:
+    description: Configuration for NJSA Frontend
+    required: true
+  njsa_api_config:
+    description: Configuration for NJSA Backend
+    required: true
+  njsa_api_secret:
+    description: Secrets from NJSA Backend
+    required: true
+  cronjob_args:
+    description: Arguments for the cronjob
+    required: true
 
 runs:
   using: composite
@@ -50,7 +62,7 @@ runs:
         --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }}
         --set njsa.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
         --set njsa.njsa.image.tag=${{ steps.shavar.outputs.short_sha }}
-        --set njsaConfig.ENVJs=${{ secrets.NJSA_CONFIG }}
+        --set njsaConfig.ENVJs=${{ inputs.NJSA_CONFIG }}
         --values ./charts/${{ inputs.app_name }}/values.${{ inputs.environment }}.yaml
         --timeout 5m
         --wait
@@ -62,9 +74,9 @@ runs:
         --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }}
         --set njsaApi.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
         --set njsaApi.njsaApi.image.tag=${{ steps.shavar.outputs.short_sha }}
-        --set njsaApiConfig.appsettingsJson=${{ secrets.NJSA_API_CONFIG }}
-        --set njsaApiSecret.appsettingsJson=${{ secrets.NJSA_API_SECRET }}
-        --set scheduledPull.cronjobProd.args=${{ secrets.CRONJOB_ARGS }}
+        --set njsaApiConfig.appsettingsJson=${ inputs.NJSA_API_CONFIG }}
+        --set njsaApiSecret.appsettingsJson=${{ inputs.NJSA_API_SECRET }}
+        --set scheduledPull.cronjobProd.args=${{ inputs.CRONJOB_ARGS }}
         --values ./charts/${{ inputs.api_name }}/values.${{ inputs.environment }}.yaml
         --timeout 5m
         --wait
