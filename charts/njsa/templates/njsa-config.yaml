@@ -5,14 +5,16 @@ metadata:
   labels:
   {{- include "chart.labels" . | nindent 4 }}
 data:
-  __ENV.js: {{ 
-    "NODE_ENV": .Values.NODE_ENV,
-    "REACT_APP_APP_DOMAIN": .Values.REACT_APP_APP_DOMAIN,
-    "REACT_APP_API_DOMAIN": .Values.REACT_APP_API_DOMAIN,
-    "REACT_APP_APP_PATH": .Values.REACT_APP_APP_PATH,
-    "REACT_APP_AUTH_SCOPE": .Values.REACT_APP_AUTH_SCOPE,
-    "REACT_APP_AUTH_URL": .Values.REACT_APP_AUTH_URL,
-    "REACT_APP_AUTH_REALM": .Values.REACT_APP_AUTH_REALM,
-    "REACT_APP_AUTH_ROLE": .Values.REACT_APP_AUTH_ROLE,
-    "REACT_APP_AUTH_CLIENT_ID": .Values.REACT_APP_AUTH_CLIENT_ID
-   }}
+  __ENV.js: |
+    window.__ENV = {
+      "NODE_ENV": .Values.NODE_ENV,
+      "REACT_APP_APP_DOMAIN": "{{ .Values.REACT_APP_APP_DOMAIN }}",
+      "REACT_APP_API_DOMAIN": "{{ .Values.REACT_APP_API_DOMAIN }}",
+      "REACT_APP_APP_PATH": "{{ .Values.REACT_APP_APP_PATH }}",
+      "REACT_APP_AUTH_SCOPE": "{{ .Values.REACT_APP_AUTH_SCOPE }}",
+      "REACT_APP_AUTH_URL": "{{ .Values.REACT_APP_AUTH_URL }}",
+      "REACT_APP_AUTH_REALM": "{{ .Values.REACT_APP_AUTH_REALM }}",
+      "REACT_APP_AUTH_ROLE": "{{ .Values.REACT_APP_AUTH_ROLE }}",
+      "REACT_APP_AUTH_CLIENT_ID": "{{ .Values.REACT_APP_AUTH_CLIENT_ID }}"
+    };
+   
