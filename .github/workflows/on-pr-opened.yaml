@@ -13,7 +13,7 @@ on:
 
 jobs:
   build-frontend:
-    name: Build & Push
+    name: Build & Push Frontend
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -29,7 +29,7 @@ jobs:
           image_registry_password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
 
   build-api:
-    name: Build & Push
+    name: Build & Push Backend
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
