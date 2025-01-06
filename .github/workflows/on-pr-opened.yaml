@@ -48,7 +48,7 @@ jobs:
     name: Deploy to Dev
     environment:
       name: dev
-    runs-on: ubuntu-latest
+    runs-on: openshift/cli
     needs: 
       - build-frontend
       - build-api
@@ -76,7 +76,7 @@ jobs:
     name: Deploy to Test
     environment:
       name: test
-    runs-on: ubuntu-latest
+    runs-on: openshift/cli
     needs: 
       - build-frontend
       - build-api
