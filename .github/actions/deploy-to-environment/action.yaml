@@ -22,9 +22,6 @@ inputs:
   openshift_token:
     description: Openshift Service Account Token
     required: true
-  njsa_config:
-    description: Configuration for NJSA Frontend
-    required: true
   njsa_api_config:
     description: Configuration for NJSA Backend
     required: true
@@ -69,7 +66,6 @@ runs:
         --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }}
         --set njsa.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
         --set njsa.njsa.image.tag=${{ steps.shavar.outputs.short_sha }}
-        --set njsaConfig.ENVJs=${{ inputs.NJSA_CONFIG }}
         --values ./charts/${{ inputs.app_name }}/values.${{ inputs.environment }}.yaml
         --timeout 5m
         --wait

@@ -27,6 +27,16 @@ runs:
   steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      env:
+        NODE_ENV: ${{ secrets.NODE_ENV }}
+        REACT_APP_APP_DOMAIN: ${{ secrets.REACT_APP_APP_DOMAIN }}
+        REACT_APP_API_DOMAIN: ${{ secrets.REACT_APP_API_DOMAIN }}
+        REACT_APP_APP_PATH: ${{ secrets.REACT_APP_APP_PATH }}
+        REACT_APP_AUTH_SCOPE: ${{ secrets.REACT_APP_AUTH_SCOPE }}
+        REACT_APP_AUTH_URL: ${{ secrets.REACT_APP_AUTH_URL }}
+        REACT_APP_AUTH_REALM: ${{ secrets.REACT_APP_AUTH_REALM }}
+        REACT_APP_AUTH_ROLE: ${{ secrets.REACT_APP_AUTH_ROLE }}
+        REACT_APP_AUTH_CLIENT_ID: ${{ secrets.REACT_APP_AUTH_CLIENT_ID }}
 
     # - name: Determine image tags
     #   shell: bash
