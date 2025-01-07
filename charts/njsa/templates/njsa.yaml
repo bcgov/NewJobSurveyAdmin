@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: njsa
-          image: {{ .Values.njsa.njsa.image.repository }}:{{ .Values.njsa.njsa.image.tag | default .Chart.AppVersion }}
+          image: {{ .Values.njsa.njsa.image.repository }}/{{ .Chart.Name }}:{{ .Values.njsa.njsa.image.tag | default .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.njsa.njsa.imagePullPolicy }}
           ports:
           - containerPort: 8080

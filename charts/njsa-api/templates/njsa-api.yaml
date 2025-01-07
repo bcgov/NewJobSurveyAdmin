@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: njsa-api
-          image: {{ .Values.njsaApi.njsaApi.image.repository }}:{{ .Values.njsaApi.njsaApi.image.tag | default .Chart.AppVersion }}
-          imagePullPolicy: {{ .Values.njsaApi.njsaApi.imagePullPolicy }}        name: njsa-api
+          image: {{ .Values.njsaApi.njsaApi.image.repository }}/{{ .Chart.Name }}:{{ .Values.njsaApi.njsaApi.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.njsaApi.njsaApi.imagePullPolicy }}
           ports:
           - containerPort: 8080
             protocol: TCP
