@@ -17,6 +17,10 @@ spec:
         deployment: njsa
       {{- include "chart.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.imagePullSecrets}}
+        imagePullSecrets:
+{{- toYaml . | nindent 8}}
+      {{- end }}
       containers:
         - name: njsa
           image: {{ .Values.njsa.njsa.image.repository }}/{{ .Chart.Name }}:{{ .Values.njsa.njsa.image.tag | default .Chart.AppVersion }}
