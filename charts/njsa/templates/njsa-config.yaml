@@ -7,7 +7,7 @@ metadata:
 data:
   __ENV.js: |
     window.__ENV = {
-      "NODE_ENV": .Values.NODE_ENV,
+      "NODE_ENV": "{{ .Values.njsaConfig.NODE_ENV }}",
       "REACT_APP_APP_DOMAIN": "{{ .Values.njsaConfig.REACT_APP_APP_DOMAIN }}",
       "REACT_APP_API_DOMAIN": "{{ .Values.njsaConfig.REACT_APP_API_DOMAIN }}",
       "REACT_APP_APP_PATH": "{{ .Values.njsaConfig.REACT_APP_APP_PATH }}",
