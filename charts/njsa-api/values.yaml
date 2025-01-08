@@ -136,7 +136,7 @@ pvc:
     storageRequest: 10Gi
 scheduledPull:
   cronjobProd:
-    args: ""
+    args: []
     image:
       repository: artifacts.developer.gov.bc.ca/docker-remote/curlimages/curl
       tag: 7.79.1
