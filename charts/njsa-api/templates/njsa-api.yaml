@@ -17,7 +17,7 @@ spec:
         deployment: njsa-api
       {{- include "chart.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets}}
+      {{- with .Values.njsaApi.njsaApi.imagePullSecrets}}
         imagePullSecrets:
 {{- toYaml . | nindent 8}}
       {{- end }}
