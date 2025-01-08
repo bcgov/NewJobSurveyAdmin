@@ -25,4 +25,12 @@ njsa:
   type: ClusterIP
   host: ""
 njsaConfig:
-  ENVJs: ""
+  NODE_ENV: "production"
+  REACT_APP_APP_DOMAIN: ""
+  REACT_APP_API_DOMAIN: ""
+  REACT_APP_APP_PATH: "/"
+  REACT_APP_AUTH_SCOPE: "profile"
+  REACT_APP_AUTH_URL: ""
+  REACT_APP_AUTH_REALM: "standard"
+  REACT_APP_AUTH_ROLE: "newjobsurveyadmin"
+  REACT_APP_AUTH_CLIENT_ID: "new-job-survey-admin-4360"
