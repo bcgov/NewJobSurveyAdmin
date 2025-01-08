@@ -32,9 +32,9 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-          - mountPath: /opt/app-root/app/config
+          - mountPath: /usr/share/nginx/html/config
             name: config-volume
-          - mountPath: /opt/app-root/app/secret
+          - mountPath: /usr/share/nginx/html/secret
             name: secret-volume
       dnsPolicy: ClusterFirst
       restartPolicy: Always

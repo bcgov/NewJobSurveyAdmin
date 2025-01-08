@@ -27,14 +27,6 @@ jobs:
           image_registry: ${{ secrets.IMAGE_REGISTRY }}
           image_registry_user: ${{ secrets.IMAGE_REGISTRY_USER }}
           image_registry_password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-          react_app_app_domain: ${{ secrets.REACT_APP_APP_DOMAIN }}
-          react_app_api_domain: ${{ secrets.REACT_APP_API_DOMAIN }}
-          react_app_app_path: ${{ secrets.REACT_APP_APP_PATH }}
-          react_app_auth_scope: ${{ secrets.REACT_APP_AUTH_SCOPE }}
-          react_app_auth_url: ${{ secrets.REACT_APP_AUTH_URL }}
-          react_app_auth_realm: ${{ secrets.REACT_APP_AUTH_REALM }}
-          react_app_auth_role: ${{ secrets.REACT_APP_AUTH_ROLE }}
-          react_app_auth_client_id: ${{ secrets.REACT_APP_AUTH_CLIENT_ID }}
 
   build-api:
     name: Build & Push Backend
@@ -77,6 +69,14 @@ jobs:
           njsa_api_config: ${{ secrets.NJSA_API_CONFIG }}
           njsa_api_secret: ${{ secrets.NJSA_API_SECRET }}
           cronjob_args: ${{ secrets.CRONJOB_ARGS }}
+          react_app_app_domain: ${{ secrets.REACT_APP_APP_DOMAIN }}
+          react_app_api_domain: ${{ secrets.REACT_APP_API_DOMAIN }}
+          react_app_app_path: ${{ secrets.REACT_APP_APP_PATH }}
+          react_app_auth_scope: ${{ secrets.REACT_APP_AUTH_SCOPE }}
+          react_app_auth_url: ${{ secrets.REACT_APP_AUTH_URL }}
+          react_app_auth_realm: ${{ secrets.REACT_APP_AUTH_REALM }}
+          react_app_auth_role: ${{ secrets.REACT_APP_AUTH_ROLE }}
+          react_app_auth_client_id: ${{ secrets.REACT_APP_AUTH_CLIENT_ID }}
           
 
   deploy-test:
