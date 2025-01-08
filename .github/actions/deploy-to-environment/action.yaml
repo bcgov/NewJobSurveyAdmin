@@ -128,7 +128,7 @@ runs:
     - name: Helm Deploy Frontend
       shell: bash
       run: >-
-        helm upgrade --install --atomic ${{ inputs.job_name }} ./charts/${{ inputs.app_name }}
+        helm upgrade --install --atomic frontend-${{ inputs.job_name }} ./charts/${{ inputs.app_name }}
         --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }}
         --set njsa.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
         --set njsa.njsa.image.tag=${{ steps.shavar.outputs.short_sha }}
@@ -139,7 +139,7 @@ runs:
     - name: Helm Deploy Backend
       shell: bash
       run: >-
-        helm upgrade --install --atomic ${{ inputs.job_name }} ./charts/${{ inputs.api_name }}
+        helm upgrade --install --atomic backend-${{ inputs.job_name }} ./charts/${{ inputs.api_name }}
         --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }}
         --set njsaApi.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
         --set njsaApi.njsaApi.image.tag=${{ steps.shavar.outputs.short_sha }}
