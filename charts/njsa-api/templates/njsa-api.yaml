@@ -58,7 +58,7 @@ metadata:
   labels:
   {{- include "chart.labels" . | nindent 4 }}
 spec:
-  host: {{ .Values.njsa-api.host }}
+  host: {{ .Values.njsaApi.host }}
   port:
     targetPort: 8080-tcp
   tls:
