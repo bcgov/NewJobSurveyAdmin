@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backup-postgresql
-  labels:
-  {{- include "chart.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.backupPostgresql.replicas }}
   revisionHistoryLimit: {{ .Values.backupPostgresql.revisionHistoryLimit }}
@@ -11,7 +9,6 @@ spec:
     matchLabels:
       app: backup-container
       name: backup-postgresql
-    {{- include "chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
@@ -19,13 +16,11 @@ spec:
         env: v1
         name: backup-postgresql
         role: backup-container
-      {{- include "chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:
         - name: BACKUP_STRATEGY
-          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupStrategy
-            }}
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupStrategy }}
         - name: BACKUP_DIR
           value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupDir }}
         - name: NUM_BACKUPS
@@ -80,17 +75,14 @@ spec:
               key: webhook-url
               name: backup-postgresql
         - name: ENVIRONMENT_FRIENDLY_NAME
-          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.environmentFriendlyName
-            }}
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.environmentFriendlyName }}
         - name: ENVIRONMENT_NAME
           value: {{ quote .Values.backupPostgresql.backupPostgresql.env.environmentName
             }}
-        image: {{ .Values.backupPostgresql.backupPostgresql.image.repository }}:{{ .Values.backupPostgresql.backupPostgresql.image.tag
-          | default .Chart.AppVersion }}
+        image: {{ .Values.backupPostgresql.backupPostgresql.image.repository }}/{{ .Values.backupPostgresql.backupPostgresql.image.tag }}
         imagePullPolicy: {{ .Values.backupPostgresql.backupPostgresql.imagePullPolicy }}
         name: backup-postgresql
-        resources: {{- toYaml .Values.backupPostgresql.backupPostgresql.resources | nindent
-          10 }}
+        resources: {{- toYaml .Values.backupPostgresql.backupPostgresql.resources | nindent 10 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:

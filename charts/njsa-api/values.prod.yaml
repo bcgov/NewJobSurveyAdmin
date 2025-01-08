@@ -7,6 +7,9 @@ njsaApi:
       requests:
         cpu: 10m
         memory: 64Mi
+njsaApiConfig:
+  CallWebApi:
+    BaseUrl: "https://erap.apps.gov.bc.ca/newjobsurveyadmin-callwebapi/api/NjsaCallWeb/"
 postgresql:
   postgresql:
     resources:

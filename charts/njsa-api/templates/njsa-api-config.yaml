@@ -5,5 +5,19 @@ metadata:
   labels:
   {{- include "chart.labels" . | nindent 4 }}
 data:
-  appsettings.json: {{ .Values.njsaApiConfig.appsettingsJson | toYaml | indent 1
-    }}
+  appsettings.json: |
+    {
+      "Logging": {
+        "LogLevel": {
+          "Default": "{{ .Values.njsaApiConfig.Logging.LogLevel.Default }}",
+          "System": "{{ .Values.njsaApiConfig.Logging.LogLevel.System }}",
+          "Microsoft": "{{ .Values.njsaApiConfig.Logging.LogLevel.Microsoft }}"
+        }
+      },
+      "CallWebApi": {
+        "BaseUrl": "{{ .Values.njsaApiConfig.CallWebApi.BaseUrl }}"
+      },
+      "Sieve": {
+        "ThrowExceptions": {{ .Values.njsaApiConfig.Sieve.ThrowExceptions | toJson }}
+      }
+    }

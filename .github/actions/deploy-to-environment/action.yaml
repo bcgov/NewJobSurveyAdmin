@@ -22,11 +22,77 @@ inputs:
   openshift_token:
     description: Openshift Service Account Token
     required: true
-  njsa_api_config:
-    description: Configuration for NJSA Backend
+  njsa_api_connection_strings:
+    description: Connection Strings for NJSA Backend
     required: true
-  njsa_api_secret:
-    description: Secrets from NJSA Backend
+  njsa_api_authentication_authority:
+    description: Authentication Authority for NJSA Backend
+    required: true
+  njsa_api_authentication_rolename:
+    description: Authentication RoleName for NJSA Backend
+    required: true
+  njsa_api_authentication_roleclaimtype:
+    description: Authentication RoleClaimType for NJSA Backend
+    required: true
+  njsa_api_authentication_audience:
+    description: Authentication Audience for NJSA Backend
+    required: true
+  njsa_api_email_fromname:
+    description: Email FromName for NJSA Backend
+    required: true
+  njsa_api_email_fromaddress:
+    description: Email FromAddress for NJSA Backend
+    required: true
+  njsa_api_email_toname:
+    description: Email ToName for NJSA Backend
+    required: true
+  njsa_api_email_toaddress:
+    description: Email ToAddress for NJSA Backend
+    required: true
+  njsa_api_email_smtpserver:
+    description: Email SmtpServer for NJSA Backend
+    required: true
+  njsa_api_email_smtpport:
+    description: Email SmtpPort for NJSA Backend
+    required: true
+  njsa_api_ldaplookup_host:
+    description: LdapLookup Host for NJSA Backend
+    required: true
+  njsa_api_ldaplookup_trustedissuers:
+    description: LdapLookup TrustedIssuers for NJSA Backend
+    required: true
+  njsa_api_ldaplookup_port:
+    description: LdapLookup Port for NJSA Backend
+    required: true
+  njsa_api_ldaplookup_base:
+    description: LdapLookup Base for NJSA Backend
+    required: true
+  njsa_api_ldaplookup_username:
+    description: LdapLookup Username for NJSA Backend
+    required: true
+  njsa_api_ldaplookup_password:
+    description: LdapLookup Password for NJSA Backend
+    required: true
+  njsa_api_ldaplookup_overrideemail:
+    description: LdapLookup OverrideEmail for NJSA Backend
+    required: true
+  njsa_api_callwebapi_tokenrequesturl:
+    description: CallWebApi TokenRequestUrl for NJSA Backend
+    required: true
+  njsa_api_callwebapi_clientid:
+    description: CallWebApi ClientId for NJSA Backend
+    required: true
+  njsa_api_callwebapi_clientsecret:
+    description: CallWebApi ClientSecret for NJSA Backend
+    required: true
+  njsa_api_psapi_njsadataurl:
+    description: PsaApi NjsaDataUrl for NJSA Backend
+    required: true
+  njsa_api_psapi_clientusername:
+    description: PsaApi ClientUsername for NJSA Backend
+    required: true
+  njsa_api_psapi_clientpassword:
+    description: PsaApi ClientPassword for NJSA Backend 
     required: true
   cronjob_args:
     description: Arguments for the cronjob
@@ -77,9 +143,33 @@ runs:
         --namespace ${{ inputs.namespace_prefix }}-${{ inputs.environment }}
         --set njsaApi.host=${{ inputs.app_name }}-${{ inputs.namespace_prefix }}-${{ inputs.environment }}.apps.silver.devops.gov.bc.ca
         --set njsaApi.njsaApi.image.tag=${{ steps.shavar.outputs.short_sha }}
-        --set njsaApiConfig.appsettingsJson=${ inputs.NJSA_API_CONFIG }}
-        --set njsaApiSecret.appsettingsJson=${{ inputs.NJSA_API_SECRET }}
-        --set scheduledPull.cronjobProd.args=${{ inputs.CRONJOB_ARGS }}
+        --set njsaApiSecret.ConnectionStrings.NewJobSurveyAdmin=${{ inputs.NJSA_API_CONNECTION_STRINGS }}
+        --set njsaApiSecret.Authentication.Authority=${{ inputs.NJSA_API_AUTHENTICATION_AUTHORITY }}
+        --set njsaApiSecret.Authentication.RoleName=${{ inputs.NJSA_API_AUTHENTICATION_ROLENAME }}
+        --set njsaApiSecret.Authentication.RoleClaimType=${{ inputs.NJSA_API_AUTHENTICATION_ROLECLAIMTYPE }}
+        --set njsaApiSecret.Authentication.Audience=${{ inputs.NJSA_API_AUTHENTICATION_AUDIENCE }}
+        --set njsaApiSecret.Email.FromName=${{ inputs.NJSA_API_EMAIL_FROMNAME }}
+        --set njsaApiSecret.Email.FromAddress=${{ inputs.NJSA_API_EMAIL_FROMADDRESS }}
+        --set njsaApiSecret.Email.ToName=${{ inputs.NJSA_API_EMAIL_TONAME }}
+        --set njsaApiSecret.Email.ToAddress=${{ inputs.NJSA_API_EMAIL_TOADDRESS }}
+        --set njsaApiSecret.Email.SmtpServer=${{ inputs.NJSA_API_EMAIL_SMTPSERVER }}
+        --set njsaApiSecret.Email.SmtpPort=${{ inputs.NJSA_API_EMAIL_SMTPPORT }}
+        --set njsaApiSecret.LdapLookup.Host=${{ inputs.NJSA_API_LDAPLOOKUP_HOST }}
+        --set njsaApiSecret.LdapLookup.TrustedIssuers=${{ inputs.NJSA_API_LDAPLOOKUP_TRUSTEDISSUERS }}
+        --set njsaApiSecret.LdapLookup.Port=${{ inputs.NJSA_API_LDAPLOOKUP_PORT }}
+        --set njsaApiSecret.LdapLookup.Base=${{ inputs.NJSA_API_LDAPLOOKUP_BASE }}
+        --set njsaApiSecret.LdapLookup.Username=${{ inputs.NJSA_API_LDAPLOOKUP_USERNAME }}
+        --set njsaApiSecret.LdapLookup.Password=${{ inputs.NJSA_API_LDAPLOOKUP_PASSWORD }}
+        --set njsaApiSecret.LdapLookup.OverrideEmail=${{ inputs.NJSA_API_LDAPLOOKUP_OVERRIDEEMAIL }}
+        --set njsaApiSecret.CallWebApi.TokenRequestUrl=${{ inputs.NJSA_API_CALLWEBAPI_TOKENREQUESTURL }}
+        --set njsaApiSecret.CallWebApi.ClientId=${{ inputs.NJSA_API_CALLWEBAPI_CLIENTID }}
+        --set njsaApiSecret.CallWebApi.ClientSecret=${{ inputs.NJSA_API_CALLWEBAPI_CLIENTSECRET }}
+        --set njsaApiSecret.PsaApi.NjsaDataUrl=${{ inputs.NJSA_API_PSAAPI_NJSADATAURL }}
+        --set njsaApiSecret.PsaApi.ClientUsername=${{ inputs.NJSA_API_PSAAPI_CLIENTUSERNAME }}
+        --set njsaApiSecret.PsaApi.ClientPassword=${{ inputs.NJSA_API_PSAAPI_CLIENTPASSWORD }}
+        --set scheduledPull.cronjobProd.args[0]="/bin/sh"
+        --set scheduledPull.cronjobProd.args[1]="-c"
+        --set scheduledPull.cronjobProd.args[2]="{{ inputs.CRONJOB_ARGS }}"
         --values ./charts/${{ inputs.api_name }}/values.${{ inputs.environment }}.yaml
         --timeout 5m
         --wait
