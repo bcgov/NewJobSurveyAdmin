@@ -18,8 +18,8 @@ spec:
       {{- include "chart.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.njsaApi.njsaApi.imagePullSecrets}}
-        imagePullSecrets:
-{{- toYaml . | nindent 8}}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: njsa-api

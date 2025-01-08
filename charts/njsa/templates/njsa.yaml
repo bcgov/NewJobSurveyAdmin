@@ -17,9 +17,9 @@ spec:
         deployment: njsa
       {{- include "chart.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.njsa.njsa.imagePullSecrets}}
-        imagePullSecrets:
-{{- toYaml . | nindent 8}}
+      {{- with .Values.njsa.njsa.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8}}
       {{- end }}
       containers:
         - name: njsa
