@@ -169,7 +169,6 @@ runs:
         --set njsaApiSecret.PsaApi.ClientPassword=${{ inputs.NJSA_API_PSAAPI_CLIENTPASSWORD }}
         --set scheduledPull.cronjobProd.args[0]="/bin/sh"
         --set scheduledPull.cronjobProd.args[1]="-c"
-        --set scheduledPull.cronjobProd.args[2]="${{ inputs.CRONJOB_ARGS }}"
         --values ./charts/${{ inputs.api_name }}/values.${{ inputs.environment }}.yaml
         --timeout 5m
         --wait
