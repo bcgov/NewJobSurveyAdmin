@@ -85,13 +85,13 @@ inputs:
   njsa_api_callwebapi_clientsecret:
     description: CallWebApi ClientSecret for NJSA Backend
     required: true
-  njsa_api_psapi_njsadataurl:
+  njsa_api_psaapi_njsadataurl:
     description: PsaApi NjsaDataUrl for NJSA Backend
     required: true
-  njsa_api_psapi_clientusername:
+  njsa_api_psaapi_clientusername:
     description: PsaApi ClientUsername for NJSA Backend
     required: true
-  njsa_api_psapi_clientpassword:
+  njsa_api_psaapi_clientpassword:
     description: PsaApi ClientPassword for NJSA Backend 
     required: true
   cronjob_args:
@@ -145,6 +145,7 @@ runs:
         --set njsaApi.njsaApi.image.tag=${{ steps.shavar.outputs.short_sha }}
         --set scheduledPull.cronjobProd.args[0]="/bin/sh"
         --set scheduledPull.cronjobProd.args[1]="-c"
+        --set scheduledPull.cronjobProd.args[2]="${{ inputs.CRONJOB_ARGS }}"
         --set njsaApiSecret.ConnectionStrings.NewJobSurveyAdmin="${{ inputs.NJSA_API_CONNECTION_STRINGS }}"
         --set njsaApiSecret.Authentication.Authority="${{ inputs.NJSA_API_AUTHENTICATION_AUTHORITY }}"
         --set njsaApiSecret.Authentication.RoleName="${{ inputs.NJSA_API_AUTHENTICATION_ROLENAME }}"

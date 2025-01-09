@@ -87,9 +87,9 @@ jobs:
           njsa_api_callwebapi_tokenrequesturl: ${{ secrets.NJSA_API_CALLWEBAPI_TOKENREQUESTURL }}
           njsa_api_callwebapi_clientid: ${{ secrets.NJSA_API_CALLWEBAPI_CLIENTID }} 
           njsa_api_callwebapi_clientsecret: ${{ secrets.NJSA_API_CALLWEBAPI_CLIENTSECRET }}   
-          njsa_api_psapi_njsadataurl: ${{ secrets.NJSA_API_PSAAPI_NJSADATAURL }}
-          njsa_api_psapi_clientusername: ${{ secrets.NJSA_API_PSAAPI_CLIENTUSERNAME }}
-          njsa_api_psapi_clientpassword: ${{ secrets.NJSA_API_PSAAPI_CLIENTPASSWORD }}  
+          njsa_api_psaapi_njsadataurl: ${{ secrets.NJSA_API_PSAAPI_NJSADATAURL }}
+          njsa_api_psaapi_clientusername: ${{ secrets.NJSA_API_PSAAPI_CLIENTUSERNAME }}
+          njsa_api_psaapi_clientpassword: ${{ secrets.NJSA_API_PSAAPI_CLIENTPASSWORD }}  
           cronjob_args: ${{ secrets.CRONJOB_ARGS }}
           
 
