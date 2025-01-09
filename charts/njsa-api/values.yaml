@@ -71,7 +71,7 @@ njsaApiConfig:
     ThrowExceptions: true
 njsaApiSecret:
   ConnectionStrings:
-    NewJobSurveyAdmin: "xx"
+    NewJobSurveyAdmin: ""
   Authentication:
     Authority: ""
     RoleName: ""
