@@ -10,7 +10,7 @@ njsa:
     resources:
       requests:
         cpu: 10m
-        memory: 64Mi
+        memory: 10Mi
   ports:
   - name: 8080-tcp
     port: 8080
