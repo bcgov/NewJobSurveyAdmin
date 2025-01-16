@@ -9,7 +9,7 @@ RUN dotnet publish -c Release -o /out
 
 # Stage 2: Build a runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS runtime
-WORKDIR /opt/app-root/app
+WORKDIR /usr/share/nginx/html
 COPY --from=build /out .
 
 # Set the entry point to your application
