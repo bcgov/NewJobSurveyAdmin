@@ -9,8 +9,9 @@ RUN dotnet publish -c Release -o /out
 
 # Stage 2: Build a runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS runtime
-WORKDIR /usr/share/nginx/html
+WORKDIR /opt/app-root/app
 COPY --from=build /out .
 
 # Set the entry point to your application
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "NewJobSurveyAdmin.dll"]
