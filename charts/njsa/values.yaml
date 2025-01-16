@@ -9,8 +9,8 @@ njsa:
       - name: artifactory-pull
     resources:
       requests:
-        cpu: 10m
-        memory: 10Mi
+        cpu: "10m"
+        memory: "10Mi"
   ports:
   - name: 8080-tcp
     port: 8080

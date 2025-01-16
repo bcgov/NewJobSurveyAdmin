@@ -2,8 +2,8 @@ njsa:
   njsa:
     resources:
       requests:
-        cpu: 10m
-        memory: 10Mi
+        cpu: "10m"
+        memory: "10Mi"
 njsaConfig:
   REACT_APP_APP_DOMAIN: "https://erap.apps.gov.bc.ca/newjobsurveyadmin-test/"
   REACT_APP_API_DOMAIN: "https://erap.apps.gov.bc.ca/newjobsurveyadmin-api-test"
