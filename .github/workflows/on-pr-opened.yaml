@@ -1,0 +1,120 @@
+name: Pull Request Opened
+
+env:
+  APP_NAME: njsa
+  API_NAME: njsa-api
+
+on:
+  # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+  workflow_dispatch:
+  pull_request:
+    branches:
+    - dev
+
+jobs:
+  build-frontend:
+    name: Build & Push Frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build & Push
+        uses: ./.github/actions/build-push-container
+        with:
+          context: ./frontend
+          image_name: ${{ env.APP_NAME }}
+          image_registry: ${{ secrets.IMAGE_REGISTRY }}
+          image_registry_user: ${{ secrets.IMAGE_REGISTRY_USER }}
+          image_registry_password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+
+  build-api:
+    name: Build & Push Backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build & Push
+        uses: ./.github/actions/build-push-container
+        with:
+          context: ./backend
+          image_name: ${{ env.API_NAME }}
+          image_registry: ${{ secrets.IMAGE_REGISTRY }}
+          image_registry_user: ${{ secrets.IMAGE_REGISTRY_USER }}
+          image_registry_password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+
+  deploy-dev:
+    name: Deploy to Dev
+    environment:
+      name: dev
+    runs-on: ubuntu-latest
+    needs: 
+      - build-frontend
+      - build-api
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy to Dev
+        uses: ./.github/actions/deploy-to-environment
+        with:
+          app_name: ${{ env.APP_NAME }}
+          api_name: ${{ env.API_NAME }}
+          environment: dev
+          job_name: dev
+          namespace_prefix: ${{ secrets.NAMESPACE_PREFIX }}
+          openshift_server: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          njsa_api_connection_strings: ${{ secrets.NJSA_API_CONNECTION_STRINGS }}
+          njsa_api_authentication_authority: ${{ secrets.NJSA_API_AUTHENTICATION_AUTHORITY }}
+          njsa_api_authentication_rolename: ${{ secrets.NJSA_API_AUTHENTICATION_ROLENAME }}
+          njsa_api_authentication_roleclaimtype: ${{ secrets.NJSA_API_AUTHENTICATION_ROLECLAIMTYPE }}
+          njsa_api_authentication_audience: ${{ secrets.NJSA_API_AUTHENTICATION_AUDIENCE }}
+          njsa_api_email_fromname: ${{ secrets.NJSA_API_EMAIL_FROMNAME }}
+          njsa_api_email_fromaddress: ${{ secrets.NJSA_API_EMAIL_FROMADDRESS }}
+          njsa_api_email_toname: ${{ secrets.NJSA_API_EMAIL_TONAME }}
+          njsa_api_email_toaddress: ${{ secrets.NJSA_API_EMAIL_TOADDRESS }}
+          njsa_api_email_smtpserver: ${{ secrets.NJSA_API_EMAIL_SMTPSERVER }}
+          njsa_api_email_smtpport: ${{ secrets.NJSA_API_EMAIL_SMTPPORT }}
+          njsa_api_ldaplookup_host: ${{ secrets.NJSA_API_LDAPLOOKUP_HOST }}
+          njsa_api_ldaplookup_trustedissuers: ${{ secrets.NJSA_API_LDAPLOOKUP_TRUSTEDISSUERS }}
+          njsa_api_ldaplookup_port: ${{ secrets.NJSA_API_LDAPLOOKUP_PORT }}
+          njsa_api_ldaplookup_base: ${{ secrets.NJSA_API_LDAPLOOKUP_BASE }} 
+          njsa_api_ldaplookup_username: ${{ secrets.NJSA_API_LDAPLOOKUP_USERNAME }}
+          njsa_api_ldaplookup_password: ${{ secrets.NJSA_API_LDAPLOOKUP_PASSWORD }}
+          njsa_api_ldaplookup_overrideemail: ${{ secrets.NJSA_API_LDAPLOOKUP_OVERRIDEEMAIL }}
+          njsa_api_callwebapi_tokenrequesturl: ${{ secrets.NJSA_API_CALLWEBAPI_TOKENREQUESTURL }}
+          njsa_api_callwebapi_clientid: ${{ secrets.NJSA_API_CALLWEBAPI_CLIENTID }} 
+          njsa_api_callwebapi_clientsecret: ${{ secrets.NJSA_API_CALLWEBAPI_CLIENTSECRET }}   
+          njsa_api_psaapi_njsadataurl: ${{ secrets.NJSA_API_PSAAPI_NJSADATAURL }}
+          njsa_api_psaapi_clientusername: ${{ secrets.NJSA_API_PSAAPI_CLIENTUSERNAME }}
+          njsa_api_psaapi_clientpassword: ${{ secrets.NJSA_API_PSAAPI_CLIENTPASSWORD }}  
+          cronjob_args: ${{ secrets.CRONJOB_ARGS }}
+          
+
+  deploy-test:
+    name: Deploy to Test
+    environment:
+      name: test
+    runs-on: ubuntu-latest
+    needs: 
+      - build-frontend
+      - build-api
+      - deploy-dev
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy to Test
+        uses: ./.github/actions/deploy-to-environment
+        with:
+          app_name: ${{ env.APP_NAME }}
+          api_name: ${{ env.API_NAME }}
+          environment: test
+          job_name: test
+          namespace_prefix: ${{ secrets.NAMESPACE_PREFIX }}
+          openshift_server: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          njsa_api_secret: ${{ secrets.NJSA_API_SECRET }}
+          cronjob_args: ${{ secrets.CRONJOB_ARGS }}

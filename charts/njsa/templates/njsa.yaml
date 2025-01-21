@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: njsa
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.njsa.replicas }}
+  revisionHistoryLimit: {{ .Values.njsa.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      deployment: njsa
+    {{- include "chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        deployment: njsa
+      {{- include "chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.njsa.njsa.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8}}
+      {{- end }}
+      containers:
+        - name: njsa
+          image: {{ .Values.njsa.njsa.image.repository }}/{{ .Chart.Name }}:{{ .Values.njsa.njsa.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.njsa.njsa.imagePullPolicy }}
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          resources: 
+          {{- toYaml .Values.njsa.njsa.resources | nindent 12 }}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/config
+            name: config-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: njsa-config
+        name: config-volume
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: njsa
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+spec:
+  host: {{ .Values.njsa.host }}
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: njsa
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: njsa
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.njsa.type }}
+  selector:
+    deployment: njsa
+  {{- include "chart.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.njsa.ports | toYaml | nindent 2 }}

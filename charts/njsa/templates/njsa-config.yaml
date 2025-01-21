@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: njsa-config
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+data:
+  __ENV.js: |
+    window.__ENV = {
+      "NODE_ENV": "{{ .Values.njsaConfig.NODE_ENV }}",
+      "REACT_APP_APP_DOMAIN": "{{ .Values.njsaConfig.REACT_APP_APP_DOMAIN }}",
+      "REACT_APP_API_DOMAIN": "{{ .Values.njsaConfig.REACT_APP_API_DOMAIN }}",
+      "REACT_APP_APP_PATH": "{{ .Values.njsaConfig.REACT_APP_APP_PATH }}",
+      "REACT_APP_AUTH_SCOPE": "{{ .Values.njsaConfig.REACT_APP_AUTH_SCOPE }}",
+      "REACT_APP_AUTH_URL": "{{ .Values.njsaConfig.REACT_APP_AUTH_URL }}",
+      "REACT_APP_AUTH_REALM": "{{ .Values.njsaConfig.REACT_APP_AUTH_REALM }}",
+      "REACT_APP_AUTH_ROLE": "{{ .Values.njsaConfig.REACT_APP_AUTH_ROLE }}",
+      "REACT_APP_AUTH_CLIENT_ID": "{{ .Values.njsaConfig.REACT_APP_AUTH_CLIENT_ID }}"
+    };
+   

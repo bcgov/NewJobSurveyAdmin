@@ -1,0 +1,10 @@
+njsa:
+  njsa:
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "10Mi"
+njsaConfig:
+  REACT_APP_APP_DOMAIN: "https://erap.apps.gov.bc.ca/newjobsurveyadmin-dev/"
+  REACT_APP_API_DOMAIN: "https://erap.apps.gov.bc.ca/newjobsurveyadmin-api-dev"
+  REACT_APP_AUTH_URL: "https://dev.loginproxy.gov.bc.ca/auth"
