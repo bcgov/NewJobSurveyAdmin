@@ -129,7 +129,7 @@ const FilterForm = ({
               )}
             </div>
             <div className="col-4 form-group mb-0">
-              <div className="text-right">
+              <div className="text-end">
                 <IconButton
                   label="Set filters"
                   iconName="check"

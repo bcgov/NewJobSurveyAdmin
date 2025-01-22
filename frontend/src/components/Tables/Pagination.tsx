@@ -63,7 +63,7 @@ const Pagination = (props: Props): JSX.Element => {
           </strong>{' '}
         </span>
       </div>
-      <div className="col text-right">
+      <div className="col text-end">
         <div className="form-group row mb-0">
           <label className="col-4 col-form-label" htmlFor="GoToPage">
             Go to page
