@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, type JSX } from 'react';
 
 import './SuccessMessage.scss'
 import { timeout } from '../../helpers/objectHelper'

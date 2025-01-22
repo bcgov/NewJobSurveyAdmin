@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import FAIcon from '../DisplayHelpers/Interface/Icons/FAIcon'
 

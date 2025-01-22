@@ -1,5 +1,5 @@
 import moment from 'moment-timezone'
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import AdminInterfaceHelpTopic from './AdminInterfaceHelpTopic'
 

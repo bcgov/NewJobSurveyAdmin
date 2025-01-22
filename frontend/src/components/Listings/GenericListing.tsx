@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, type JSX } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router'
 
 import { FixTypeLater } from '../../types/FixTypeLater'
@@ -69,7 +69,7 @@ const GenericListing = <T extends object>({
   const fetchIdRef = React.useRef<number>(0)
 
   // Keep track of the previous value of the filterQuery in a ref
-  const prevFilterQueryRef = React.useRef<string>()
+  const prevFilterQueryRef = React.useRef<string>(undefined)
   useEffect(() => {
     prevFilterQueryRef.current = filterQuery
   }, [filterQuery])

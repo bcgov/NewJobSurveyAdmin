@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 import { plainToClass } from 'class-transformer'
 import moment from 'moment-timezone'
 

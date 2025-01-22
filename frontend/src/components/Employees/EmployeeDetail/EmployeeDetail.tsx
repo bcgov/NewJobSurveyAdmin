@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { plainToClass } from 'class-transformer'
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { Employee } from '../../../types/Employee'
 import {

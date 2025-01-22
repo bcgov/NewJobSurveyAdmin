@@ -1,6 +1,6 @@
 import { CellProps, Column } from 'react-table'
 import { Link } from 'react-router-dom'
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { Employee } from '../../types/Employee'
 import { EmployeeStatus } from '../../types/EmployeeStatus'

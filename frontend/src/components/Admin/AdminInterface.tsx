@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer'
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { AdminSetting } from '../../types/AdminSetting'
 import { FixTypeLater } from '../../types/FixTypeLater'

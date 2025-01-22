@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 import ReactSelect from 'react-select'
 import { ValueType } from 'react-select/src/types'
 

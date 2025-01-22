@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React from 'react'
+import React, { type JSX } from 'react';
 import moment from 'moment-timezone'
 
 import { AdminSetting, AdminSettingKeyEnum } from '../../types/AdminSetting'

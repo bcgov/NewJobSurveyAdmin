@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useMemo } from 'react'
+import React, { useMemo, type JSX } from 'react';
 
 import { Filter, FilterType } from './FilterClasses/FilterTypes'
 import { PresetProps } from './Presets/PresetProps'

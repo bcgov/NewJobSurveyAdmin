@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import LoggedInInfo from './Login/LoggedInInfo'
 

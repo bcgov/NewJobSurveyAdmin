@@ -4,6 +4,8 @@ import { Route } from 'react-router-dom'
 import { FixTypeLater } from '../../types/FixTypeLater'
 import AuthWrapper from './AuthWrapper'
 
+import type { JSX } from "react";
+
 const AuthenticatedRoute = ({
   component: Component,
   ...rest

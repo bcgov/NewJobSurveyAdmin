@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router'
 
 import { Filter } from './FilterClasses/FilterTypes'
