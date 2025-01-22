@@ -1,4 +1,5 @@
-import moment from 'moment-timezone'
+import timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
 
 import { NullableString } from '../types/NullableString'
 export type NullableDate = Date | null
@@ -7,22 +8,24 @@ export const defaultNiceDateFormat = 'dddd, MMMM D, yyyy'
 export const defaultDatetimeFormat = 'YYYY-MM-DD HH:mm:ss z'
 export const defaultNiceDatetimeFormat = 'ddd MMM D YYYY HH:mm:ss'
 
+dayjs.extend(timezone);
+
 export const stringToDate = (str: string | undefined): Date | undefined => {
   if (str === undefined) return undefined
-  const candidateDate = moment(str)
-  return candidateDate.isValid() ? candidateDate.toDate() : undefined
+  const candidateDate = dayjs(str);
+  return candidateDate.isValid() ? candidateDate.toDate() : undefined;
 }
 
 export const dateToString = (date: Date | undefined): string => {
-  return date ? moment(date).format(defaultDateFormat) : ''
+  return date ? dayjs(date).format(defaultDateFormat) : '';
 }
 
 export function createDateAsUTCFromString(dateString: string): Date {
-  return moment.utc(dateString).toDate()
+  return dayjs.utc(dateString).toDate();
 }
 
 export function createDateFromString(dateString: string): Date {
-  return moment(dateString).toDate()
+  return dayjs(dateString).toDate();
 }
 
 export function dateOrUndefined(

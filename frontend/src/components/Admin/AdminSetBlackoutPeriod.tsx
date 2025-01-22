@@ -1,5 +1,4 @@
 import { plainToClass } from 'class-transformer'
-import moment from 'moment-timezone'
 import React, { type JSX } from 'react';
 
 import { AdminSetting } from '../../types/AdminSetting'

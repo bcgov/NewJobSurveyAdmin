@@ -1,4 +1,5 @@
-import moment from 'moment-timezone'
+import timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
 import React, { useContext, type JSX } from 'react';
 
 import { FilterDispatch } from '../../FilterForm'
@@ -7,9 +8,10 @@ import DateFilter from '../../FilterClasses/DateFilter'
 import IconButton from '../../../DisplayHelpers/Interface/Buttons/IconButton'
 
 export const getPreviousMonthFilter = (): DateFilter => {
-  const startDate = moment().subtract(1, 'month').startOf('month')
-  const endDate = moment(startDate).endOf('month')
-  return new DateFilter('effectiveDate', startDate.toDate(), endDate.toDate())
+  dayjs.extend(timezone);
+  const startDate = dayjs().subtract(1, 'month').startOf('month');
+  const endDate = dayjs(startDate).endOf('month');
+  return new DateFilter('effectiveDate', startDate.toDate(), endDate.toDate());
 }
 
 interface Props {

@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer'
-import moment from 'moment-timezone'
+import { Dayjs } from 'dayjs';
 import React, { type JSX } from 'react';
 
 import { AdminSetting } from '../../types/AdminSetting'
@@ -10,7 +10,7 @@ import './DatePreviewDate.scss'
 
 interface Props {
   adminSetting?: AdminSetting
-  basePullDate?: moment.Moment
+  basePullDate?: Dayjs
   color: string
   dayNum: number
   eventName: string

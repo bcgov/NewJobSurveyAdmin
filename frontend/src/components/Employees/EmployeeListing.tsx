@@ -1,6 +1,7 @@
 import React, { type JSX } from 'react';
-import { plainToClass } from 'class-transformer'
-import moment from 'moment-timezone'
+import { plainToClass } from 'class-transformer';
+import timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
 
 import { Employee } from '../../types/Employee'
 import { employeeFilters } from '../Filters/Presets/FieldSets/employeeFilters'
@@ -17,20 +18,22 @@ const EmployeeListing = (): JSX.Element => {
     []
   )
 
+  dayjs.extend(timezone);
+
   const exportedDataMapperCallback = React.useCallback(
     (responseJSON: FixTypeLater[]): FixTypeLater[] =>
       responseJSON.map((e) => {
         delete e.timelineEntries
         delete e.currentEmployeeStatus
-        e.birthDate = moment(e.birthDate).format(defaultDateFormat)
-        e.originalHireDate = moment(e.originalHireDate).format(
+        e.birthDate = dayjs(e.birthDate).format(defaultDateFormat)
+        e.originalHireDate = dayjs(e.originalHireDate).format(
           defaultDateFormat
         )
-        e.lastDayWorkedDate = moment(e.lastDayWorkedDate).format(
+        e.lastDayWorkedDate = dayjs(e.lastDayWorkedDate).format(
           defaultDateFormat
         )
-        e.effectiveDate = moment(e.effectiveDate).format(defaultDateFormat)
-        e.leaveDate = moment(e.leaveDate).format(defaultDateFormat)
+        e.effectiveDate = dayjs(e.effectiveDate).format(defaultDateFormat)
+        e.leaveDate = dayjs(e.leaveDate).format(defaultDateFormat)
         return e
       }),
     []
