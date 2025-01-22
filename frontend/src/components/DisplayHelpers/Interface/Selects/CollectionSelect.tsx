@@ -1,6 +1,5 @@
 import React, { type JSX } from 'react';
-import ReactSelect from 'react-select'
-import { ValueType } from 'react-select/src/types'
+import ReactSelect, { SingleValue, MultiValue } from 'react-select';
 
 import { FixTypeLater } from '../../../../types/FixTypeLater'
 
@@ -39,10 +38,7 @@ export const singleValue = (
 export interface CollectionSelectProps<T> {
   className?: string
   defaultValueKeys?: string[]
-  excludeNames?: string[]
-  excludeValues?: string[]
   id?: string
-  includeBlank?: boolean
   isClearable?: boolean
   isMultiSelect?: boolean
   items?: T[]
@@ -50,7 +46,6 @@ export interface CollectionSelectProps<T> {
   nameAccessor?: (item: T) => string
   onChangeCallback: (selectedValues: CollectionSelectReturnValue) => void
   placeholder?: React.ReactNode
-  suppressLabel?: boolean
   valueAccessor?: (item: T) => string
 }
 
@@ -61,8 +56,8 @@ const customReactSelectStyles = {
     backgroundColor: state.isSelected
       ? baseColor
       : state.isFocused
-      ? focusShadowColor
-      : 'white'
+        ? focusShadowColor
+        : 'white'
   }),
   menu: (provided: FixTypeLater): FixTypeLater => ({
     ...provided,
@@ -93,7 +88,7 @@ class CollectionSelect<T> extends React.Component<Props<T>> {
   }
 
   protected onChange(
-    selectedItems: ValueType<CollectionSelectValue, FixTypeLater>
+    selectedItems: SingleValue<CollectionSelectValue> | MultiValue<CollectionSelectValue>
   ): void {
     if (selectedItems != null && !Array.isArray(selectedItems)) {
       // Selected items is not an array. But for simplicity, we want to return

@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 
 import { FixTypeLater } from '../../types/FixTypeLater'
 import AuthWrapper from './AuthWrapper'

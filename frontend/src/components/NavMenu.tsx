@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import React, { type JSX } from 'react';
 
 import LoggedInInfo from './Login/LoggedInInfo'
@@ -11,7 +11,7 @@ class NavMenu extends React.Component {
   render(): JSX.Element {
     return (
       <nav className="navbar navbar-expand-xl navbar-light bg-warning border-bottom mb-4">
-        <Link to="/" className="navbar-brand text-primary">
+        <Link to="../" className="navbar-brand text-primary">
           <i className="fas fa-envelope-open-text mr-3"></i>
           New Job Survey Admin
         </Link>
@@ -33,22 +33,22 @@ class NavMenu extends React.Component {
           <LoggedInInfo />
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <Link to="/status" className="nav-link text-primary">
+              <Link to="../status" className="nav-link text-primary">
                 Health status
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/task-log-entries" className="nav-link text-primary">
+              <Link to="../task-log-entries" className="nav-link text-primary">
                 Task log
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/employees" className="nav-link text-primary">
+              <Link to="../employees" className="nav-link text-primary">
                 Employee database
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/admin" className="nav-link text-primary">
+              <Link to="../admin" className="nav-link text-primary">
                 Admin interface
               </Link>
             </li>

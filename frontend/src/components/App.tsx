@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router'
 import React, { useEffect } from 'react'
 
 import { windowLocation } from '../helpers/envHelper'
@@ -26,21 +26,15 @@ const App = () => {
 
   return (
     <Layout>
-      <AuthenticatedRoute exact path="/" component={Home} />
-      <Route path="/logout" component={LogoutPage} />
-      <Route path="/status" component={HealthStatus} />
-      <AuthenticatedRoute
-        exact
-        path="/employees/:employeeId"
-        component={EmployeeDetail}
-      />
-      <AuthenticatedRoute exact path="/employees" component={EmployeeListing} />
-      <AuthenticatedRoute
-        exact
-        path="/task-log-entries"
-        component={TaskLogEntryListing}
-      />
-      <AuthenticatedRoute exact path="/admin" component={AdminInterface} />
+      <Routes>
+        <Route path="/" element={<AuthenticatedRoute component={Home} />} />
+        <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/status" element={<HealthStatus />} />
+        <Route path="/employees/:employeeId" element={<AuthenticatedRoute component={EmployeeDetail} />} />
+        <Route path="/employees" element={<AuthenticatedRoute component={EmployeeListing} />} />
+        <Route path="/task-log-entries" element={<AuthenticatedRoute component={TaskLogEntryListing} />} />
+        <Route path="/admin" element={<AuthenticatedRoute component={AdminInterface} />} />
+      </Routes>
     </Layout>
   )
 }
