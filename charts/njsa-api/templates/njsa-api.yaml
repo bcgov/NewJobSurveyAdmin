@@ -29,8 +29,8 @@ spec:
           - containerPort: 8080
             protocol: TCP
           env:
-          - name: ASPNETCORE_URLS
-            value: "http://0.0.0.0:8080"
+          - name: ASPNETCORE_HTTP_PORTS
+            value: {{ .Values.njsaApi.ports.port }}
           resources: 
             {{- toYaml .Values.njsaApi.njsaApi.resources | nindent 12 }}
           terminationMessagePath: /dev/termination-log
