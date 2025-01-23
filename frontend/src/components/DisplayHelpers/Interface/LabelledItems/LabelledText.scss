@@ -1,17 +1,17 @@
-@import "../../../../variables";
+@use "../../../../variables";
 
 .LabelledText {
   .Label {
-    color: $color-grey;
+    color: variables.$color-grey;
     display: block;
     font-size: 0.9rem;
     font-weight: 600;
     .text-muted {
-      color: $color-lightest-grey;
+      color: variables.$color-lightest-grey;
     }
   }
   .HelperText {
-    color: $color-grey;
+    color: variables.$color-grey;
     font-size: 0.8rem;
   }
   margin-bottom: 1rem;

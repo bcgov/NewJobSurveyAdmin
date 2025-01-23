@@ -28,7 +28,7 @@
     "react-select": "^5.9.0",
     "reflect-metadata": "^0.2.2",
     "rimraf": "^6.0.1",
-    "sass": "^1.57.1",
+    "sass": "^1.83.4",
     "slugify": "^1.4.0",
     "typescript": "^4.9.4",
     "web-vitals": "^2.1.4"
