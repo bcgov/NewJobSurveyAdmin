@@ -29,7 +29,7 @@
     "reflect-metadata": "^0.2.2",
     "rimraf": "^6.0.1",
     "sass": "^1.83.4",
-    "slugify": "^1.4.0",
+    "slugify": "^1.6.6",
     "typescript": "^4.9.4",
     "web-vitals": "^2.1.4"
   },
