@@ -1,4 +1,4 @@
-import { CellProps, Column } from 'react-table'
+import { CellContext, ColumnDef } from '@tanstack/react-table'
 import { Link } from 'react-router'
 import React, { type JSX } from 'react';
 
@@ -7,106 +7,104 @@ import { EmployeeStatus } from '../../types/EmployeeStatus'
 import FormattedDate from '../DisplayHelpers/FormattedDate'
 import { FixTypeLater } from '../../types/FixTypeLater'
 
-type EmployeeCellProps = React.PropsWithChildren<
-  CellProps<Employee, FixTypeLater>
->
+type EmployeeCellProps = CellContext<Employee, FixTypeLater>
 
-export const employeeTableColumns = (): Column<Employee>[] => [
+export const employeeTableColumns = (): ColumnDef<Employee>[] => [
   {
-    Header: 'Telkey',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
-      <Link to={`/employees/${props.cell.row.original.id}`}>{props.value}</Link>
+    header: 'Telkey',
+    cell: (props: EmployeeCellProps): JSX.Element => (
+      <Link to={`/employees/${props.cell.row.original.id}`}>{props.getValue()}</Link>
     ),
-    accessor: 'telkey'
+    accessorKey: 'telkey'
   },
   {
-    Header: 'Employee ID',
-    accessor: 'governmentEmployeeId'
+    header: 'Employee ID',
+    accessorKey: 'governmentEmployeeId'
   },
   {
-    Header: 'Preferred first name',
-    accessor: 'preferredFirstName'
+    header: 'Preferred first name',
+    accessorKey: 'preferredFirstName'
   },
   {
-    Header: 'Last name',
-    accessor: 'lastName'
+    header: 'Last name',
+    accessorKey: 'lastName'
   },
   {
-    Header: 'Preferred email',
-    accessor: 'preferredEmail'
+    header: 'Preferred email',
+    accessorKey: 'preferredEmail'
   },
   {
-    Header: 'Hiring reason',
-    accessor: 'staffingReason'
+    header: 'Hiring reason',
+    accessorKey: 'staffingReason'
   },
   {
-    Header: 'New hire or internal staffing',
-    accessor: 'newHireOrInternalStaffing'
+    header: 'New hire or internal staffing',
+    accessorKey: 'newHireOrInternalStaffing'
   },
   {
-    Header: 'Hire effective date',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
+    header: 'Hire effective date',
+    cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate
         noWrap
         showLocalTimezone
-        date={(props.value as unknown) as Date}
+        date={(props.getValue() as unknown) as Date}
       />
     ),
-    accessor: 'effectiveDate'
+    accessorKey: 'effectiveDate'
   },
   {
-    Header: 'Import date',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
+    header: 'Import date',
+    cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate
         noWrap
         showLocalTimezone
-        date={(props.value as unknown) as Date}
+        date={(props.getValue() as unknown) as Date}
       />
     ),
-    accessor: 'createdTs'
+    accessorKey: 'createdTs'
   },
   {
-    Header: 'Invite date',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
+    header: 'Invite date',
+    cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate
         noWrap
         showLocalTimezone
-        date={(props.value as unknown) as Date}
+        date={(props.getValue() as unknown) as Date}
       />
     ),
-    accessor: 'inviteDate'
+    accessorKey: 'inviteDate'
   },
   {
-    Header: 'Deadline date',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
+    header: 'Deadline date',
+    cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate
         noWrap
         showLocalTimezone
-        date={(props.value as unknown) as Date}
+        date={(props.getValue() as unknown) as Date}
       />
     ),
-    accessor: 'deadlineDate'
+    accessorKey: 'deadlineDate'
   },
   {
-    Header: 'Status',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
-      <>{((props.value as unknown) as EmployeeStatus).displayName}</>
+    header: 'Status',
+    cell: (props: EmployeeCellProps): JSX.Element => (
+      <>{((props.getValue() as unknown) as EmployeeStatus).displayName}</>
     ),
-    accessor: 'currentEmployeeStatusCode'
+    accessorKey: 'currentEmployeeStatusCode'
   },
   {
-    Header: 'Last modified time',
-    Cell: (props: EmployeeCellProps): JSX.Element => (
+    header: 'Last modified time',
+    cell: (props: EmployeeCellProps): JSX.Element => (
       <FormattedDate
-        date={(props.value as unknown) as Date}
+        date={(props.getValue() as unknown) as Date}
         showTime
         showLocalTimezone
       />
     ),
-    accessor: 'modifiedTs'
+    accessorKey: 'modifiedTs'
   },
   {
-    Header: 'Timeline entries',
-    accessor: 'timelineEntryCount'
+    header: 'Timeline entries',
+    accessorKey: 'timelineEntryCount'
   }
 ]

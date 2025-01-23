@@ -1,44 +1,42 @@
-import { CellProps, Column } from 'react-table'
+import { CellContext, ColumnDef } from '@tanstack/react-table';
 import React, { type JSX } from 'react';
 
-import { TaskLogEntry } from '../../types/TaskLogEntry'
-import FormattedDate from '../DisplayHelpers/FormattedDate'
-import TaskComment from './TaskComment'
-import TaskOutcome from './TaskOutcome'
-import { FixTypeLater } from '../../types/FixTypeLater'
+import { TaskLogEntry } from '../../types/TaskLogEntry';
+import FormattedDate from '../DisplayHelpers/FormattedDate';
+import TaskComment from './TaskComment';
+import TaskOutcome from './TaskOutcome';
+import { FixTypeLater } from '../../types/FixTypeLater';
 
-type TaskLogEntryCellProps = React.PropsWithChildren<
-  CellProps<TaskLogEntry, FixTypeLater>
->
+type TaskLogEntryCellProps = CellContext<TaskLogEntry, FixTypeLater>;
 
-export const taskLogEntryTableColumns = (): Column<TaskLogEntry>[] => [
+export const taskLogEntryTableColumns = (): ColumnDef<TaskLogEntry>[] => [
   {
-    Header: 'Date',
-    Cell: (props: TaskLogEntryCellProps): JSX.Element => (
+    header: 'Date',
+    cell: (props: TaskLogEntryCellProps): JSX.Element => (
       <FormattedDate
-        date={(props.value as unknown) as Date}
+        date={props.getValue() as Date}
         showTime
         showLocalTimezone
       />
     ),
-    accessor: 'createdTs'
+    accessorKey: 'createdTs'
   },
   {
-    Header: 'Task',
-    accessor: 'taskCode'
+    header: 'Task',
+    accessorKey: 'taskCode'
   },
   {
-    Header: 'Status',
-    Cell: (props: TaskLogEntryCellProps): JSX.Element => (
-      <TaskOutcome taskOutcomeCode={props.value as string} />
+    header: 'Status',
+    cell: (props: TaskLogEntryCellProps): JSX.Element => (
+      <TaskOutcome taskOutcomeCode={props.getValue() as string} />
     ),
-    accessor: 'taskOutcomeCode'
+    accessorKey: 'taskOutcomeCode'
   },
   {
-    Header: 'Comment',
-    Cell: (props: TaskLogEntryCellProps): JSX.Element => (
-      <TaskComment comment={props.value as string} />
+    header: 'Comment',
+    cell: (props: TaskLogEntryCellProps): JSX.Element => (
+      <TaskComment comment={props.getValue() as string} />
     ),
-    accessor: 'comment'
+    accessorKey: 'comment'
   }
-]
+];
