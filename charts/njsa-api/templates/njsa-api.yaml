@@ -30,7 +30,7 @@ spec:
             protocol: TCP
           env:
           - name: ASPNETCORE_HTTP_PORTS
-            value: {{ (index .Values.njsaApi.ports 0).port }}
+            value: '{{ (index .Values.njsaApi.ports 0).port }}'
           resources: 
             {{- toYaml .Values.njsaApi.njsaApi.resources | nindent 12 }}
           terminationMessagePath: /dev/termination-log
