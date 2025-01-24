@@ -7,10 +7,10 @@
     "@bcgov/bootstrap-v5-theme": "1.0.1",
     "@beam-australia/react-env": "^3.1.1",
     "@tanstack/react-table": "^8.20.6",
-    "@types/node": "^22.10.7",
-    "@types/react": "^19.0.0",
-    "@types/react-csv": "^1.1.1",
-    "@types/react-datepicker": "^2.11.0",
+    "@types/node": "^22.10.10",
+    "@types/react": "^19.0.8",
+    "@types/react-csv": "^1.1.10",
+    "@types/react-datepicker": "^7.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/react-router": "^5.1.20",
     "bootstrap": "~5.3.3",
@@ -25,7 +25,7 @@
     "react-datepicker": "7.6.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.1.3",
-    "react-select": "^5.9.0",
+    "react-select": "^5.10.0",
     "reflect-metadata": "^0.2.2",
     "rimraf": "^6.0.1",
     "sass": "^1.83.4",
@@ -35,13 +35,13 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
     "@types/jest": "^29.5.4",
+    "@types/node": "^22.10.7",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint-config-react": "^1.1.7",
     "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.4.2",
-    "@types/node": "^22.10.7",
-    "@vitejs/plugin-react": "^4.3.4",
     "vite": "^6.0.0",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "eslintConfig": {
     "extends": "react-app"
