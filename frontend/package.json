@@ -35,7 +35,6 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
     "@types/jest": "^29.5.4",
-    "@types/node": "^22.10.7",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint-config-react": "^1.1.7",
     "eslint-plugin-prettier": "^5.2.3",
