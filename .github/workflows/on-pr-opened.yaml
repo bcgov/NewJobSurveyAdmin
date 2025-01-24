@@ -81,7 +81,7 @@ jobs:
           njsa_api_ldaplookup_trustedissuers: ${{ secrets.NJSA_API_LDAPLOOKUP_TRUSTEDISSUERS }}
           njsa_api_ldaplookup_port: ${{ secrets.NJSA_API_LDAPLOOKUP_PORT }}
           njsa_api_ldaplookup_base: "${{ secrets.NJSA_API_LDAPLOOKUP_BASE }}"
-          njsa_api_ldaplookup_username: "${{ secrets.NJSA_API_LDAPLOOKUP_USERNAME }}"
+          njsa_api_ldaplookup_username: '${{ secrets.NJSA_API_LDAPLOOKUP_USERNAME }}'
           njsa_api_ldaplookup_password: ${{ secrets.NJSA_API_LDAPLOOKUP_PASSWORD }}
           njsa_api_ldaplookup_overrideemail: ${{ secrets.NJSA_API_LDAPLOOKUP_OVERRIDEEMAIL }}
           njsa_api_callwebapi_tokenrequesturl: ${{ secrets.NJSA_API_CALLWEBAPI_TOKENREQUESTURL }}
