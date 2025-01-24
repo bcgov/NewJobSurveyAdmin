@@ -7,23 +7,23 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  setEnv(mode);
-  return {
-    plugins: [
-      react(),
-      tsconfigPaths(),
-      envPlugin(),
-      devServerPlugin(),
-      sourcemapPlugin(),
-      buildPathPlugin(),
-      basePlugin(),
-      importPrefixPlugin(),
-      htmlPlugin(mode),
-      
-      
-      
-    ],
-  };
+	setEnv(mode);
+	return {
+		plugins: [
+			react(),
+			tsconfigPaths(),
+			envPlugin(),
+			devServerPlugin(),
+			sourcemapPlugin(),
+			buildPathPlugin(),
+			basePlugin(),
+			importPrefixPlugin(),
+			htmlPlugin(mode),
+
+
+
+		],
+	};
 });
 
 function setEnv(mode: string) {
@@ -32,34 +32,27 @@ function setEnv(mode: string) {
 		loadEnv(mode, ".", ["REACT_APP_", "NODE_ENV", "PUBLIC_URL"]),
 	);
 	process.env.NODE_ENV ||= mode;
-	const { homepage } = JSON.parse(readFileSync("package.json", "utf-8"));
-	process.env.PUBLIC_URL ||= homepage
-		? `${
-				homepage.startsWith("http") || homepage.startsWith("/")
-					? homepage
-					: `/${homepage}`
-			}`.replace(/\/$/, "")
-		: "";
+	process.env.PUBLIC_URL ||= ".";
 }
 
 // Expose `process.env` environment variables to your client code
 // Migration guide: Follow the guide below to replace process.env with import.meta.env in your app, you may also need to rename your environment variable to a name that begins with VITE_ instead of REACT_APP_
 // https://vitejs.dev/guide/env-and-mode.html#env-variables
 function envPlugin(): Plugin {
-  return {
-    name: "env-plugin",
-    config(_, { mode }) {
-      const env = loadEnv(mode, ".", ["REACT_APP_", "NODE_ENV", "PUBLIC_URL"]);
-      return {
-        define: Object.fromEntries(
-          Object.entries(env).map(([key, value]) => [
-            `process.env.${key}`,
-            JSON.stringify(value),
-          ]),
-        ),
-      };
-    },
-  };
+	return {
+		name: "env-plugin",
+		config(_, { mode }) {
+			const env = loadEnv(mode, ".", ["REACT_APP_", "NODE_ENV", "PUBLIC_URL"]);
+			return {
+				define: Object.fromEntries(
+					Object.entries(env).map(([key, value]) => [
+						`process.env.${key}`,
+						JSON.stringify(value),
+					]),
+				),
+			};
+		},
+	};
 }
 
 // Setup HOST, SSL, PORT
@@ -85,11 +78,11 @@ function devServerPlugin(): Plugin {
 					...(https &&
 						SSL_CRT_FILE &&
 						SSL_KEY_FILE && {
-							https: {
-								cert: readFileSync(resolve(SSL_CRT_FILE)),
-								key: readFileSync(resolve(SSL_KEY_FILE)),
-							},
-						}),
+						https: {
+							cert: readFileSync(resolve(SSL_CRT_FILE)),
+							key: readFileSync(resolve(SSL_KEY_FILE)),
+						},
+					}),
 				},
 			};
 		},
@@ -138,9 +131,8 @@ function basePlugin(): Plugin {
 	return {
 		name: "base-plugin",
 		config(_, { mode }) {
-			const { PUBLIC_URL } = loadEnv(mode, ".", ["PUBLIC_URL"]);
 			return {
-				base: PUBLIC_URL || "",
+				base: "./",
 			};
 		},
 	};

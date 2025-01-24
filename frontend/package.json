@@ -2,7 +2,6 @@
   "name": "new-job-survey-admin",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
   "dependencies": {
     "@bcgov/bootstrap-v5-theme": "1.0.1",
     "@beam-australia/react-env": "^3.1.1",
