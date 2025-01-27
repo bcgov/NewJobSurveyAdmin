@@ -12,8 +12,7 @@ class NavMenu extends React.Component {
     return (
       <nav className="navbar navbar-expand-xl navbar-light bg-warning border-bottom mb-4">
         <Link to="../" className="navbar-brand text-primary">
-          <i className="fas fa-envelope-open-text mr-3"></i>
-          New Job Survey Admin
+          <i className="fas fa-envelope-open-text me-3"></i>New Job Survey Admin
         </Link>
         <button
           className="navbar-toggler"
@@ -31,7 +30,7 @@ class NavMenu extends React.Component {
           id="navbarSupportedContent"
         >
           <LoggedInInfo />
-          <ul className="navbar-nav ml-auto">
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <Link to="../status" className="nav-link text-primary">
                 Health status

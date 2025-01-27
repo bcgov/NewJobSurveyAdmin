@@ -12,9 +12,9 @@ const ColumnSortIndicator = <T,>(props: Props<T>): JSX.Element => {
     <span>
       {column.getIsSorted() ? (
         column.getIsSorted() === 'desc' ? (
-          <FAIcon name="caret-up" marginClasses="ml-1" />
+          <FAIcon name="caret-up" marginClasses="ms-1" />
         ) : (
-          <FAIcon name="caret-down" marginClasses="ml-1" />
+          <FAIcon name="caret-down" marginClasses="ms-1" />
         )
       ) : (
         ''

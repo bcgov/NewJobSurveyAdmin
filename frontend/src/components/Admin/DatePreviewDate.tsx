@@ -43,7 +43,7 @@ const DatePreviewDate = ({
           <div
             className={`Dates border bg-${color}-light border-${color} p-3 shadow d-flex align-items-center`}
           >
-            <div className={`mr-3 text-${color}`} style={{ maxWidth: '50px' }}>
+            <div className={`me-3 text-${color}`} style={{ maxWidth: '50px' }}>
               <i className={`fas fa-lg ${icon}`} />
             </div>
             <div>
@@ -54,7 +54,7 @@ const DatePreviewDate = ({
                   : date?.format('dddd, MMM D, YYYY')}
               </h3>
             </div>
-            <div className="ml-auto">
+            <div className="ms-auto">
               <span className={`badge badge-pill badge-secondary`}>
                 Day {dayNum}
               </span>
