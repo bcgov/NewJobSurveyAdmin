@@ -1,5 +1,6 @@
 import React, { useEffect, type JSX } from 'react';
 import { useLocation } from 'react-router'
+import { ColumnDef } from '@tanstack/react-table';
 
 import { FixTypeLater } from '../../types/FixTypeLater'
 import { Filter } from '../Filters/FilterClasses/FilterTypes'
@@ -35,7 +36,7 @@ export interface GenericListingProps<T extends object> {
   listingPath: string
   modelName: string
   presetComponent?: React.FC<PresetProps>
-  columns: () => FixTypeLater[]
+  columns: ColumnDef<T>[]
   dataMapper: (responseJSON: FixTypeLater[]) => T[]
   exportedDataMapper: (responseJSON: FixTypeLater[]) => FixTypeLater[]
   pageSize?: number

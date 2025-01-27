@@ -39,12 +39,14 @@ const EmployeeListing = (): JSX.Element => {
     []
   )
 
+  const cols = employeeTableColumns();
+
   return (
     <GenericListing
       sortProp={`&sorts=-modifiedTs`} // By default, sort by last modified
       modelName="employees"
       filterableFields={employeeFilters}
-      columns={employeeTableColumns}
+      columns={cols}
       presetComponent={EmployeePresets}
       listingPath="employees"
       dataMapper={dataMapperCallback}
