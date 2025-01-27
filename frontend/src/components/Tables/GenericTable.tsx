@@ -58,11 +58,18 @@ const GenericTable = <T extends object>(props: Props<T>): JSX.Element => {
     }
   });
 
+  const headerGroups = table.getHeaderGroups();
+  if (!Array.isArray(headerGroups)) {
+    console.error('Header Groups is not an array:', headerGroups);
+  }
+
+  console.log('Header Groups: {0}', headerGroups);
+
   return (
     <div>
       <table>
         <thead>
-          {table.getHeaderGroups().map(headerGroup => (
+          {Array.isArray(table.getHeaderGroups()) && table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
                 <th key={header.id}>

@@ -55,7 +55,7 @@ const DatePreviewDate = ({
               </h3>
             </div>
             <div className="ms-auto">
-              <span className={`badge badge-pill badge-secondary`}>
+              <span className={`badge badge-pill bg-secondary`}>
                 Day {dayNum}
               </span>
             </div>
