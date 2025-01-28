@@ -1,7 +1,7 @@
 
 # Stage 1: Build
 FROM docker.io/node:22-alpine AS builder
-ENV NODE_ENV production
+ENV NODE_ENV=production
 WORKDIR /opt/app-root/src
 
 # Copy everything and yarn build
