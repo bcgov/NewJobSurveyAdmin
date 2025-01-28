@@ -21,7 +21,7 @@
     "keycloak-js": "^26.1.0",
     "query-string": "^9.1.1",
     "react": "^19.0.0",
-    "react-csv": "^2.2.2",
+    "export-to-csv": "^1.4.0",
     "react-datepicker": "7.6.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.1.3",
