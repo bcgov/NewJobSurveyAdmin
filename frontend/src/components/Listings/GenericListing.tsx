@@ -90,7 +90,7 @@ const GenericListing = <T extends object>({
 
       // If there are no sorts from the table, use the passed-in sort prop, if
       // any, and otherwise just use an empty string.
-      const sortByQuery = processSorts(sortBy) ?? sortProp ?? ''
+      const sortByQuery = sortBy == null ? '' : processSorts(sortBy) ?? sortProp ?? ''
 
       // Set page index
       let newPageIndex = pageIndex
