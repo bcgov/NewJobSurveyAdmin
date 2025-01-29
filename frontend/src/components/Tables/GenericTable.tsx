@@ -78,6 +78,13 @@ const GenericTable = <T extends object>(props: Props<T>): JSX.Element => {
       />
       <table className="table table-sm table-striped">
         <thead>
+          <LoadingRow
+            colSpan={columns.length}
+            loading={loading}
+            pageIndex={controlledPageIndex}
+            pageSize={pageSize}
+            recordCount={recordCount}
+          />
           {table.getHeaderGroups().map((headerGroup) => {
             return (
               <tr key={headerGroup.id}>
@@ -102,29 +109,20 @@ const GenericTable = <T extends object>(props: Props<T>): JSX.Element => {
           })}
         </thead>
         <tbody>
-          {loading ? (
-            <LoadingRow
-              colSpan={columns.length}
-              loading={loading}
-              pageIndex={controlledPageIndex}
-              pageSize={pageSize}
-              recordCount={recordCount}
-            />
-          ) : (
-            table.getRowModel().rows.map((row) => {
-              return (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <td key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
-                    );
-                  })}
-                </tr>
-              )
-            })
-          )}
+          {table.getRowModel().rows.map((row) => {
+            return (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  );
+                })}
+              </tr>
+            )
+          })
+          }
         </tbody>
       </table>
       <Pagination

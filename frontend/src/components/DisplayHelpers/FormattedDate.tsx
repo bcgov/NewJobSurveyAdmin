@@ -1,5 +1,6 @@
 import React, { type JSX } from 'react';
 import timezone from 'dayjs/plugin/timezone';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
@@ -34,6 +35,7 @@ const FormattedDate = ({
   dayjs.extend(utc);
   dayjs.extend(timezone);
   dayjs.extend(relativeTime);
+  dayjs.extend(advancedFormat);
 
   let dayjsDate = dayjs(date);
 
