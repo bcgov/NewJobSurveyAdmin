@@ -129,8 +129,8 @@ scheduledPull:
   cronjobProd:
     args: []
     image:
-      repository: artifacts.developer.gov.bc.ca/docker-remote/curlimages/curl
-      tag: 7.79.1
+      repository: docker.io/curlimages/curl
+      tag: latest
     imagePullPolicy: IfNotPresent
   failedJobsHistoryLimit: 1
   schedule: 0 16 * * *
