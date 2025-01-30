@@ -6,7 +6,7 @@ import LoggedInInfo from './Login/LoggedInInfo'
 import './NavMenu.scss'
 
 class NavMenu extends React.Component {
-  static displayName = NavMenu.name
+  static readonly displayName = NavMenu.name
 
   render(): JSX.Element {
     return (
@@ -17,8 +17,8 @@ class NavMenu extends React.Component {
         <button
           className="navbar-toggler"
           type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
