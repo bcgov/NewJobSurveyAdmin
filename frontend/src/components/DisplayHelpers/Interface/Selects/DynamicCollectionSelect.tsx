@@ -1,5 +1,5 @@
 import { deserializeArray, plainToClass } from 'class-transformer'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, type JSX } from 'react';
 import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
 import { FixTypeLater } from '../../../../types/FixTypeLater'
 import CollectionSelect, {

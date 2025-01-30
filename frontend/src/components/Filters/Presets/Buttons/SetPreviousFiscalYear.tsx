@@ -1,5 +1,6 @@
-import moment from 'moment-timezone'
-import React, { useContext } from 'react'
+import timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
+import React, { useContext, type JSX } from 'react';
 
 import { FilterDispatch } from '../../FilterForm'
 import { FixTypeLater } from '../../../../types/FixTypeLater'
@@ -7,16 +8,21 @@ import DateFilter from '../../FilterClasses/DateFilter'
 import IconButton from '../../../DisplayHelpers/Interface/Buttons/IconButton'
 
 export const getPreviousFiscalYearFilter = (): DateFilter => {
-  let startDate = moment()
-  const currentYearApril = moment().month('April').startOf('month')
+  dayjs.extend(timezone);
+  let startDate = dayjs();
+  // Jan - 0
+  // Feb - 1
+  // Mar - 2
+  // Apr - 3
+  const currentYearApril = dayjs().month(3).startOf('month');
 
   if (startDate.isBefore(currentYearApril)) {
-    startDate = startDate.subtract(1, 'year')
+    startDate = startDate.subtract(1, 'year');
   }
-  startDate = startDate.subtract(1, 'year').month('April').startOf('month')
-  const endDate = moment(startDate).add(1, 'year').month('March').endOf('month')
+  startDate = startDate.subtract(1, 'year').month(3).startOf('month');
+  const endDate = dayjs(startDate).add(1, 'year').month(2).endOf('month');
 
-  return new DateFilter('effectiveDate', startDate.toDate(), endDate.toDate())
+  return new DateFilter('effectiveDate', startDate.toDate(), endDate.toDate());
 }
 
 interface Props {
@@ -44,8 +50,8 @@ const SetPreviousFiscalYear = ({
         label="Previous fiscal year"
         iconName="calendar-alt"
         colorType="outline-primary"
-        marginClasses="mr-2"
-        iconMarginClasses="mr-2"
+        marginClasses="me-2"
+        iconMarginClasses="me-2"
         buttonClasses="btn-sm"
         onClick={setPreviousFiscalYear}
       />

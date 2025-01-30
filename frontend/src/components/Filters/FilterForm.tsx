@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useMemo } from 'react'
+import React, { useMemo, type JSX } from 'react';
 
 import { Filter, FilterType } from './FilterClasses/FilterTypes'
 import { PresetProps } from './Presets/PresetProps'
@@ -129,19 +129,19 @@ const FilterForm = ({
               )}
             </div>
             <div className="col-4 form-group mb-0">
-              <div className="text-right">
+              <div className="text-end">
                 <IconButton
                   label="Set filters"
                   iconName="check"
-                  marginClasses="mr-3"
-                  iconMarginClasses="mr-2"
+                  marginClasses="me-3"
+                  iconMarginClasses="me-2"
                   submit
                 />
                 <IconButton
                   label="Reset all filters"
                   iconName="undo"
                   colorType="secondary"
-                  iconMarginClasses="mr-2"
+                  iconMarginClasses="me-2"
                   onClick={reset}
                   reset
                 />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import Button, { CommonButtonProps } from './Button'
 import FAIcon from '../Icons/FAIcon'

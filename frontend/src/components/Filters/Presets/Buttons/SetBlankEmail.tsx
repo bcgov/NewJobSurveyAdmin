@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, type JSX } from 'react';
 
 import { FilterDispatch } from '../../FilterForm'
 import { FixTypeLater } from '../../../../types/FixTypeLater'
@@ -31,8 +31,8 @@ const SetActiveEmployees = ({ submitId, setSubmitId }: Props): JSX.Element => {
         label="Blank email"
         iconName="envelope-open"
         colorType="outline-primary"
-        marginClasses="mr-2"
-        iconMarginClasses="mr-2"
+        marginClasses="me-2"
+        iconMarginClasses="me-2"
         buttonClasses="btn-sm"
         onClick={setActiveEmployees}
       />

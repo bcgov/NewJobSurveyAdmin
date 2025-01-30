@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer'
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { AdminSetting } from '../../types/AdminSetting'
 import { FixTypeLater } from '../../types/FixTypeLater'
@@ -31,12 +31,10 @@ const AdminInterface = (): JSX.Element => {
         <div className="row">
           <div className="col-5">
             {adminSettings.length > 0 && (
-              <>
-                <DatePreview
-                  adminSettings={adminSettings}
-                  setAdminSettings={setAdminSettings}
-                />
-              </>
+              <DatePreview
+                adminSettings={adminSettings}
+                setAdminSettings={setAdminSettings}
+              />
             )}
           </div>
           <div className="col-6 offset-1">

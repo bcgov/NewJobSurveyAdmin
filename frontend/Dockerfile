@@ -1,13 +1,12 @@
 
 # Stage 1: Build
-FROM docker.io/node:16-alpine AS builder
-ENV NODE_ENV production
+FROM docker.io/node:22-alpine AS builder
+ENV NODE_ENV=production
 WORKDIR /opt/app-root/src
 
 # Copy everything and yarn build
 COPY . .
-RUN yarn install --frozen-lockfile --production
-RUN yarn build
+RUN yarn install --frozen-lockfile --production && yarn build
 
 # Stage 2: Build a runtime image
 FROM nginxinc/nginx-unprivileged:alpine

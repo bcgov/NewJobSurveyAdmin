@@ -1,6 +1,7 @@
 import { plainToClass } from 'class-transformer'
-import moment from 'moment-timezone'
-import React from 'react'
+import dayjs from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek';
+import React, { type JSX } from 'react';
 
 import { AdminSetting } from '../../types/AdminSetting'
 import { AnyJson } from '../../types/JsonType'
@@ -24,8 +25,10 @@ const mapIsoWeekdayToOption = (i: number | string): NameValuePair => {
   if (isNaN(+i) || +i < 1 || +i > 7) {
     throw new RangeError('isoWeekDay must be between 1 and 7, inclusive')
   }
+  dayjs.extend(isoWeek);
+
   return {
-    name: moment().isoWeekday(+i).format('dddd'),
+    name: dayjs().isoWeekday(+i).format('dddd'),
     value: `${i}`,
   }
 }

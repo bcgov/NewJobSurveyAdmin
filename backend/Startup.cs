@@ -13,6 +13,7 @@ using NewJobSurveyAdmin.Services.PsaApi;
 using Sieve.Models;
 using Sieve.Services;
 using System.Net.Http;
+using System;
 
 namespace NewJobSurveyAdmin
 {
@@ -34,6 +35,11 @@ namespace NewJobSurveyAdmin
         public void ConfigureServices(IServiceCollection services)
         {
             // services.AddHttpClient();
+
+            // Enable legacy timestamp behavior.
+            // https://www.npgsql.org/doc/release-notes/6.0.html
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 
             // CORS configuration. Note we have to manually list all the methods
             // allowed: options.AllowAnyMethod() does NOT include "PATCH".

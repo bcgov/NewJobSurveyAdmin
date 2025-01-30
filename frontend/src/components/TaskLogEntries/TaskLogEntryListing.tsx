@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer'
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { FixTypeLater } from '../../types/FixTypeLater'
 import { TaskLogEntry } from '../../types/TaskLogEntry'
@@ -24,11 +24,13 @@ const TaskLogEntryListing = (): JSX.Element => {
     []
   )
 
+  const taskLogEntryTableCols = taskLogEntryTableColumns()
+
   return (
     <GenericListing
       modelName="task log entries"
       filterableFields={taskLogEntryFilters}
-      columns={taskLogEntryTableColumns}
+      columns={taskLogEntryTableCols}
       listingPath="taskLogEntries"
       dataMapper={dataMapperCallback}
       sortProp={`&sorts=-createdTs`} // By default, sort reverse chronologically

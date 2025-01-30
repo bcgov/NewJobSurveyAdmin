@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 import * as EmailValidator from 'email-validator'
 
 import { Employee } from '../../../types/Employee'

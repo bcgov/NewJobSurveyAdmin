@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { PresetProps } from './PresetProps'
 import SetActiveEmployees from './Buttons/SetActiveEmployees'

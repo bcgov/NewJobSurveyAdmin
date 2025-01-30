@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { Filter } from '../FilterClasses/FilterTypes'
 import ActiveFilterButton from './ActiveFilterButton'
