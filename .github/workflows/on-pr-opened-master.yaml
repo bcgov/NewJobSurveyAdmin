@@ -10,6 +10,10 @@ on:
   pull_request:
     branches:
     - master
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'charts/**'
 
 jobs:
   build-frontend:
