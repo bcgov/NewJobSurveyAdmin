@@ -1,7 +1,7 @@
-import { Routes, Route } from 'react-router'
+import { Routes, Route, useLocation } from 'react-router'
 import React, { useEffect } from 'react'
 
-import { windowLocation } from '../helpers/envHelper'
+import { windowLocation, frontendUrl } from '../helpers/envHelper'
 import AdminInterface from './Admin/AdminInterface'
 import AuthenticatedRoute from './Wrappers/AuthenticatedRoute'
 import EmployeeDetail from './Employees/EmployeeDetail/EmployeeDetail'
@@ -17,12 +17,16 @@ import '../custom.css'
 const App = () => {
   // If we get redirected here from a Keycloak logon, redirect the user to
   // the location we had saved for them before being redirected.
+  const location = useLocation();
+  const baseUrl = frontendUrl();
+
   useEffect(() => {
     const href = windowLocation.get();
-    if (href) {
+    if (href && href !== window.location.href && href !== baseUrl) {
+      windowLocation.remove(); // Clear the saved location to prevent infinite loop
       window.location.href = href;
     }
-  }, []);
+  }, [location]);
 
   return (
     <Layout>
