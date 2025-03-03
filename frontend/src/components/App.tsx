@@ -22,16 +22,12 @@ const App = () => {
 
   useEffect(() => {
     if (!window.location.hash.startsWith("#/")) {
-      console.log("🔄 Redirecting to hash-based URL");
       window.location.hash = "#/";
     }
   }, []);
 
   useEffect(() => {
     const href = windowLocation.get();
-    console.log("🔍 Saved href:", href);
-    console.log("🔍 Current window location:", window.location.href);
-    console.log("🔍 baseUrl:", baseUrl);
     if (href && href !== window.location.href && href !== baseUrl) {
       windowLocation.remove(); // Clear the saved location to prevent infinite loop
       window.location.href = href;
