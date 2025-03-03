@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 KeycloakService.initKeycloak(() => {
   root.render(
-    <HashRouter basename={getRouterBasename()}>
+    <HashRouter>
       <App />
     </HashRouter>
   );
