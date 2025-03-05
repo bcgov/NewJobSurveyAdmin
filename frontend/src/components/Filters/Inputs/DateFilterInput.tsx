@@ -47,6 +47,16 @@ const DateFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
             selected={fromDate}
             onChange={fromChange}
             className="form-control form-control-sm"
+            popperPlacement="bottom-start"
+            popperModifiers={[
+              {
+                name: 'preventOverflow',
+                options: {
+                  boundary: 'viewport',
+                },
+                fn: (data) => { return data },
+              },
+            ]}
             placeholderText={'From'}
           />
         </div>
@@ -55,6 +65,16 @@ const DateFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
             selected={toDate}
             onChange={toChange}
             className="form-control form-control-sm"
+            popperPlacement="bottom-start"
+            popperModifiers={[
+              {
+                name: 'preventOverflow',
+                options: {
+                  boundary: 'viewport',
+                },
+                fn: (data) => { return data },
+              },
+            ]}
             placeholderText={'To'}
           />
         </div>
