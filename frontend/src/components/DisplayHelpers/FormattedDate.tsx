@@ -1,5 +1,9 @@
-import React from 'react'
-import moment from 'moment-timezone'
+import React, { type JSX } from 'react';
+import timezone from 'dayjs/plugin/timezone';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import utc from 'dayjs/plugin/utc';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import dayjs from 'dayjs';
 import {
   defaultDateFormat,
   defaultNiceDatetimeFormat
@@ -28,22 +32,27 @@ const FormattedDate = ({
     return <>—</>
   }
 
-  let momentDate = moment(date)
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
+  dayjs.extend(relativeTime);
+  dayjs.extend(advancedFormat);
+
+  let dayjsDate = dayjs(date);
 
   if (showLocalTimezone) {
-    momentDate = momentDate.tz(TIMEZONE)
+    dayjsDate = dayjsDate.tz(TIMEZONE);
   }
 
   let displayDate = ''
 
   if (customFormat) {
-    displayDate = momentDate.format(customFormat)
+    displayDate = dayjsDate.format(customFormat)
   } else if (nice) {
-    displayDate = momentDate.fromNow()
+    displayDate = dayjsDate.fromNow()
   } else {
     displayDate = showTime
-      ? momentDate.format(defaultNiceDatetimeFormat)
-      : momentDate.format(defaultDateFormat)
+      ? dayjsDate.format(defaultNiceDatetimeFormat)
+      : dayjsDate.format(defaultDateFormat)
   }
 
   return (

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { FixTypeLater } from '../../../../types/FixTypeLater'
 import { requestJSONWithErrorHandler } from '../../../../helpers/requestHelpers'
@@ -79,7 +79,7 @@ const EditableSelect = ({
           <input
             type="button"
             value="Cancel"
-            className="btn btn-sm btn-outline-danger mt-2 mr-2"
+            className="btn btn-sm btn-outline-danger mt-2 me-2"
             onClick={toggleEditable}
           />
           <input

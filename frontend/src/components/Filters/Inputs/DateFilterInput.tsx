@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, type JSX } from 'react';
 import DatePicker from 'react-datepicker'
 
 import { FilterDispatch } from '../FilterForm'
@@ -16,25 +16,25 @@ interface Props {
 const DateFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
   const dispatch = useContext(FilterDispatch) as FixTypeLater
 
-  const [fromDate, setFromDate] = React.useState(filter.from)
-  const [toDate, setToDate] = React.useState(filter.to)
+  const [fromDate, setFromDate] = React.useState<Date | null>(filter.from ?? null)
+  const [toDate, setToDate] = React.useState<Date | null>(filter.to ?? null)
 
   React.useEffect((): void => {
-    setFromDate(undefined)
-    setToDate(undefined)
+    setFromDate(null)
+    setToDate(null)
   }, [resetTimestamp])
 
   React.useEffect((): void => {
     const clone = filter.clone()
-    clone.from = fromDate
-    clone.to = toDate
+    clone.from = fromDate ?? undefined
+    clone.to = toDate ?? undefined
     if (fromDate || toDate) {
       dispatch({ type: 'setFilter', filter: clone })
     }
   }, [fromDate, toDate, filter, dispatch])
 
-  const fromChange = React.useCallback((d: Date) => setFromDate(d), [])
-  const toChange = React.useCallback((d: Date) => setToDate(d), [])
+  const fromChange = React.useCallback((d: Date | null) => setFromDate(d), [])
+  const toChange = React.useCallback((d: Date | null) => setToDate(d), [])
 
   const name = filter.fieldName
 
@@ -42,19 +42,39 @@ const DateFilterInput = ({ filter, resetTimestamp }: Props): JSX.Element => {
     <div className="LabelledItem">
       <label htmlFor={`${name}-From`}>{labelFor(name)}</label>
       <div key={`${resetTimestamp}`} className="d-flex">
-        <div className="w-50 mr-1">
+        <div className="w-50 me-1">
           <DatePicker
             selected={fromDate}
             onChange={fromChange}
             className="form-control form-control-sm"
+            popperPlacement="bottom-start"
+            popperModifiers={[
+              {
+                name: 'preventOverflow',
+                options: {
+                  boundary: 'viewport',
+                },
+                fn: (data) => { return data },
+              },
+            ]}
             placeholderText={'From'}
           />
         </div>
-        <div className="w-50 ml-1">
+        <div className="w-50 ms-1">
           <DatePicker
             selected={toDate}
             onChange={toChange}
             className="form-control form-control-sm"
+            popperPlacement="bottom-start"
+            popperModifiers={[
+              {
+                name: 'preventOverflow',
+                options: {
+                  boundary: 'viewport',
+                },
+                fn: (data) => { return data },
+              },
+            ]}
             placeholderText={'To'}
           />
         </div>

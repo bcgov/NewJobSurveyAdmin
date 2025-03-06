@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { AppointmentStatus } from '../types/AppointmentStatus'
 import { Employee } from '../types/Employee'
@@ -114,7 +114,7 @@ export const labelForWithFlag = (
       title={flagIsSet ? 'This field has been edited by an admin' : undefined}
     >
       {fieldLabels[fieldName]}{' '}
-      {flagIsSet && <FAIcon name="flag" marginClasses="ml-1" />}
+      {flagIsSet && <FAIcon name="flag" marginClasses="ms-1" />}
     </span>
   )
 }

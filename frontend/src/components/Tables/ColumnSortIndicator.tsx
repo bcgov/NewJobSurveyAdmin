@@ -1,30 +1,26 @@
-import React from 'react'
+import React, { type JSX } from 'react';
+import { Column } from '@tanstack/react-table';
 import FAIcon from '../DisplayHelpers/Interface/Icons/FAIcon'
 
-export interface IColumn {
-  isSorted?: boolean
-  isSortedDesc?: boolean
+interface Props<T> {
+  column: Column<T, unknown>
 }
 
-interface Props {
-  column: IColumn
-}
-
-const ColumnSortIndicator = (props: Props): JSX.Element => {
+const ColumnSortIndicator = <T,>(props: Props<T>): JSX.Element => {
   const { column } = props
   return (
     <span>
-      {column.isSorted ? (
-        column.isSortedDesc ? (
-          <FAIcon name="caret-up" marginClasses="ml-1" />
+      {column.getIsSorted() ? (
+        column.getIsSorted() === 'desc' ? (
+          <FAIcon name="caret-up" marginClasses="ms-1" />
         ) : (
-          <FAIcon name="caret-down" marginClasses="ml-1" />
+          <FAIcon name="caret-down" marginClasses="ms-1" />
         )
       ) : (
         ''
       )}
     </span>
-  )
-}
+  );
+};
 
-export default ColumnSortIndicator
+export default ColumnSortIndicator;

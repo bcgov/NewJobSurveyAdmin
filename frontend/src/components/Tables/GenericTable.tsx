@@ -3,152 +3,139 @@
 // by react-table are not obviously supplying the key (but it actually does get
 // supplied when rendering in browser).
 
-import React from 'react'
-import { Column, usePagination, useSortBy, useTable } from 'react-table'
-
-import { FixTypeLater } from '../../types/FixTypeLater'
-import ColumnSortIndicator from './ColumnSortIndicator'
-import LoadingRow from './LoadingRow'
-import Pagination from './Pagination'
+import React, { type JSX, useEffect, useState } from 'react';
+import {
+  useReactTable, getCoreRowModel, getSortedRowModel,
+  getPaginationRowModel, ColumnDef, flexRender, SortingState
+} from '@tanstack/react-table';
+import { FixTypeLater } from '../../types/FixTypeLater';
+import ColumnSortIndicator from './ColumnSortIndicator';
+import LoadingRow from './LoadingRow';
+import Pagination from './Pagination';
 
 interface Props<T extends object> {
-  data: T[]
-  columns: () => Column<T>[]
-  fetchData: (options: FixTypeLater) => FixTypeLater
-  loading: boolean
-  controlledPageCount: number
-  controlledPageIndex: number
-  recordCount: number
-  pageSize: number
+  data: T[];
+  columns: ColumnDef<T>[];
+  fetchData: (options: FixTypeLater) => FixTypeLater;
+  loading: boolean;
+  controlledPageCount: number;
+  controlledPageIndex: number;
+  recordCount: number;
+  pageSize: number;
 }
 
 const GenericTable = <T extends object>(props: Props<T>): JSX.Element => {
   const {
-    columns: propColumns,
-    controlledPageCount,
-    controlledPageIndex,
     data,
+    columns,
     fetchData,
     loading,
-    pageSize: propPageSize,
-    recordCount
-  } = props
+    controlledPageCount,
+    controlledPageIndex,
+    recordCount,
+    pageSize
+  } = props;
 
-  const columns = React.useMemo(propColumns, [propColumns])
-  const initialPageSize = propPageSize
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    // Get the state from the instance
-    state: { pageIndex, pageSize, sortBy }
-  }: FixTypeLater = useTable(
-    {
-      columns,
-      data,
-      // defaultColumn,
-      initialState: {
-        pageIndex: 0,
-        pageSize: initialPageSize
-      } as FixTypeLater,
-      manualPagination: true,
-      pageCount: controlledPageCount,
-      manualSortBy: true,
-      manualFilters: true,
-      defaultCanFilter: true,
-      autoResetSortBy: false,
-      autoResetFilters: false
-    } as FixTypeLater,
-    useSortBy,
-    usePagination
-  )
+  useEffect(() => {
+    fetchData({ pageIndex: controlledPageIndex, pageSize, sortBy: sorting });
+  }, [controlledPageIndex, pageSize, sorting, fetchData]);
 
-  React.useEffect(() => {
-    fetchData({ pageIndex, sortBy })
-  }, [fetchData, pageIndex, sortBy])
-
-  React.useEffect(() => {
-    if (controlledPageIndex !== pageIndex) {
-      gotoPage(controlledPageIndex)
-    }
-    // Intentionally only looking at controlledPageIndex
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [controlledPageIndex])
+  const table = useReactTable({
+    data,
+    columns,
+    pageCount: controlledPageCount,
+    state: {
+      pagination: {
+        pageIndex: controlledPageIndex,
+        pageSize
+      },
+      sorting
+    },
+    manualPagination: true,
+    manualSorting: true,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: (updater) => {
+      const newState = typeof updater === 'function' ? updater({ pageIndex: controlledPageIndex, pageSize }) : updater;
+      fetchData({ pageIndex: newState.pageIndex, pageSize: newState.pageSize });
+    },
+    onSortingChange: setSorting
+  });
 
   return (
-    <>
+    <div>
       <Pagination
-        gotoPage={gotoPage}
-        nextPage={nextPage}
-        previousPage={previousPage}
-        canNextPage={canNextPage}
-        canPreviousPage={canPreviousPage}
-        pageCount={pageCount}
-        pageIndex={pageIndex}
+        pageCount={controlledPageCount}
+        pageIndex={controlledPageIndex}
+        canPreviousPage={controlledPageIndex > 0}
+        canNextPage={controlledPageIndex < controlledPageCount - 1}
+        gotoPage={(pageIndex) => fetchData({ pageIndex, pageSize })}
+        previousPage={() => fetchData({ pageIndex: controlledPageIndex - 1, pageSize })}
+        nextPage={() => fetchData({ pageIndex: controlledPageIndex + 1, pageSize })}
       />
-      <table className="table table-sm table-striped" {...getTableProps()}>
+      <table className="table table-sm table-striped">
         <thead>
           <LoadingRow
+            colSpan={columns.length}
             loading={loading}
-            pageIndex={pageIndex}
+            pageIndex={controlledPageIndex}
             pageSize={pageSize}
             recordCount={recordCount}
           />
-          {headerGroups.map((headerGroup: FixTypeLater) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column: FixTypeLater) => (
-                <th {...column.getHeaderProps()}>
-                  <span {...column.getSortByToggleProps()}>
-                    {column.render('Header')}
-                    <ColumnSortIndicator column={column} />
-                  </span>
-                  <div>{column.canFilter ? column.render('Filter') : null}</div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row: FixTypeLater) => {
-            prepareRow(row)
+          {table.getHeaderGroups().map((headerGroup) => {
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell: FixTypeLater) => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder ? null : (
+                        <span {...{
+                          onClick: header.column.getToggleSortingHandler(),
+                          title: 'Toggle SortBy',
+                          style: { cursor: 'pointer' }
+                        }}>
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          <ColumnSortIndicator column={header.column} />
+                        </span>
+                      )}
+                    </th>
+                  )
                 })}
               </tr>
             )
           })}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => {
+            return (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  );
+                })}
+              </tr>
+            )
+          })
+          }
         </tbody>
-        <tfoot>
-          <LoadingRow
-            loading={loading}
-            pageIndex={pageIndex}
-            pageSize={pageSize}
-            recordCount={recordCount}
-          />
-        </tfoot>
       </table>
       <Pagination
-        gotoPage={gotoPage}
-        nextPage={nextPage}
-        previousPage={previousPage}
-        canNextPage={canNextPage}
-        canPreviousPage={canPreviousPage}
-        pageCount={pageCount}
-        pageIndex={pageIndex}
+        pageCount={controlledPageCount}
+        pageIndex={controlledPageIndex}
+        canPreviousPage={controlledPageIndex > 0}
+        canNextPage={controlledPageIndex < controlledPageCount - 1}
+        gotoPage={(pageIndex) => fetchData({ pageIndex, pageSize })}
+        previousPage={() => fetchData({ pageIndex: controlledPageIndex - 1, pageSize })}
+        nextPage={() => fetchData({ pageIndex: controlledPageIndex + 1, pageSize })}
       />
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default GenericTable
+export default GenericTable;

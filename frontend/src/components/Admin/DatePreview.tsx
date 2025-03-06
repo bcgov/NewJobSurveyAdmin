@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React from 'react'
-import moment from 'moment-timezone'
+import React, { type JSX } from 'react';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import dayjs from 'dayjs';
 
 import { AdminSetting, AdminSettingKeyEnum } from '../../types/AdminSetting'
 import AdminDataPullDayOfWeek from './AdminDataPullDayOfWeek'
@@ -52,12 +54,15 @@ const DatePreview = ({
 
   const realCloseDays = 1
 
-  const basePullDate = moment()
-    .startOf('isoWeek')
-    .add(dataPullDayOfWeek, 'days')
-  const now = moment()
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
 
-  if (now.unix() > moment(basePullDate).add(1, 'days').unix()) {
+  const basePullDate = dayjs()
+    .startOf('isoWeek')
+    .add(dataPullDayOfWeek, 'days');
+  const now = dayjs();
+
+  if (now.unix() > dayjs(basePullDate).add(1, 'days').unix()) {
     basePullDate.add(1, 'week')
   }
 

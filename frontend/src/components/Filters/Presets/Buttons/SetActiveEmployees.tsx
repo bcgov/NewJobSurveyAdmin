@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, type JSX } from 'react';
 
 import {
   EmployeeStatus,
@@ -38,8 +38,8 @@ const SetActiveEmployees = ({ submitId, setSubmitId }: Props): JSX.Element => {
         label="Active employees"
         iconName="user-check"
         colorType="outline-primary"
-        marginClasses="mr-2"
-        iconMarginClasses="mr-2"
+        marginClasses="me-2"
+        iconMarginClasses="me-2"
         buttonClasses="btn-sm"
         onClick={setActiveEmployees}
       />

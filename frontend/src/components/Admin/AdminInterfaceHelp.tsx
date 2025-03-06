@@ -1,12 +1,17 @@
-import moment from 'moment-timezone'
-import React from 'react'
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import dayjs from 'dayjs';
+import React, { type JSX } from 'react';
 
 import AdminInterfaceHelpTopic from './AdminInterfaceHelpTopic'
 
 import './AdminInterfaceHelp.scss'
 
+
 // The scheduled task runs at 16:00 UTC.
-const SCHEDULED_TASK_UTC_TIME = moment.utc().hour(16).minute(0)
+dayjs.extend(utc);
+dayjs.extend(timezone);
+const SCHEDULED_TASK_UTC_TIME = dayjs.utc().hour(16).minute(0)
 
 // The task time will be shown in Pacific time.
 const TASK_TIME = SCHEDULED_TASK_UTC_TIME.clone()
@@ -17,14 +22,14 @@ const AdminInterfaceHelp = (): JSX.Element => {
   return (
     <div className="AdminInterfaceHelp text-muted border border-secondary p-3 shadow mt-4">
       <h2 className="mb-1">
-        <i className="fas fa-info-circle mr-2" /> Information
+        <i className="fas fa-info-circle me-2" /> Information
       </h2>
       <div className="row">
         <div className="col">
           <AdminInterfaceHelpTopic title="Scheduled task">
             The scheduled task runs every day at {TASK_TIME} Pacific time. In
             order, the task will:
-            <ol className="my-2 pl-3">
+            <ol className="my-2 ps-3">
               <li>
                 <strong>Update employee statuses from CallWeb</strong>, checking
                 to see whether any employees in a non-final state have completed

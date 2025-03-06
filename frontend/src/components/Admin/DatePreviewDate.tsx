@@ -1,6 +1,6 @@
 import { plainToClass } from 'class-transformer'
-import moment from 'moment-timezone'
-import React from 'react'
+import { Dayjs } from 'dayjs';
+import React, { type JSX } from 'react';
 
 import { AdminSetting } from '../../types/AdminSetting'
 import { AnyJson } from '../../types/JsonType'
@@ -10,7 +10,7 @@ import './DatePreviewDate.scss'
 
 interface Props {
   adminSetting?: AdminSetting
-  basePullDate?: moment.Moment
+  basePullDate?: Dayjs
   color: string
   dayNum: number
   eventName: string
@@ -43,7 +43,7 @@ const DatePreviewDate = ({
           <div
             className={`Dates border bg-${color}-light border-${color} p-3 shadow d-flex align-items-center`}
           >
-            <div className={`mr-3 text-${color}`} style={{ maxWidth: '50px' }}>
+            <div className={`me-3 text-${color}`} style={{ maxWidth: '50px' }}>
               <i className={`fas fa-lg ${icon}`} />
             </div>
             <div>
@@ -54,8 +54,8 @@ const DatePreviewDate = ({
                   : date?.format('dddd, MMM D, YYYY')}
               </h3>
             </div>
-            <div className="ml-auto">
-              <span className={`badge badge-pill badge-secondary`}>
+            <div className="ms-auto">
+              <span className={`badge badge-pill bg-secondary`}>
                 Day {dayNum}
               </span>
             </div>

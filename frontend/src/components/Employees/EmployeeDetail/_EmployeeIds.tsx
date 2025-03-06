@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 
 import { Employee } from '../../../types/Employee'
 import { labelFor } from '../../../helpers/labelHelper'
