@@ -1,0 +1,138 @@
+backupConf:
+  backupConf: |-
+    postgres=postgresql:5432/njsa
+    30 6 * * * default ./backup.sh -s
+    30 7 * * * default ./backup.sh -s -v all
+backupPostgresql:
+  backupPostgresql:
+    env:
+      backupDir: /backups/
+      backupPeriod: ""
+      backupStrategy: rolling
+      dailyBackups: ""
+      databaseName: ""
+      databaseServiceName: ""
+      environmentFriendlyName: "NJSA DB Backups"
+      environmentName: ""
+      mongodbAuthenticationDatabase: ""
+      monthlyBackups: ""
+      numBackups: ""
+      tableSchema: public
+      weeklyBackups: ""
+    image:
+      repository: image-registry.openshift-image-registry.svc:5000/c746eb-tools
+      tag: backup-postgresql@sha256:7db17b3a78dda726b54824fcba6d6703c77ddd5505ca15f5450ab2eeebacb040
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+  replicas: 1
+  revisionHistoryLimit: 10
+  webhookUrl: ""
+  webhookUrlHost: ""
+njsaApi:
+  njsaApi:
+    image:
+      repository: artifacts.developer.gov.bc.ca/nc74-gen-docker-local
+      tag: latest
+    imagePullPolicy: IfNotPresent
+    # imagePullSecrets specifies docker-registry secret names as an array
+    imagePullSecrets:
+      - name: artifactory-pull
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "128Mi"
+  ports:
+  - name: 8080-tcp
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  replicas: 1
+  revisionHistoryLimit: 10
+  type: ClusterIP
+  host: ""
+njsaApiConfig:
+  Logging:
+    LogLevel:
+      Default: "Debug"
+      System: "Information"
+      Microsoft: "Information"
+  CallWebApi:
+    BaseUrl: "https://call-web-api-4339-dev.apps.silver.devops.gov.bc.ca"
+  Sieve:
+    ThrowExceptions: true
+njsaApiSecret:
+  ConnectionStrings:
+    NewJobSurveyAdmin: ""
+  Authentication:
+    Authority: ""
+    RoleName: ""
+    RoleClaimType: ""
+    Audience: ""
+  Email:
+    FromName: ""
+    FromAddress: ""
+    ToName: ""
+    ToAddress: ""
+    SmtpServer: ""
+    SmtpPort: ""
+  LdapLookup:
+    Host: ""
+    TrustedIssuers: ""
+    Port: ""
+    Base: ""
+    Username: ""
+    Password: ""
+    OverrideEmail: ""
+  CallWebApi:
+    TokenRequestUrl: ""
+    ClientId: ""
+    ClientSecret: ""
+  PsaApi:
+    NjsaDataUrl: ""
+    ClientUsername: ""
+    ClientPassword: ""
+postgresql:
+  ports:
+  - name: postgresql
+    port: 5432
+    protocol: TCP
+    targetPort: 5432
+  postgresql:
+    containerSecurityContext:
+      capabilities: {}
+      privileged: false
+    image:
+      repository: image-registry.openshift-image-registry.svc:5000/openshift
+      tag: postgresql@sha256:ed2da0eed3f495f5455f490cdf7f7943420f64b0cf541271a2d315a3f9e9744c
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "10m"
+  replicas: 1
+  revisionHistoryLimit: 10
+  type: ClusterIP
+pvc:
+  backupPostgresqlPvc:
+    storageClass: netapp-file-backup
+    storageRequest: 2Gi
+  backupVerification:
+    storageClass: netapp-file-standard
+    storageRequest: 2Gi
+  postgresql:
+    storageClass: netapp-file-standard
+    storageRequest: 10Gi
+scheduledPull:
+  cronjobProd:
+    args: []
+    image:
+      repository: docker.io/curlimages/curl
+      tag: latest
+    imagePullPolicy: IfNotPresent
+  failedJobsHistoryLimit: 1
+  schedule: 0 16 * * *
+  successfulJobsHistoryLimit: 3
+  suspend: false

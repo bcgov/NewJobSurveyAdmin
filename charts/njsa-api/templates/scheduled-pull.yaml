@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scheduled-pull
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: {{ .Values.scheduledPull.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cronjob-prod
+            {{- if .Values.scheduledPull.cronjobProd.args }}
+            args: {{ .Values.scheduledPull.cronjobProd.args | toYaml | nindent 12 }}
+            {{- end }}
+            image: {{ .Values.scheduledPull.cronjobProd.image.repository }}:{{ .Values.scheduledPull.cronjobProd.image.tag }}
+            imagePullPolicy: {{ .Values.scheduledPull.cronjobProd.imagePullPolicy }}
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          imagePullSecrets:
+          - name: cronjob-artifactory-secret
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+  schedule: {{ .Values.scheduledPull.schedule | quote }}
+  successfulJobsHistoryLimit: {{ .Values.scheduledPull.successfulJobsHistoryLimit }}
+  suspend: {{ .Values.scheduledPull.suspend }}

@@ -1,0 +1,18 @@
+@use "../../../../variables";
+
+.LabelledText {
+  .Label {
+    color: variables.$color-grey;
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    .text-muted {
+      color: variables.$color-lightest-grey;
+    }
+  }
+  .HelperText {
+    color: variables.$color-grey;
+    font-size: 0.8rem;
+  }
+  margin-bottom: 1rem;
+}

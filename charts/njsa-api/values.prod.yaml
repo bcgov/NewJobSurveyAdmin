@@ -1,0 +1,25 @@
+njsaApi:
+  njsaApi:
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "128Mi"
+njsaApiConfig:
+  CallWebApi:
+    BaseUrl: "https://erap.apps.gov.bc.ca/newjobsurveyadmin-callwebapi/api/NjsaCallWeb/"
+postgresql:
+  postgresql:
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "10m"
+pvc:
+  backupPostgresqlPvc:
+    storageClass: netapp-file-backup
+    storageRequest: 2Gi
+  backupVerification:
+    storageClass: netapp-file-standard
+    storageRequest: 2Gi
+  postgresql:
+    storageClass: netapp-file-standard
+    storageRequest: 10Gi

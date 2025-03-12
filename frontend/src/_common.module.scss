@@ -1,0 +1,20 @@
+@use "sass:color";
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+:export {
+  baseColor: $primary;
+  focusShadowColor: $input-btn-focus-color;
+  focusBorderColor: $input-focus-border-color;
+}
+
+.react-datepicker {
+  font-family: BCSans, Verdana, Arial, sans-serif !important;
+}
+
+.bg-primary-light { background: color.adjust($primary, $lightness: 48%, $space: hsl) !important; }
+.bg-success-light { background: color.adjust($success, $lightness: 57%, $space: hsl) !important; }
+.bg-warning-light { background: color.adjust($warning, $lightness: 46%, $space: hsl) !important; }
+.bg-danger-light { background: color.adjust($danger, $lightness: 45%, $space: hsl) !important; }
+.bg-dark-light { background: color.adjust($dark, $lightness: 45%, $space: hsl) !important; }

@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: njsa-api
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.njsaApi.replicas }}
+  revisionHistoryLimit: {{ .Values.njsaApi.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      deployment: njsa-api
+    {{- include "chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        deployment: njsa-api
+      {{- include "chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.njsaApi.njsaApi.imagePullSecrets}}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: njsa-api
+          image: {{ .Values.njsaApi.njsaApi.image.repository }}/{{ .Chart.Name }}:{{ .Values.njsaApi.njsaApi.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.njsaApi.njsaApi.imagePullPolicy }}
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          env:
+          - name: ASPNETCORE_HTTP_PORTS
+            value: '{{ (index .Values.njsaApi.ports 0).port }}'
+          resources: 
+            {{- toYaml .Values.njsaApi.njsaApi.resources | nindent 12 }}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /opt/app-root/app/config
+            name: config-volume
+          - mountPath: /opt/app-root/app/secret
+            name: secret-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: njsa-api-config
+        name: config-volume
+      - name: secret-volume
+        secret:
+          defaultMode: 420
+          secretName: njsa-api-secret
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: njsa-api
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+spec:
+  host: {{ .Values.njsaApi.host }}
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: njsa-api
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: njsa-api
+  labels:
+  {{- include "chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.njsaApi.type }}
+  selector:
+    deployment: njsa-api
+  {{- include "chart.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.njsaApi.ports | toYaml | nindent 2 }}

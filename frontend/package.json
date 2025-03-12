@@ -1,0 +1,64 @@
+{
+  "name": "new-job-survey-admin",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@bcgov/bootstrap-v5-theme": "1.0.1",
+    "@beam-australia/react-env": "^3.1.1",
+    "@tanstack/react-table": "^8.20.6",
+    "@types/node": "^22.10.10",
+    "@types/react": "^19.0.8",
+    "@types/react-csv": "^1.1.10",
+    "@types/react-dom": "^19.0.0",
+    "@types/react-router": "^5.1.20",
+    "@vitejs/plugin-react": "^4.3.4",
+    "bootstrap": "~5.3.3",
+    "class-transformer": "^0.5.1",
+    "client-oauth2": "^4.2.5",
+    "dayjs": "^1.11.3",
+    "email-validator": "^2.0.4",
+    "keycloak-js": "^26.1.0",
+    "query-string": "^9.1.1",
+    "react": "^19.0.0",
+    "export-to-csv": "^1.4.0",
+    "react-datepicker": "8.1.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.1.3",
+    "react-select": "^5.10.0",
+    "reflect-metadata": "^0.2.2",
+    "rimraf": "^6.0.1",
+    "sass": "^1.83.4",
+    "slugify": "^1.6.6",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
+    "@types/jest": "^29.5.4",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.4.2"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "scripts": {
+    "prestart": "react-env --dest=public/config",
+    "start": "rimraf ./build && vite",
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

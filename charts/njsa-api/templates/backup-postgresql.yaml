@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backup-postgresql
+spec:
+  replicas: {{ .Values.backupPostgresql.replicas }}
+  revisionHistoryLimit: {{ .Values.backupPostgresql.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: backup-container
+      name: backup-postgresql
+  template:
+    metadata:
+      labels:
+        app: backup-container
+        env: v1
+        name: backup-postgresql
+        role: backup-container
+    spec:
+      containers:
+      - env:
+        - name: BACKUP_STRATEGY
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupStrategy }}
+        - name: BACKUP_DIR
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupDir }}
+        - name: NUM_BACKUPS
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.numBackups }}
+        - name: DAILY_BACKUPS
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.dailyBackups }}
+        - name: WEEKLY_BACKUPS
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.weeklyBackups }}
+        - name: MONTHLY_BACKUPS
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.monthlyBackups
+            }}
+        - name: BACKUP_PERIOD
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.backupPeriod }}
+        - name: DATABASE_SERVICE_NAME
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.databaseServiceName
+            }}
+        - name: DATABASE_NAME
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.databaseName }}
+        - name: MONGODB_AUTHENTICATION_DATABASE
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.mongodbAuthenticationDatabase
+            }}
+        - name: TABLE_SCHEMA
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.tableSchema }}
+        - name: POSTGRESQL_USER
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: postgresql
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: postgresql
+        - name: FTP_URL
+          valueFrom:
+            secretKeyRef:
+              key: ftp-url
+              name: ftp-secret
+        - name: FTP_USER
+          valueFrom:
+            secretKeyRef:
+              key: ftp-user
+              name: ftp-secret
+        - name: FTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: ftp-password
+              name: ftp-secret
+        - name: WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              key: webhook-url
+              name: backup-postgresql
+        - name: ENVIRONMENT_FRIENDLY_NAME
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.environmentFriendlyName }}
+        - name: ENVIRONMENT_NAME
+          value: {{ quote .Values.backupPostgresql.backupPostgresql.env.environmentName
+            }}
+        image: {{ .Values.backupPostgresql.backupPostgresql.image.repository }}/{{ .Values.backupPostgresql.backupPostgresql.image.tag }}
+        imagePullPolicy: {{ .Values.backupPostgresql.backupPostgresql.imagePullPolicy }}
+        name: backup-postgresql
+        resources: {{- toYaml .Values.backupPostgresql.backupPostgresql.resources | nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /backups/
+          name: backup-postgresql-pvc
+        - mountPath: /var/lib/pgsql/data
+          name: backup-verification
+        - mountPath: /backup.conf
+          name: backup-postgresql-config-volume
+          subPath: backup.conf
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: backup-postgresql-pvc
+        persistentVolumeClaim:
+          claimName: backup-postgresql-pvc
+      - name: backup-verification
+        persistentVolumeClaim:
+          claimName: backup-verification
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: backup.conf
+            path: backup.conf
+          name: backup-conf
+        name: backup-postgresql-config-volume
